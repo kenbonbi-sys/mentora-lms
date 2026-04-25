@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentora LMS — Compliance Training Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="lms-nav">
+    <div class="container">
+      <a class="nav-brand" href="javascript:void(0)" onclick="showPage('list')">
+        <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo">
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a class="nav-link active" href="javascript:void(0)" data-scroll="hero">Trang chủ</a></li>
+        <li><a class="nav-link" href="javascript:void(0)" data-scroll="courses">Modules</a></li>
+        <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <button class="btn btn-ghost btn-icon" id="btn-theme" title="Chuyển giao diện">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="btn btn-outline" id="btn-login">Đăng nhập</button>
+        <button class="btn btn-primary" id="btn-register">Đăng ký</button>
+      </div>
+      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE: LIST -->
+  <div id="page-list">
+    <div class="container">
+
+      <!-- HERO -->
+      <div class="hero" id="hero">
+        <div class="hero-content">
+          <p class="hero-eyebrow"><span class="promo-box">NẮM VỮNG QUY TRÌNH</span></p>
+          <h1 class="hero-h1">
+            <span class="sig hero-sig">Làm Đúng</span>
+            <span class="hero-h1-dark">từ đầu</span>
+          </h1>
+          <p class="hero-desc">Tổng hợp các module đào tạo về chính sách, quy trình và tiêu chuẩn nội bộ. Học theo tiến độ của bạn, bất cứ lúc nào.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+              <i class="fa-solid fa-book-open"></i> Xem tất cả Modules
+            </button>
+            <button class="btn btn-outline btn-lg">
+              <i class="fa-solid fa-circle-question"></i> Hướng dẫn sử dụng
+            </button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-blob-wrap">
+            <img src="/assets/images/hero/hero-01.jpg" alt="Training">
+            <div class="hero-deco hero-deco-1"></div>
+            <div class="hero-deco hero-deco-2"></div>
+            <div class="hero-deco hero-deco-3"></div>
+          </div>
+          <div class="hero-float-card">
+            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            <span id="hero-module-count">5 modules đang hoạt động</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULES -->
+      <div id="courses" class="courses-card">
+        <div class="courses-header">
+          <div class="courses-header-left">
+            <h3>Danh sách <span class="sig">Modules</span></h3>
+            <span class="courses-count" id="courses-count"></span>
+          </div>
+          <div class="courses-header-right">
+            <div class="filter-tabs" id="filter-tabs">
+              <button class="filter-tab active" data-cat="all">Tất cả</button>
+              <button class="filter-tab" data-cat="Policy">Policy</button>
+              <button class="filter-tab" data-cat="Process">Process</button>
+              <button class="filter-tab" data-cat="Safety">Safety</button>
+            </div>
+            <div class="search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="input-search" class="search-input" placeholder="Tìm module...">
+            </div>
+          </div>
+        </div>
+
+        <div id="skeleton-loader" class="skeleton-wrap" style="display:none">
+          <div class="skeleton-row" style="animation-delay:.0s"></div>
+          <div class="skeleton-row" style="animation-delay:.1s"></div>
+          <div class="skeleton-row" style="animation-delay:.2s"></div>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display:none">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>Không tìm thấy module nào.</p>
+        </div>
+
+        <div class="modules-grid" id="modules-grid"></div>
+      </div>
+
+    </div>
+    <footer class="lms-footer">
+      <div class="container">
+        <div class="footer-brand">
+          <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo" style="height:24px;">
+        </div>
+        <p>&copy; 2026 Mentora LMS — Compliance Training Portal</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- PAGE: DETAIL -->
+  <div id="page-detail" style="display:none">
+    <div class="container">
+
+      <div class="breadcrumb">
+        <button class="btn btn-ghost btn-sm" onclick="showPage('list')">
+          <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </button>
+        <span class="bc-sep">/</span>
+        <span class="bc-current" id="detail-bc">Chi tiết Module</span>
+      </div>
+
+      <div class="detail-header">
+        <div class="detail-header-meta">
+          <div class="detail-badges" id="detail-badges"></div>
+          <h1 class="detail-title" id="detail-title"></h1>
+          <p class="detail-subtitle" id="detail-subtitle"></p>
+          <div class="detail-info-row">
+            <span><i class="fa-solid fa-user-tie"></i> <span id="detail-owner"></span></span>
+            <span><i class="fa-solid fa-calendar-days"></i> Cập nhật: <span id="detail-updated"></span></span>
+            <span><i class="fa-solid fa-clock"></i> <span id="detail-duration"></span></span>
+          </div>
+        </div>
+        <div class="detail-header-thumb">
+          <img id="detail-thumb" src="" alt="">
+        </div>
+      </div>
+
+      <div class="detail-layout">
+        <div class="detail-main">
+          <section class="detail-section">
+            <div class="section-title"><i class="fa-solid fa-list-check"></i> Nội dung & Quy trình</div>
+            <div class="process-steps" id="detail-steps"></div>
+          </section>
+          <section class="detail-section" id="section-images">
+            <div class="section-title"><i class="fa-solid fa-layer-group"></i> Bài viết liên quan</div>
+            <div class="image-gallery" id="detail-gallery"></div>
+          </section>
+          <section class="detail-section" id="section-video">
+            <div class="section-title"><i class="fa-solid fa-circle-play"></i> Video hướng dẫn</div>
+            <div class="video-wrap" id="detail-video"></div>
+          </section>
+          <section class="detail-section" id="section-quiz">
+            <div class="section-title"><i class="fa-solid fa-circle-question"></i> Kiểm tra kiến thức</div>
+            <div class="quiz-wrap" id="quiz-wrap"></div>
+          </section>
+        </div>
+
+        <aside class="detail-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-paperclip"></i> Tài liệu đính kèm</div>
+            <div id="detail-resources"></div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title"><i class="fa-solid fa-list"></i> Nội dung bài</div>
+            <div class="step-tracker" id="step-tracker"></div>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+    <footer class="lms-footer">
+      <div class="container">
+        <div class="footer-brand">
+          <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo" style="height:24px;">
+        </div>
+        <p>&copy; 2026 Mentora LMS — Compliance Training Portal</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="modal-login">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Đăng nhập</h3>
+        <button class="btn modal-close" data-close="modal-login"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="email@company.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" data-close="modal-login">Hủy</button>
+        <button class="btn btn-primary" id="btn-do-login">
+          <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER MODAL -->
+  <div class="modal-overlay" id="modal-register">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Tạo tài khoản</h3>
+        <button class="btn modal-close" data-close="modal-register"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Họ và tên</label>
+        <input type="text" class="form-input" placeholder="Nguyễn Văn A">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="email@company.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-outline" data-close="modal-register">Hủy</button>
+        <button class="btn btn-primary" id="btn-do-register">
+          <i class="fa-solid fa-user-plus"></i> Đăng ký
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

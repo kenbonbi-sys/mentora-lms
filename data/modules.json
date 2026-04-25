@@ -1,0 +1,458 @@
+[
+  {
+    "id": "M001",
+    "name": "Quy trình Onboarding Nhân viên Mới",
+    "owner": "HR-L&OD",
+    "duration": "30 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Tổng quan quy trình tiếp nhận và định hướng nhân viên mới từ ngày đầu tiên đến hết thử việc.",
+    "thumbnail": "/assets/images/hero/hero-02.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "15/04/2026",
+    "steps": [
+      {
+        "title": "Chuẩn bị trước ngày đầu tiên",
+        "desc": "Trước khi nhân viên mới chính thức bắt đầu, bộ phận HR cần hoàn thành toàn bộ thủ tục hành chính bao gồm soạn thảo và ký hợp đồng lao động, đăng ký bảo hiểm xã hội, bảo hiểm y tế theo đúng quy định pháp luật hiện hành. HR gửi welcome email chứa lịch làm việc tuần đầu, danh sách tài liệu cần mang theo, hướng dẫn tìm đường đến văn phòng và thông tin về người liên hệ trực tiếp.\n\nBộ phận IT cần chuẩn bị đầy đủ thiết bị làm việc (laptop, màn hình, chuột, bàn phím), tạo tài khoản email công ty, cấp quyền truy cập các hệ thống nội bộ cần thiết, cài đặt sẵn các phần mềm theo yêu cầu của vị trí. Tất cả phải hoàn tất trước 17h ngày làm việc cuối cùng trước ngày nhân viên vào.",
+        "note": "Deadline cứng: IT và HR phải xác nhận hoàn thành checklist trước 17h ngày làm việc cuối trước khi nhân viên vào. Nếu trễ, báo cáo ngay cho HR Manager."
+      },
+      {
+        "title": "Ngày đầu tiên — Orientation toàn diện",
+        "desc": "Nhân viên mới check-in tại reception lúc 8:30, được hướng dẫn lên tầng, nhận thẻ badge tạm và được dẫn đến bàn làm việc đã chuẩn bị sẵn. Buổi sáng dành cho meeting 1:1 với manager trực tiếp để nghe tổng quan về team, mục tiêu phòng ban, kỳ vọng trong giai đoạn thử việc và roadmap phát triển.\n\nBuổi chiều là tour văn phòng: giới thiệu các khu vực chức năng (phòng họp, bếp, khu nghỉ ngơi, nhà vệ sinh, cửa thoát hiểm), gặp gỡ các phòng ban liên quan, nhận bàn giao thiết bị và ký biên bản. Cuối ngày, nhân viên hoàn thành form nhận việc và nộp lại HR.",
+        "note": "Buddy (người hỗ trợ) sẽ được chỉ định ngay từ buổi sáng ngày đầu tiên và đồng hành suốt 30 ngày đầu. Buddy phải có ít nhất 3 tháng kinh nghiệm ở vị trí tương đương."
+      },
+      {
+        "title": "Tuần 1 — Nắm bắt hệ thống và công cụ",
+        "desc": "Trong tuần đầu tiên, nhân viên sẽ được đào tạo về toàn bộ hệ thống và công cụ nội bộ: hệ thống quản lý công việc, nền tảng giao tiếp nội bộ, hệ thống chấm công, quy trình đặt phòng họp, cổng thông tin nội bộ và các ứng dụng chuyên biệt theo vị trí. Buddy sẽ hỗ trợ trực tiếp khi gặp khó khăn.\n\nSong song đó, nhân viên bắt buộc hoàn thành tất cả các khóa học đào tạo bắt buộc trên hệ thống LMS này: Chính sách Bảo mật Thông tin, Quy tắc Ứng xử, An toàn Lao động và Quy trình Chi phí. Mỗi khóa học cần hoàn thành trong vòng 7 ngày kể từ ngày vào.",
+        "note": "Nhân viên phải đạt tối thiểu 80% điểm bài kiểm tra cuối mỗi module. Nếu chưa đạt, được phép làm lại tối đa 2 lần trong vòng 3 ngày."
+      },
+      {
+        "title": "Tuần 2–4 — Thực hành có hướng dẫn",
+        "desc": "Giai đoạn này nhân viên bắt đầu thực hiện công việc thực tế với sự hỗ trợ của buddy và manager. Các nhiệm vụ được giao theo nguyên tắc tăng dần độ phức tạp: bắt đầu từ các task quan sát và hỗ trợ, sau đó chuyển sang tự thực hiện dưới giám sát, cuối cùng là độc lập hoàn toàn với các task đơn giản.\n\nMỗi tuần, nhân viên có buổi check-in 1:1 với manager kéo dài 30 phút để review tiến độ, đặt câu hỏi và nhận feedback. Buddy cũng họp briefing 15 phút mỗi ngày vào đầu giờ sáng để đồng bộ kế hoạch trong ngày. Nhân viên được khuyến khích ghi lại câu hỏi và thắc mắc vào notebook cá nhân để tiện hỏi trong các buổi họp định kỳ.",
+        "note": "Tất cả output trong giai đoạn thử việc phải được buddy hoặc manager review trước khi gửi ra ngoài team. Đây là quy định bắt buộc nhằm đảm bảo chất lượng."
+      },
+      {
+        "title": "Tháng 2 — Độc lập và mở rộng phạm vi",
+        "desc": "Bước vào tháng thứ hai, nhân viên được kỳ vọng thực hiện công việc độc lập ở mức 70–80% workload chuẩn của vị trí. Buddy giảm tần suất hỗ trợ trực tiếp nhưng vẫn sẵn sàng giải đáp khi cần. Manager chuyển từ daily oversight sang weekly review.\n\nNhân viên được tham gia các cuộc họp team chính thức, đóng góp ý kiến trong các buổi brainstorm và bắt đầu xây dựng mối quan hệ làm việc với các phòng ban liên quan. Cuối tháng 2, nhân viên tự đánh giá tiến độ theo form tự đánh giá thử việc và nộp cho HR trước ngày 25 hàng tháng.",
+        "note": "Nếu nhân viên gặp khó khăn về performance trong tháng 2, manager phải lập Performance Improvement Plan (PIP) ngay và thông báo HR trong vòng 3 ngày làm việc."
+      },
+      {
+        "title": "Đánh giá kết thúc thử việc",
+        "desc": "Trước ngày kết thúc thử việc 5 ngày làm việc, manager phải hoàn thành và nộp form Đánh giá Thử việc (PE-001) lên HR. Form này bao gồm đánh giá theo 5 tiêu chí: chuyên môn nghiệp vụ, tinh thần học hỏi, kỹ năng làm việc nhóm, khả năng tự quản lý và văn hóa phù hợp với công ty. Mỗi tiêu chí được chấm từ 1–5 điểm.\n\nHR tổ chức buổi meeting ba bên (nhân viên – manager – HR) để thông báo kết quả và ký biên bản. Nếu đạt, nhân viên chuyển sang hợp đồng chính thức và được bổ sung quyền truy cập hệ thống đầy đủ. Nếu không đạt, HR thực hiện quy trình chấm dứt thử việc theo đúng quy định lao động.",
+        "note": "Điểm trung bình tối thiểu để đạt thử việc là 3.5/5. Nếu nhân viên không đồng ý với kết quả đánh giá, có quyền gửi khiếu nại bằng văn bản lên HR Director trong vòng 2 ngày làm việc."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-02.jpg",   "caption": "Workspace chuẩn bị sẵn sàng" },
+      { "url": "/assets/images/hero/hero-03.jpg",   "caption": "Orientation session" },
+      { "url": "/assets/images/hero/hero-04.jpg",   "caption": "On-the-job training" },
+      { "url": "/assets/images/promo/promo-01.jpg", "caption": "Form đánh giá thử việc" }
+    ],
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "resources": [
+      { "name": "Onboarding Checklist.pdf",        "type": "pdf",  "size": "245 KB", "url": "#" },
+      { "name": "Slide Orientation 2026.pptx",     "type": "pptx", "size": "3.2 MB", "url": "#" },
+      { "name": "Hướng dẫn hệ thống nội bộ.pdf",  "type": "pdf",  "size": "1.1 MB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "IT và HR phải hoàn thành checklist chuẩn bị trước khi nào?",
+        "options": [
+          "Trước 8h sáng ngày nhân viên chính thức bắt đầu",
+          "Trước 17h ngày làm việc cuối trước khi nhân viên vào",
+          "Trong tuần đầu tiên sau khi nhân viên vào làm",
+          "Khi nhân viên đến văn phòng làm thủ tục nhận việc"
+        ],
+        "correct": 1,
+        "explanation": "Theo quy trình onboarding, IT và HR bắt buộc hoàn thành toàn bộ checklist trước 17h ngày làm việc cuối cùng trước ngày nhân viên bắt đầu. Đây là deadline cứng — nếu trễ phải báo cáo ngay cho HR Manager."
+      },
+      {
+        "question": "Buddy được chỉ định phải có tối thiểu bao nhiêu tháng kinh nghiệm ở vị trí tương đương?",
+        "options": ["1 tháng", "2 tháng", "3 tháng", "6 tháng"],
+        "correct": 2,
+        "explanation": "Buddy (người hỗ trợ) phải có ít nhất 3 tháng kinh nghiệm ở vị trí tương đương và được chỉ định ngay từ buổi sáng ngày đầu tiên. Buddy sẽ đồng hành cùng nhân viên mới trong suốt 30 ngày đầu."
+      },
+      {
+        "question": "Nhân viên mới phải đạt tối thiểu bao nhiêu % điểm mỗi bài kiểm tra trên LMS?",
+        "options": ["60%", "70%", "80%", "90%"],
+        "correct": 2,
+        "explanation": "Mỗi khóa học bắt buộc trên LMS yêu cầu đạt tối thiểu 80% điểm bài kiểm tra cuối. Nếu chưa đạt, nhân viên được phép làm lại tối đa 2 lần trong vòng 3 ngày."
+      },
+      {
+        "question": "Điểm trung bình tối thiểu để đạt thử việc theo form đánh giá PE-001 là bao nhiêu?",
+        "options": ["3.0/5", "3.5/5", "4.0/5", "4.5/5"],
+        "correct": 1,
+        "explanation": "Điểm trung bình tối thiểu để đạt thử việc là 3.5/5. Nếu nhân viên không đồng ý với kết quả, có quyền gửi khiếu nại bằng văn bản lên HR Director trong vòng 2 ngày làm việc."
+      }
+    ]
+  },
+  {
+    "id": "M002",
+    "name": "Chính sách Bảo mật Thông tin & PDPA",
+    "owner": "HR-L&OD",
+    "duration": "45 phút đọc",
+    "category": "Policy",
+    "level": "Bắt buộc",
+    "subtitle": "Các quy định về bảo vệ dữ liệu cá nhân, xử lý thông tin khách hàng và nội bộ theo tiêu chuẩn PDPA.",
+    "thumbnail": "/assets/images/hero/hero-05.jpg",
+    "icon": "/assets/icons/security.png",
+    "status": "Đang hoạt động",
+    "updated": "01/03/2026",
+    "steps": [
+      {
+        "title": "Tổng quan về PDPA và tầm quan trọng",
+        "desc": "Luật Bảo vệ Dữ liệu Cá nhân (PDPA) là khung pháp lý quy định cách tổ chức thu thập, lưu trữ, sử dụng và chia sẻ thông tin cá nhân của người dùng. Với vai trò là nhân viên MoMo, bạn đang tiếp xúc hàng ngày với dữ liệu nhạy cảm của hàng triệu người dùng — bao gồm thông tin định danh, số điện thoại, thông tin tài khoản ngân hàng và lịch sử giao dịch.\n\nViệc vi phạm PDPA không chỉ gây thiệt hại cho người dùng mà còn ảnh hưởng nghiêm trọng đến uy tín và hoạt động kinh doanh của công ty. Hình phạt có thể lên đến hàng tỷ đồng và trong một số trường hợp có thể dẫn đến trách nhiệm hình sự cá nhân.",
+        "note": "Mọi nhân viên đều phải ký cam kết bảo mật thông tin khi vào làm và cập nhật lại hàng năm. Cam kết này có hiệu lực ngay cả sau khi rời công ty."
+      },
+      {
+        "title": "Phân loại dữ liệu theo 3 cấp độ",
+        "desc": "MoMo phân loại toàn bộ dữ liệu thành 3 cấp độ bảo mật với các quy tắc xử lý khác nhau:\n\n**Cấp 1 — Công khai:** Thông tin có thể chia sẻ tự do với bên ngoài như thông tin sản phẩm, chính sách công ty, tài liệu marketing. Không cần xin phép trước khi chia sẻ.\n\n**Cấp 2 — Nội bộ:** Dữ liệu chỉ được chia sẻ trong nội bộ công ty như báo cáo tài chính nội bộ, quy trình vận hành, thông tin nhân sự. Chỉ chia sẻ khi có nhu cầu công việc rõ ràng và phải qua kênh bảo mật.\n\n**Cấp 3 — Bí mật:** Dữ liệu cá nhân người dùng, thông tin tài khoản, mã nguồn, chiến lược kinh doanh. Chỉ được truy cập khi có phân quyền cụ thể và phải ghi log mỗi lần truy cập.",
+        "note": "Khi không chắc chắn dữ liệu thuộc cấp nào, mặc định xử lý theo cấp 3 (Bí mật) và hỏi ý kiến Legal trước khi xử lý."
+      },
+      {
+        "title": "Nguyên tắc thu thập và xử lý dữ liệu",
+        "desc": "Dữ liệu cá nhân chỉ được thu thập khi đáp ứng đồng thời 3 điều kiện: (1) có mục đích cụ thể, hợp pháp và được khai báo rõ ràng; (2) được sự đồng ý tường minh của chủ thể dữ liệu hoặc có cơ sở pháp lý khác; (3) chỉ thu thập đúng những gì cần thiết cho mục đích đã khai báo — nguyên tắc tối giản dữ liệu.\n\nDữ liệu chỉ được lưu trữ trong thời hạn cần thiết theo quy định của pháp luật hoặc mục đích kinh doanh đã được phê duyệt. Sau khi hết hạn lưu trữ, dữ liệu phải được tiêu hủy an toàn theo quy trình của bộ phận IT Security — không được xóa tùy tiện bằng cách thông thường.",
+        "note": "Tuyệt đối không chia sẻ dữ liệu người dùng cho bên thứ ba khi chưa có Thỏa thuận Xử lý Dữ liệu (DPA) được ký bởi Legal. Vi phạm này bị xem là hành vi nghiêm trọng và sẽ bị xử lý kỷ luật ngay lập tức."
+      },
+      {
+        "title": "Quy trình xử lý khi phát hiện sự cố rò rỉ dữ liệu",
+        "desc": "Sự cố rò rỉ dữ liệu (data breach) là bất kỳ tình huống nào mà dữ liệu bị truy cập, tiết lộ, sao chép, thay đổi hoặc mất mát trái phép — dù vô tình hay cố ý. Khi phát hiện hoặc nghi ngờ có sự cố:\n\nBước 1: DỪNG ngay mọi hành động có thể làm tình trạng tệ hơn (không xóa log, không tắt hệ thống).\nBước 2: Báo cáo ngay cho IT Security qua hotline nội bộ hoặc email security@momo.vn trong vòng 1 giờ.\nBước 3: Ghi lại toàn bộ thông tin: thời điểm phát hiện, loại dữ liệu có thể bị ảnh hưởng, số lượng người dùng ước tính, nguồn phát hiện.\nBước 4: Phối hợp với team Security trong quá trình điều tra — không tự ý xử lý hay thông báo ra ngoài.",
+        "note": "Theo PDPA, công ty có nghĩa vụ thông báo cho cơ quan quản lý trong vòng 72 giờ kể từ khi phát hiện sự cố. Việc che giấu hoặc trì hoãn báo cáo bị xem là vi phạm pháp luật."
+      },
+      {
+        "title": "Quyền của chủ thể dữ liệu và cách xử lý yêu cầu",
+        "desc": "Theo PDPA, mỗi người dùng có đầy đủ các quyền sau đối với dữ liệu của họ: Quyền biết — được thông báo về việc dữ liệu được thu thập và sử dụng như thế nào. Quyền truy cập — yêu cầu xem toàn bộ dữ liệu công ty đang lưu giữ về họ. Quyền chỉnh sửa — yêu cầu cập nhật dữ liệu không chính xác. Quyền xóa — yêu cầu xóa dữ liệu trong các trường hợp nhất định. Quyền phản đối — không đồng ý với một số hình thức xử lý dữ liệu nhất định.\n\nKhi nhận được yêu cầu từ người dùng liên quan đến quyền dữ liệu cá nhân, phải chuyển ngay cho bộ phận HR-L&OD và không được tự xử lý. Thời hạn phản hồi là 30 ngày làm việc kể từ khi nhận yêu cầu hợp lệ.",
+        "note": "Việc từ chối hoặc bỏ qua yêu cầu hợp lệ của chủ thể dữ liệu mà không có lý do chính đáng là vi phạm PDPA và có thể dẫn đến khiếu nại chính thức lên cơ quan quản lý."
+      },
+      {
+        "title": "Thực hành bảo mật hàng ngày",
+        "desc": "Bảo mật thông tin không chỉ là quy định pháp lý mà còn là thói quen làm việc hàng ngày. Một số nguyên tắc bắt buộc áp dụng với mọi nhân viên:\n\n• Khóa màn hình ngay khi rời bàn làm việc (Windows: Win+L, Mac: Cmd+Ctrl+Q)\n• Không sử dụng thiết bị cá nhân để xử lý dữ liệu cấp 3 khi chưa đăng ký MDM\n• Không gửi dữ liệu người dùng qua email cá nhân hoặc ứng dụng chat không được phê duyệt\n• Đặt mật khẩu đủ mạnh (ít nhất 12 ký tự, kết hợp chữ hoa, thường, số và ký tự đặc biệt) và thay đổi mỗi 90 ngày\n• Bật xác thực hai yếu tố (2FA) cho tất cả tài khoản công ty\n• Báo cáo ngay khi phát hiện email phishing, link lạ hoặc yêu cầu thông tin bất thường",
+        "note": "IT Security thực hiện kiểm tra ngẫu nhiên hàng tháng về việc tuân thủ các nguyên tắc bảo mật. Nhân viên vi phạm lần đầu sẽ được nhắc nhở, lần hai sẽ phải tham gia khóa đào tạo bổ sung, lần ba sẽ bị xử lý kỷ luật chính thức."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-05.jpg",   "caption": "Bảo mật dữ liệu" },
+      { "url": "/assets/images/hero/hero-06.jpg",   "caption": "Phân loại dữ liệu" },
+      { "url": "/assets/images/promo/promo-04.jpg", "caption": "Quy trình xử lý vi phạm" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "PDPA Policy v2.1.pdf",          "type": "pdf",  "size": "890 KB", "url": "#" },
+      { "name": "Data Classification Guide.pdf", "type": "pdf",  "size": "320 KB", "url": "#" },
+      { "name": "Slide PDPA Training.pptx",      "type": "pptx", "size": "5.4 MB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Khi không chắc chắn dữ liệu thuộc cấp nào, bạn phải xử lý theo cấp nào mặc định?",
+        "options": [
+          "Cấp 1 — Công khai, chia sẻ tự do",
+          "Cấp 2 — Nội bộ, chỉ trong công ty",
+          "Cấp 3 — Bí mật, hỏi Legal trước khi xử lý",
+          "Tùy theo ngữ cảnh cụ thể"
+        ],
+        "correct": 2,
+        "explanation": "Theo nguyên tắc thận trọng, khi không chắc chắn dữ liệu thuộc cấp nào, bạn phải mặc định xử lý theo Cấp 3 (Bí mật) và hỏi ý kiến Legal trước khi xử lý bất kỳ hành động nào liên quan đến dữ liệu đó."
+      },
+      {
+        "question": "Theo PDPA, sau khi phát hiện sự cố rò rỉ dữ liệu, công ty có bao lâu để thông báo cơ quan quản lý?",
+        "options": ["24 giờ", "48 giờ", "72 giờ", "7 ngày làm việc"],
+        "correct": 2,
+        "explanation": "Theo quy định PDPA, công ty có nghĩa vụ thông báo cho cơ quan quản lý trong vòng 72 giờ kể từ khi phát hiện sự cố rò rỉ dữ liệu. Che giấu hoặc trì hoãn báo cáo bị xem là vi phạm pháp luật."
+      },
+      {
+        "question": "Thời hạn tối đa để công ty phản hồi yêu cầu quyền dữ liệu cá nhân từ người dùng là bao lâu?",
+        "options": [
+          "7 ngày làm việc",
+          "14 ngày làm việc",
+          "30 ngày làm việc",
+          "60 ngày làm việc"
+        ],
+        "correct": 2,
+        "explanation": "Khi nhận được yêu cầu liên quan đến quyền dữ liệu cá nhân (truy cập, chỉnh sửa, xóa…), thời hạn phản hồi tối đa là 30 ngày làm việc kể từ khi nhận yêu cầu hợp lệ. Yêu cầu phải được chuyển ngay cho bộ phận HR-L&OD."
+      },
+      {
+        "question": "Mật khẩu tài khoản công ty phải được thay đổi định kỳ mỗi bao nhiêu ngày theo quy định bảo mật?",
+        "options": ["30 ngày", "60 ngày", "90 ngày", "180 ngày"],
+        "correct": 2,
+        "explanation": "Quy định bảo mật hàng ngày yêu cầu thay đổi mật khẩu mỗi 90 ngày. Mật khẩu phải đủ mạnh với ít nhất 12 ký tự, kết hợp chữ hoa, thường, số và ký tự đặc biệt, đồng thời bật 2FA cho tất cả tài khoản công ty."
+      }
+    ]
+  },
+  {
+    "id": "M003",
+    "name": "An toàn Lao động & Phòng cháy Chữa cháy",
+    "owner": "HR-L&OD",
+    "duration": "25 phút đọc",
+    "category": "Safety",
+    "level": "Bắt buộc",
+    "subtitle": "Quy định về an toàn tại nơi làm việc, sơ tán khẩn cấp và phòng ngừa cháy nổ.",
+    "thumbnail": "/assets/images/hero/hero-07.jpg",
+    "icon": "/assets/icons/securityshield.png",
+    "status": "Đang hoạt động",
+    "updated": "10/01/2026",
+    "steps": [
+      {
+        "title": "Nhận diện các nguy cơ tại nơi làm việc",
+        "desc": "Môi trường văn phòng tuy có vẻ an toàn nhưng ẩn chứa nhiều nguy cơ tiềm ẩn mà nhân viên cần nhận diện và phòng tránh chủ động. Các nguy cơ phổ biến bao gồm: dây điện và thiết bị hư hỏng (nguy cơ điện giật, gây cháy); sàn ướt hoặc vật cản ở lối đi (nguy cơ ngã); tư thế ngồi sai trong thời gian dài (chấn thương cơ xương); ánh sáng không đủ hoặc quá chói (mỏi mắt, đau đầu); và vật nặng đặt ở độ cao không an toàn (nguy cơ rơi đổ).\n\nMỗi nhân viên có trách nhiệm báo cáo ngay cho bộ phận Admin khi phát hiện bất kỳ nguy cơ nào, dù nhỏ. Không tự ý sửa chữa thiết bị điện hoặc can thiệp vào cơ sở hạ tầng của tòa nhà.",
+        "note": "Admin thực hiện kiểm tra an toàn định kỳ hàng quý. Nhân viên có thể gửi báo cáo nguy cơ bất kỳ lúc nào qua form trực tuyến trên intranet."
+      },
+      {
+        "title": "Quy định an toàn cơ bản tại văn phòng",
+        "desc": "Một số quy định an toàn bắt buộc tuân thủ mọi lúc tại văn phòng:\n\n• Không để bất kỳ vật gì cản trở lối thoát hiểm, hành lang, cửa thoát nạn và khu vực trước bình chữa cháy — khoảng trống tối thiểu 1 mét\n• Không sạc điện thoại, laptop hoặc bất kỳ thiết bị nào qua đêm tại bàn làm việc khi không có người\n• Không sử dụng ổ cắm điện đa năng để nối nhiều tầng (daisy chain) — gây quá tải và nguy cơ cháy nổ cao\n• Báo ngay cho IT khi phát hiện dây điện bị hỏng, ổ cắm phát nhiệt hoặc thiết bị có mùi khét\n• Không mang thức ăn và đồ uống vào khu vực server room hoặc gần thiết bị điện tử quan trọng\n• Tắt toàn bộ thiết bị điện cá nhân trước khi rời văn phòng cuối ngày",
+        "note": "Admin có quyền nhắc nhở và lập biên bản khi phát hiện vi phạm các quy định an toàn. Tái phạm nhiều lần sẽ bị báo cáo lên HR để xử lý theo quy định kỷ luật."
+      },
+      {
+        "title": "Quy trình sơ tán khẩn cấp",
+        "desc": "Khi nghe còi báo động hoặc có thông báo sơ tán:\n\nBước 1: Dừng ngay mọi hoạt động đang làm, lưu file nếu chỉ mất 5–10 giây, sau đó tắt màn hình.\nBước 2: Lấy những vật dụng thiết yếu gần tay (điện thoại, thẻ badge) — không mất thời gian thu dọn đồ đạc.\nBước 3: Di chuyển nhanh nhưng không chạy theo sơ đồ thoát hiểm dán tại cạnh cửa mỗi tầng. Ưu tiên sử dụng cầu thang bộ — tuyệt đối không dùng thang máy.\nBước 4: Tập hợp tại điểm tập kết: Bãi đỗ xe B1, khu vực được đánh dấu màu xanh lá.\nBước 5: Trưởng nhóm điểm danh và báo cáo lên người phụ trách tầng. Không tự ý quay lại tòa nhà khi chưa có lệnh.",
+        "note": "Mỗi phòng ban có một Fire Warden được chỉ định chịu trách nhiệm điểm danh và hỗ trợ nhân viên sơ tán. Danh sách Fire Warden được cập nhật và dán tại bảng thông báo mỗi tầng."
+      },
+      {
+        "title": "Sử dụng bình chữa cháy đúng cách",
+        "desc": "Bình chữa cháy chỉ được sử dụng khi đám cháy còn nhỏ (kích thước thùng rác), không có nguy cơ lan rộng và lối thoát hiểm vẫn còn thông thoáng. Nếu đám cháy đã lớn, ưu tiên sơ tán — không cố gắng dập lửa.\n\nQuy tắc PASS bắt buộc phải ghi nhớ:\n• **P — Pull:** Rút chốt an toàn khỏi tay cầm\n• **A — Aim:** Hướng vòi xịt vào GỐC ngọn lửa, không phải ngọn lửa\n• **S — Squeeze:** Bóp tay cầm để xịt hóa chất\n• **S — Sweep:** Quét vòi từ bên này sang bên kia ở gốc lửa cho đến khi tắt hoặc hết bình\n\nBình chữa cháy tại MoMo sử dụng bột khô ABC, có thể dập các đám cháy từ giấy, gỗ, dầu mỡ và điện. Vị trí các bình được đánh dấu trên sơ đồ tầng và được kiểm tra 6 tháng một lần.",
+        "note": "Sau mỗi lần sử dụng bình chữa cháy (dù chỉ xịt một ít), bắt buộc phải báo cáo ngay cho Admin để đặt bình mới. Không bao giờ đặt lại bình đã qua sử dụng mà không nạp lại."
+      },
+      {
+        "title": "Sơ cứu cơ bản và tủ thuốc",
+        "desc": "Tại mỗi tầng văn phòng đều có tủ sơ cứu được đặt tại khu vực pantry, được kiểm tra và bổ sung hàng tháng bởi bộ phận Admin. Tủ sơ cứu chứa: băng gạc, cồn sát trùng, thuốc hạ sốt, thuốc đau đầu, thuốc dị ứng và hướng dẫn sơ cứu cơ bản.\n\nTrong trường hợp có người bị thương hoặc đột ngột ngã bệnh: gọi ngay cho Admin (ext. 100) hoặc gọi cấp cứu 115 nếu tình trạng nghiêm trọng. Không di chuyển người bị thương khi chưa xác định mức độ chấn thương. Luôn giữ bình tĩnh và thông báo rõ vị trí, tình trạng nạn nhân khi gọi cấp cứu.",
+        "note": "MoMo tổ chức khóa học Sơ cứu Cơ bản (CPR, xử lý vết thương, nhận diện đột quỵ) miễn phí cho nhân viên mỗi 6 tháng. Nhân viên được khuyến khích tham gia ít nhất 1 lần."
+      },
+      {
+        "title": "Báo cáo tai nạn và sự cố an toàn",
+        "desc": "Mọi tai nạn, sự cố an toàn hoặc suýt xảy ra tai nạn (near-miss) đều phải được báo cáo — dù nhỏ hay lớn, dù có gây thương tích hay không. Nguyên tắc này giúp công ty phát hiện và khắc phục nguy cơ trước khi xảy ra tai nạn nghiêm trọng.\n\nQuy trình báo cáo: Ngay khi xảy ra, thông báo bằng miệng cho Admin và manager trực tiếp. Trong vòng 24 giờ, điền đầy đủ form Báo cáo Sự cố An toàn (SF-001) và nộp cho HR. Với tai nạn gây thương tích cần điều trị y tế, bổ sung biên bản khám chữa bệnh và giấy chứng nhận của bác sĩ.\n\nCông ty cam kết không truy cứu trách nhiệm kỷ luật với nhân viên báo cáo sự cố trung thực. Mục tiêu là cải thiện an toàn, không phải tìm người đổ lỗi.",
+        "note": "Che giấu hoặc không báo cáo tai nạn/sự cố an toàn là vi phạm nội quy nghiêm trọng và có thể dẫn đến hậu quả pháp lý cho cả nhân viên và công ty."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-07.jpg",   "caption": "Vị trí bình chữa cháy" },
+      { "url": "/assets/images/hero/hero-08.jpg",   "caption": "Sơ đồ thoát hiểm tầng 3" },
+      { "url": "/assets/images/promo/promo-06.jpg", "caption": "Cửa thoát hiểm" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Nội quy An toàn Lao động.pdf", "type": "pdf",  "size": "560 KB", "url": "#" },
+      { "name": "Sơ đồ Thoát hiểm.pdf",         "type": "pdf",  "size": "2.1 MB", "url": "#" },
+      { "name": "Slide PCCC Training.pptx",      "type": "pptx", "size": "8.7 MB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Trong quy tắc PASS khi sử dụng bình chữa cháy, chữ 'A' có nghĩa là gì?",
+        "options": [
+          "Alert — Báo động ngay cho mọi người",
+          "Aim — Hướng vòi xịt vào gốc ngọn lửa",
+          "Attack — Tấn công trực tiếp vào ngọn lửa",
+          "Activate — Kích hoạt hệ thống phun nước"
+        ],
+        "correct": 1,
+        "explanation": "Quy tắc PASS: Pull (rút chốt), Aim (hướng vào GỐC lửa — không phải ngọn lửa), Squeeze (bóp tay cầm), Sweep (quét từ bên này sang bên kia). Hướng vào gốc lửa mới dập được nguồn nhiên liệu đang cháy."
+      },
+      {
+        "question": "Điểm tập kết khi sơ tán khẩn cấp tại văn phòng MoMo ở đâu?",
+        "options": [
+          "Bãi đỗ xe B1, khu vực đánh dấu màu xanh lá",
+          "Sảnh tầng 1 gần thang máy",
+          "Vỉa hè phía trước tòa nhà",
+          "Khu vực mái tầng thượng"
+        ],
+        "correct": 0,
+        "explanation": "Điểm tập kết chính thức khi sơ tán là Bãi đỗ xe B1, khu vực được đánh dấu màu xanh lá. Sau khi tập kết, trưởng nhóm điểm danh và báo cáo lên người phụ trách tầng. Không tự ý quay lại tòa nhà khi chưa có lệnh."
+      },
+      {
+        "question": "Khi xảy ra tai nạn/sự cố an toàn, nhân viên phải điền form nào và nộp trong vòng bao lâu?",
+        "options": [
+          "Form EF-001 trong vòng 48 giờ",
+          "Form SF-001 trong vòng 24 giờ",
+          "Form PE-001 trong vòng 24 giờ",
+          "Form COI-001 trong vòng 3 ngày làm việc"
+        ],
+        "correct": 1,
+        "explanation": "Mọi tai nạn hoặc sự cố an toàn phải được báo cáo bằng Form SF-001 (Báo cáo Sự cố An toàn) và nộp cho HR trong vòng 24 giờ. Ngay khi xảy ra, cần thông báo bằng miệng cho Admin và manager trực tiếp."
+      },
+      {
+        "question": "Bình chữa cháy tại văn phòng MoMo sử dụng loại hóa chất nào?",
+        "options": [
+          "Bột khô ABC — dập được cháy giấy, dầu mỡ và điện",
+          "CO2 — chỉ dập cháy điện",
+          "Nước áp suất cao — chỉ dập cháy vật liệu rắn",
+          "Bọt foam — dập cháy chất lỏng dễ cháy"
+        ],
+        "correct": 0,
+        "explanation": "Bình chữa cháy tại MoMo dùng bột khô ABC — loại đa năng có thể dập các đám cháy từ giấy, gỗ (Class A), dầu mỡ (Class B) và thiết bị điện (Class C). Sau mỗi lần dùng, dù chỉ xịt một ít, phải báo ngay Admin để thay bình mới."
+      }
+    ]
+  },
+  {
+    "id": "M004",
+    "name": "Quy trình Phê duyệt Chi phí & Thanh toán",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Theo phòng ban",
+    "subtitle": "Hướng dẫn đề xuất, phê duyệt và hoàn ứng chi phí công tác, mua sắm và chi phí vận hành.",
+    "thumbnail": "/assets/images/hero/hero-09.jpg",
+    "icon": "/assets/icons/money.png",
+    "status": "Đang hoạt động",
+    "updated": "20/02/2026",
+    "steps": [
+      {
+        "title": "Phân loại chi phí và ngưỡng phê duyệt",
+        "desc": "Toàn bộ chi phí phát sinh trong hoạt động công việc được chia thành 4 nhóm chính:\n\n**Chi phí công tác:** Di chuyển, lưu trú, ăn uống khi đi công tác trong và ngoài nước. Áp dụng định mức theo từng cấp bậc được quy định trong Chính sách Công tác 2026.\n\n**Chi phí mua sắm:** Thiết bị, vật tư, phần mềm phục vụ công việc. Cần có tối thiểu 2 báo giá cho mọi khoản mua sắm trên 5 triệu đồng.\n\n**Chi phí vận hành:** Điện, nước, thuê mặt bằng, dịch vụ định kỳ — thường được Finance xử lý tự động theo hợp đồng đã ký.\n\n**Chi phí đột xuất:** Các khoản phát sinh ngoài kế hoạch. Cần có lý do rõ ràng và được phê duyệt đặc biệt.",
+        "note": "Mọi chi phí từ ngân sách dự án phải được Project Manager phê duyệt trước khi trình lên cấp tiếp theo, bất kể giá trị."
+      },
+      {
+        "title": "Quy trình đề xuất và phê duyệt chi phí",
+        "desc": "Để đề xuất chi phí, truy cập hệ thống ERP nội bộ, chọn module Finance > Expense Request, điền đầy đủ form EF-001 bao gồm: mô tả chi tiết mục đích chi, số tiền dự kiến, ngày cần tiền, mã dự án/cost center và đính kèm báo giá hoặc tài liệu chứng minh. Gửi trước ít nhất 5 ngày làm việc so với ngày cần sử dụng tiền.\n\nQuy trình phê duyệt theo mức giá trị:\n• Dưới 5 triệu đồng: Manager trực tiếp (phê duyệt trong 1 ngày làm việc)\n• 5–50 triệu đồng: Manager + Department Head (phê duyệt trong 2 ngày)\n• 50–200 triệu đồng: Manager + Dept Head + CFO (phê duyệt trong 3 ngày)\n• Trên 200 triệu đồng: Cần thêm chữ ký CEO và họp Committee Finance",
+        "note": "Không được tự chi trước khi có phê duyệt đầy đủ, ngoại trừ chi phí khẩn cấp (xem bước tiếp theo). Chi mà không có phê duyệt trước sẽ không được hoàn ứng."
+      },
+      {
+        "title": "Xử lý chi phí khẩn cấp",
+        "desc": "Trong trường hợp chi phí phát sinh đột xuất và không thể chờ quy trình phê duyệt thông thường (ví dụ: máy chủ hỏng cần thay linh kiện ngay, sự cố khách hàng cần xử lý gấp), áp dụng quy trình phê duyệt khẩn cấp:\n\nBước 1: Gọi điện hoặc nhắn tin trực tiếp cho manager xin phê duyệt bằng miệng — ghi lại thời gian và nội dung cuộc gọi.\nBước 2: Chụp màn hình hoặc lưu lại tin nhắn phê duyệt qua Zalo/Teams làm bằng chứng.\nBước 3: Chi tiêu theo đúng mức đã được phê duyệt bằng miệng.\nBước 4: Trong vòng 24 giờ sau khi chi, hoàn thiện form EF-001 chính thức trên hệ thống và đính kèm bằng chứng phê duyệt khẩn cấp.",
+        "note": "Quy trình khẩn cấp chỉ áp dụng cho chi phí dưới 20 triệu đồng. Lạm dụng quy trình này để né tránh phê duyệt chính thức là vi phạm quy định tài chính."
+      },
+      {
+        "title": "Hoàn ứng và thanh toán sau chi tiêu",
+        "desc": "Sau khi đã chi tiêu, để được hoàn ứng cần nộp đầy đủ hồ sơ cho Finance trong vòng 5 ngày làm việc kể từ ngày chi. Hồ sơ bao gồm:\n\n• Hóa đơn VAT gốc hợp lệ (có đầy đủ thông tin công ty, mã số thuế, tên hàng hóa/dịch vụ)\n• Form Thanh toán PT-002 điền đầy đủ và có chữ ký của người đề xuất và manager\n• Bản sao phê duyệt EF-001 đã được duyệt\n• Với chi phí công tác: bổ sung bảng kê chi tiết (boarding pass, hóa đơn khách sạn...)\n\nSau khi Finance kiểm tra và xác nhận hồ sơ hợp lệ, tiền sẽ được chuyển về tài khoản ngân hàng của nhân viên trong vòng 3–5 ngày làm việc tiếp theo.",
+        "note": "Hồ sơ nộp trễ hạn 5 ngày sẽ tự động chuyển vào kỳ thanh toán tháng sau. Hóa đơn không hợp lệ (thiếu thông tin, không có VAT, hóa đơn cá nhân) sẽ bị từ chối hoàn toàn."
+      },
+      {
+        "title": "Các loại chi phí không được hoàn ứng",
+        "desc": "Finance sẽ từ chối hoàn ứng trong các trường hợp sau, bất kể có phê duyệt hay không:\n\n• Chi phí cá nhân không liên quan đến công việc (mua sắm cá nhân, giải trí cá nhân...)\n• Hóa đơn không có VAT hoặc không hợp lệ theo quy định thuế\n• Chi phí vượt quá định mức được phê duyệt mà không có phê duyệt bổ sung\n• Chi phí cho bên thứ ba mà không có hợp đồng dịch vụ\n• Quà tặng, tiệc chiêu đãi vượt quá định mức trong Chính sách Gifts & Entertainment\n• Chi phí phát sinh sau khi dự án/hợp đồng đã kết thúc\n\nNếu Finance từ chối, nhân viên có quyền khiếu nại lên CFO trong vòng 5 ngày làm việc kèm theo lý do và bằng chứng bổ sung.",
+        "note": "Cố tình khai gian chi phí hoặc sử dụng hóa đơn giả là hành vi gian lận tài chính, sẽ bị sa thải ngay lập tức và có thể bị truy cứu trách nhiệm hình sự."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-09.jpg",   "caption": "Form đề xuất chi phí" },
+      { "url": "/assets/images/promo/promo-08.jpg", "caption": "Quy trình phê duyệt" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Form Đề xuất Chi phí EF-001.xlsx", "type": "doc",  "size": "48 KB",  "url": "#" },
+      { "name": "Form Thanh toán PT-002.xlsx",       "type": "doc",  "size": "52 KB",  "url": "#" },
+      { "name": "Chính sách Chi phí 2026.pdf",       "type": "pdf",  "size": "430 KB", "url": "#" },
+      { "name": "Slide Finance Process.pptx",        "type": "pptx", "size": "4.1 MB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Chi phí từ 5 đến 50 triệu đồng cần được phê duyệt bởi những ai?",
+        "options": [
+          "Manager trực tiếp (phê duyệt trong 1 ngày)",
+          "Manager trực tiếp + Department Head (trong 2 ngày)",
+          "Manager + Department Head + CFO (trong 3 ngày)",
+          "Manager + Department Head + CFO + CEO"
+        ],
+        "correct": 1,
+        "explanation": "Chi phí từ 5–50 triệu đồng cần phê duyệt của Manager trực tiếp và Department Head, thời hạn 2 ngày làm việc. Chi dưới 5 triệu chỉ cần Manager; chi 50–200 triệu cần thêm CFO; trên 200 triệu cần CEO và họp Committee Finance."
+      },
+      {
+        "question": "Hồ sơ hoàn ứng chi phí phải được nộp cho Finance trong vòng bao nhiêu ngày làm việc kể từ ngày chi?",
+        "options": ["3 ngày làm việc", "5 ngày làm việc", "7 ngày làm việc", "10 ngày làm việc"],
+        "correct": 1,
+        "explanation": "Hồ sơ hoàn ứng phải nộp trong vòng 5 ngày làm việc kể từ ngày chi tiêu. Nộp trễ sẽ tự động chuyển vào kỳ thanh toán tháng sau. Hồ sơ cần có hóa đơn VAT gốc, form PT-002 và bản sao phê duyệt EF-001."
+      },
+      {
+        "question": "Quy trình phê duyệt chi phí khẩn cấp chỉ được áp dụng cho khoản chi dưới bao nhiêu?",
+        "options": ["5 triệu đồng", "10 triệu đồng", "20 triệu đồng", "50 triệu đồng"],
+        "correct": 2,
+        "explanation": "Quy trình khẩn cấp chỉ áp dụng cho chi phí dưới 20 triệu đồng. Sau khi chi, phải hoàn thiện form EF-001 chính thức trong vòng 24 giờ và đính kèm bằng chứng phê duyệt (tin nhắn/ghi âm). Lạm dụng quy trình này là vi phạm quy định tài chính."
+      },
+      {
+        "question": "Mọi khoản mua sắm trên bao nhiêu triệu đồng bắt buộc phải có tối thiểu 2 báo giá?",
+        "options": ["1 triệu đồng", "5 triệu đồng", "10 triệu đồng", "20 triệu đồng"],
+        "correct": 1,
+        "explanation": "Theo quy định, tất cả khoản mua sắm thiết bị, vật tư, phần mềm có giá trị trên 5 triệu đồng đều cần có tối thiểu 2 báo giá từ nhà cung cấp khác nhau trước khi đệ trình phê duyệt."
+      }
+    ]
+  },
+  {
+    "id": "M005",
+    "name": "Quy tắc Ứng xử & Đạo đức Nghề nghiệp",
+    "owner": "HR-L&OD",
+    "duration": "35 phút đọc",
+    "category": "Policy",
+    "level": "Bắt buộc",
+    "subtitle": "Tiêu chuẩn hành vi, ứng xử với đồng nghiệp, khách hàng và đối tác. Chính sách chống quấy rối và xung đột lợi ích.",
+    "thumbnail": "/assets/images/hero/hero-10.jpg",
+    "icon": "/assets/icons/chat.png",
+    "status": "Đang hoạt động",
+    "updated": "05/04/2026",
+    "steps": [
+      {
+        "title": "Giá trị cốt lõi và văn hóa MoMo",
+        "desc": "MoMo xây dựng văn hóa làm việc trên nền tảng 5 giá trị cốt lõi: Khách hàng là trung tâm, Chính trực, Đổi mới sáng tạo, Hợp tác và Trách nhiệm. Những giá trị này không phải khẩu hiệu trên tường mà là tiêu chuẩn thực tế trong từng quyết định, từng hành vi và từng tương tác hàng ngày.\n\nLà nhân viên MoMo, bạn là đại diện của thương hiệu — không chỉ khi làm việc trong văn phòng mà còn trên mạng xã hội, trong các sự kiện công cộng và trong cuộc sống hàng ngày. Hành vi của bạn có thể ảnh hưởng trực tiếp đến hình ảnh công ty trước hàng triệu người dùng và đối tác.",
+        "note": "Nhân viên được khuyến khích chia sẻ các trường hợp thực tế thể hiện giá trị cốt lõi qua kênh nội bộ #culture-moments. Những câu chuyện xuất sắc sẽ được vinh danh trong buổi All-hands hàng quý."
+      },
+      {
+        "title": "Tiêu chuẩn hành vi tại nơi làm việc",
+        "desc": "MoMo kỳ vọng mọi nhân viên duy trì môi trường làm việc tôn trọng, chuyên nghiệp và hòa nhập. Một số tiêu chuẩn cụ thể:\n\n• Giao tiếp tôn trọng với tất cả mọi người bất kể cấp bậc, giới tính, tuổi tác, quốc tịch, tôn giáo hay quan điểm\n• Sử dụng ngôn ngữ chuyên nghiệp trong mọi kênh giao tiếp công việc (email, chat, họp)\n• Đúng giờ trong các cuộc họp và cam kết — nếu trễ phải thông báo trước\n• Lắng nghe ý kiến người khác một cách chân thành trước khi phản hồi\n• Không nói xấu, bình phẩm tiêu cực về đồng nghiệp sau lưng — phản hồi phải được đưa trực tiếp và xây dựng\n• Giữ gìn không gian chung (bếp, phòng họp, toilet) sạch sẽ và ngăn nắp",
+        "note": "Phong cách làm việc mỗi người có thể khác nhau, nhưng tiêu chuẩn về sự tôn trọng là không khoan nhượng và áp dụng đồng đều với tất cả."
+      },
+      {
+        "title": "Chính sách chống quấy rối và phân biệt đối xử",
+        "desc": "MoMo có chính sách không khoan nhượng với mọi hình thức quấy rối, bắt nạt hoặc phân biệt đối xử. Quấy rối bao gồm nhưng không giới hạn ở: lời nói, cử chỉ, hành động hoặc nội dung kỹ thuật số mang tính xúc phạm, đe dọa, kỳ thị hoặc có tính chất tình dục không được chào đón.\n\nNếu bạn là nạn nhân hoặc chứng kiến hành vi quấy rối:\nBước 1: Nếu an toàn, nói thẳng với người vi phạm rằng hành vi đó không được chấp nhận.\nBước 2: Báo cáo với HR hoặc manager trực tiếp. Nếu manager là người vi phạm, báo cáo thẳng lên HR Director.\nBước 3: Sử dụng kênh báo cáo ẩn danh nếu không muốn lộ danh tính: hr-confidential@momo.vn hoặc đường dây nóng ext. 9999.\n\nMọi khiếu nại sẽ được điều tra nghiêm túc, bảo mật và không có sự trả thù.",
+        "note": "Đây là lĩnh vực HR ưu tiên zero-tolerance. Người vi phạm có thể bị sa thải ngay lập tức tùy mức độ nghiêm trọng, không cần qua các bước kỷ luật thông thường."
+      },
+      {
+        "title": "Quản lý xung đột lợi ích",
+        "desc": "Xung đột lợi ích xảy ra khi lợi ích cá nhân của bạn có thể ảnh hưởng (hoặc có vẻ ảnh hưởng) đến khả năng thực hiện nhiệm vụ công việc một cách khách quan và trung thực. Ví dụ điển hình:\n\n• Có người thân làm việc tại nhà cung cấp/đối tác mà bạn đang thẩm định hoặc ký hợp đồng\n• Sở hữu cổ phần đáng kể tại đối thủ cạnh tranh hoặc nhà cung cấp\n• Tham gia hội đồng quản trị hoặc làm việc part-time cho công ty khác trong cùng lĩnh vực\n• Nhận quà hoặc tiếp đãi có giá trị từ đối tác mà không khai báo\n\nKhi phát hiện xung đột lợi ích thực tế hoặc tiềm ẩn, phải khai báo ngay với HR bằng Form COI-001 và rút lui khỏi quá trình ra quyết định liên quan. Khai báo chủ động được đánh giá cao — che giấu mới là vấn đề.",
+        "note": "Khai báo xung đột lợi ích phải được cập nhật lại mỗi năm hoặc ngay khi có thay đổi. Che giấu xung đột lợi ích bị xem là vi phạm đạo đức nghề nghiệp nghiêm trọng."
+      },
+      {
+        "title": "Sử dụng tài sản và thông tin của công ty",
+        "desc": "Tài sản công ty (thiết bị, phần mềm, hệ thống, thông tin, thời gian làm việc) được giao cho nhân viên với mục đích duy nhất là phục vụ công việc. Sử dụng cá nhân ở mức độ không đáng kể và không ảnh hưởng đến công việc là có thể chấp nhận — nhưng không được thành thói quen hoặc ảnh hưởng đến năng suất.\n\nMột số quy tắc quan trọng:\n• Không cài phần mềm chưa được IT phê duyệt lên thiết bị công ty\n• Không sử dụng tài khoản công ty để đăng ký dịch vụ cá nhân\n• Không chia sẻ thông tin, dữ liệu hoặc tài liệu nội bộ khi chưa được phép\n• Không copy dữ liệu khách hàng ra thiết bị cá nhân\n• Bàn giao đầy đủ thiết bị và dữ liệu khi nghỉ việc",
+        "note": "Khi rời công ty, nhân viên phải trả lại toàn bộ thiết bị trong tình trạng tốt và xóa mọi dữ liệu công ty khỏi thiết bị cá nhân. Bộ phận IT sẽ xác nhận việc này trước khi hoàn tất thủ tục nghỉ việc."
+      },
+      {
+        "title": "Đạo đức trong giao tiếp trực tuyến và mạng xã hội",
+        "desc": "Trong thời đại kỹ thuật số, ranh giới giữa cá nhân và chuyên nghiệp rất mờ nhạt. MoMo khuyến khích nhân viên tự hào chia sẻ về công việc và thành tựu của công ty — nhưng phải tuân thủ một số nguyên tắc quan trọng:\n\n• Không chia sẻ thông tin nội bộ, số liệu kinh doanh, chiến lược hoặc dữ liệu người dùng lên mạng xã hội\n• Khi phát ngôn với tư cách cá nhân về chủ đề liên quan đến công ty, nên thêm disclaimer \"Đây là quan điểm cá nhân\"\n• Không đăng nội dung tiêu cực, chỉ trích hoặc gây hiểu lầm về công ty, sản phẩm, lãnh đạo hoặc đồng nghiệp\n• Báo cáo ngay khi phát hiện thông tin sai lệch về MoMo trên mạng xã hội để team Communication xử lý\n• Với vai trò phát ngôn viên chính thức, phải có sự phê duyệt của Communications trước khi đăng tải",
+        "note": "Mọi phát ngôn công khai ảnh hưởng đến danh tiếng công ty — dù dưới danh nghĩa cá nhân — đều có thể được xem xét theo Quy tắc Ứng xử này."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-10.jpg",   "caption": "Môi trường làm việc đa dạng" },
+      { "url": "/assets/images/hero/hero-01.jpg",   "caption": "Giao tiếp chuyên nghiệp" },
+      { "url": "/assets/images/promo/promo-03.jpg", "caption": "Đạo đức nghề nghiệp" }
+    ],
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "resources": [
+      { "name": "Code of Conduct 2026.pdf",            "type": "pdf",  "size": "1.3 MB", "url": "#" },
+      { "name": "Slide Ethics Training.pptx",          "type": "pptx", "size": "6.2 MB", "url": "#" },
+      { "name": "Form Khai báo Xung đột Lợi ích.pdf", "type": "pdf",  "size": "180 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Form khai báo xung đột lợi ích có mã số là gì?",
+        "options": ["EF-001", "PE-001", "SF-001", "COI-001"],
+        "correct": 3,
+        "explanation": "Form khai báo xung đột lợi ích có mã COI-001 (Conflict of Interest). Khi phát hiện xung đột lợi ích thực tế hoặc tiềm ẩn, phải điền form COI-001 nộp cho HR ngay và rút lui khỏi quá trình ra quyết định liên quan."
+      },
+      {
+        "question": "Kênh báo cáo quấy rối ẩn danh qua email là địa chỉ nào?",
+        "options": [
+          "hr@momo.vn",
+          "hr-confidential@momo.vn",
+          "legal@momo.vn",
+          "compliance@momo.vn"
+        ],
+        "correct": 1,
+        "explanation": "Nhân viên có thể báo cáo quấy rối ẩn danh qua hr-confidential@momo.vn hoặc đường dây nóng nội bộ ext. 9999. Mọi khiếu nại đều được điều tra nghiêm túc, bảo mật và không có sự trả thù từ phía công ty."
+      },
+      {
+        "question": "Khai báo xung đột lợi ích phải được cập nhật lại theo định kỳ nào?",
+        "options": [
+          "Mỗi 6 tháng một lần",
+          "Mỗi năm một lần hoặc khi có thay đổi",
+          "Mỗi 2 năm một lần",
+          "Chỉ khai báo một lần khi vào làm"
+        ],
+        "correct": 1,
+        "explanation": "Khai báo xung đột lợi ích phải được cập nhật lại mỗi năm hoặc ngay khi có thay đổi (ví dụ: có người thân mới vào làm tại nhà cung cấp, sở hữu thêm cổ phần…). Che giấu xung đột lợi ích là vi phạm đạo đức nghề nghiệp nghiêm trọng."
+      },
+      {
+        "question": "MoMo xây dựng văn hóa làm việc trên nền tảng bao nhiêu giá trị cốt lõi?",
+        "options": ["3 giá trị", "4 giá trị", "5 giá trị", "6 giá trị"],
+        "correct": 2,
+        "explanation": "MoMo có 5 giá trị cốt lõi: Khách hàng là trung tâm, Chính trực, Đổi mới sáng tạo, Hợp tác và Trách nhiệm. Đây không phải khẩu hiệu mà là tiêu chuẩn thực tế trong mỗi quyết định và hành vi hàng ngày của mọi nhân viên."
+      }
+    ]
+  }
+]

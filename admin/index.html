@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Mentora LMS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  LOGIN SCREEN                        ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div id="screen-login" class="screen-login">
+    <div class="login-card">
+      <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="login-logo">
+      <h2>Admin Dashboard</h2>
+      <p class="login-sub">Mentora LMS — Compliance Training Portal</p>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="admin-email" placeholder="admin@momo.vn" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input type="password" id="admin-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <div id="login-error" class="login-error" style="display:none"></div>
+
+      <button class="btn-login" id="btn-admin-login">
+        <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập
+      </button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  DASHBOARD SCREEN                    ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div id="screen-dash" class="screen-dash" style="display:none">
+
+    <!-- Nav -->
+    <nav class="admin-nav">
+      <div class="admin-nav-brand">
+        <img src="/assets/images/logo/logo-primary.png" alt="MoMo">
+        <span>Admin Dashboard</span>
+      </div>
+      <div class="admin-nav-right">
+        <span class="admin-user-email" id="admin-user-email"></span>
+        <button class="btn-ghost" id="btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+        </button>
+      </div>
+    </nav>
+
+    <div class="admin-body">
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="overview">
+          <i class="fa-solid fa-chart-bar"></i> Tổng quan
+        </button>
+        <button class="admin-tab" data-tab="modules">
+          <i class="fa-solid fa-book-open"></i> Modules
+        </button>
+        <button class="admin-tab" data-tab="activity">
+          <i class="fa-solid fa-clock-rotate-left"></i> Hoạt động
+        </button>
+      </div>
+
+      <!-- ── TAB: OVERVIEW ── -->
+      <div id="tab-overview" class="tab-content">
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon views"><i class="fa-solid fa-eye"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Tổng lượt xem</div>
+              <div class="stat-value" id="stat-total-views">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon quiz"><i class="fa-solid fa-circle-question"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Lượt làm quiz</div>
+              <div class="stat-value" id="stat-total-quiz">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon score"><i class="fa-solid fa-star"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Điểm trung bình</div>
+              <div class="stat-value" id="stat-avg-score">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon pass"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Tỉ lệ đạt (≥75%)</div>
+              <div class="stat-value" id="stat-pass-rate">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-module breakdown -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Thống kê theo Module</div>
+            <button class="btn-ghost" id="btn-refresh-stats" onclick="loadStats()">
+              <i class="fa-solid fa-rotate-right"></i> Làm mới
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Danh mục</th>
+                <th>Lượt xem</th>
+                <th>Lượt quiz</th>
+                <th>Điểm TB</th>
+                <th>Đạt quiz</th>
+              </tr>
+            </thead>
+            <tbody id="module-stats-body">
+              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /tab-overview -->
+
+      <!-- ── TAB: MODULES ── -->
+      <div id="tab-modules" class="tab-content" style="display:none">
+        <div class="tab-header">
+          <h3>Danh sách Modules <span id="cms-module-count" style="font-weight:400;color:#9ca3af;font-size:13px"></span></h3>
+          <button class="btn-primary" id="btn-add-module">
+            <i class="fa-solid fa-plus"></i> Thêm module mới
+          </button>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên Module</th>
+                <th>Danh mục</th>
+                <th>Cập nhật</th>
+                <th>Nguồn</th>
+                <th style="width:80px"></th>
+              </tr>
+            </thead>
+            <tbody id="modules-cms-body">
+              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /tab-modules -->
+
+      <!-- ── TAB: ACTIVITY ── -->
+      <div id="tab-activity" class="tab-content" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">50 sự kiện gần nhất</div>
+          </div>
+          <div id="activity-feed"></div>
+        </div>
+      </div><!-- /tab-activity -->
+
+    </div><!-- /admin-body -->
+  </div><!-- /screen-dash -->
+
+
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  MODAL: ADD / EDIT MODULE            ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div class="modal-overlay" id="modal-module" style="display:none">
+    <div class="modal-box modal-large">
+      <div class="modal-header">
+        <h3 id="modal-module-title">Thêm Module mới</h3>
+        <button class="btn-ghost" onclick="closeModuleModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Basic fields -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label>ID Module *</label>
+            <input type="text" id="mod-id" placeholder="M006">
+          </div>
+          <div class="form-group">
+            <label>Tên Module *</label>
+            <input type="text" id="mod-name" placeholder="Quy trình XYZ...">
+          </div>
+          <div class="form-group">
+            <label>Danh mục</label>
+            <select id="mod-category">
+              <option value="Process">Process</option>
+              <option value="Policy">Policy</option>
+              <option value="Safety">Safety</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cấp độ</label>
+            <select id="mod-level">
+              <option value="Bắt buộc">Bắt buộc</option>
+              <option value="Theo phòng ban">Theo phòng ban</option>
+              <option value="Tự nguyện">Tự nguyện</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Thời lượng</label>
+            <input type="text" id="mod-duration" placeholder="30 phút đọc">
+          </div>
+          <div class="form-group">
+            <label>Ngày cập nhật</label>
+            <input type="text" id="mod-updated" placeholder="25/04/2026">
+          </div>
+          <div class="form-group form-full">
+            <label>Mô tả ngắn</label>
+            <input type="text" id="mod-subtitle" placeholder="Tổng quan về quy trình...">
+          </div>
+          <div class="form-group">
+            <label>Thumbnail URL</label>
+            <input type="text" id="mod-thumbnail" placeholder="/assets/images/hero/hero-01.jpg">
+          </div>
+          <div class="form-group">
+            <label>Icon URL</label>
+            <input type="text" id="mod-icon" placeholder="/assets/icons/education.png">
+          </div>
+          <div class="form-group form-full">
+            <label>Video URL (YouTube embed, để trống nếu chưa có)</label>
+            <input type="text" id="mod-video" placeholder="https://www.youtube.com/embed/...">
+          </div>
+        </div>
+
+        <!-- Steps builder -->
+        <div class="builder-section">
+          <div class="builder-header">
+            <div class="builder-title"><i class="fa-solid fa-list-check" style="color:#a50064;margin-right:6px"></i>Nội dung & Quy trình</div>
+            <button class="btn-sm" onclick="addStep()"><i class="fa-solid fa-plus"></i> Thêm bước</button>
+          </div>
+          <div id="steps-builder"></div>
+        </div>
+
+        <!-- Quiz builder -->
+        <div class="builder-section">
+          <div class="builder-header">
+            <div class="builder-title"><i class="fa-solid fa-circle-question" style="color:#a50064;margin-right:6px"></i>Câu hỏi kiểm tra (Quiz)</div>
+            <button class="btn-sm" onclick="addQuizQ()"><i class="fa-solid fa-plus"></i> Thêm câu hỏi</button>
+          </div>
+          <div id="quiz-builder"></div>
+        </div>
+
+      </div><!-- /modal-body -->
+
+      <div class="modal-footer">
+        <button class="btn-ghost" onclick="closeModuleModal()">Hủy</button>
+        <button class="btn-primary" id="btn-save-module" onclick="saveModule()">
+          <i class="fa-solid fa-floppy-disk"></i> Lưu module
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="admin-toast" class="admin-toast" style="display:none"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
