@@ -347,32 +347,184 @@ function showCertificate(score, total) {
 }
 
 // ════════════════════════════════════════
-//  USAGE GUIDE
+//  USAGE GUIDE — 5-step user journey
 // ════════════════════════════════════════
+var _guideStep = 0;
+var _GUIDE_STEPS = [
+  {
+    icon: 'fa-graduation-cap',
+    color: '#a50064',
+    bg: 'linear-gradient(135deg,#ffeff4 0%,#fec8dc 100%)',
+    eyebrow: 'BƯỚC 1 / 5',
+    title: 'Chào mừng đến Mentora LMS',
+    desc: 'Hệ thống đào tạo nội bộ MoMo — nơi bạn nắm vững chính sách, quy trình và tiêu chuẩn nghề nghiệp. Không cần cài đặt, học ngay trên trình duyệt.',
+    features: [
+      { icon: 'fa-mobile-screen-button', text: 'Học mọi lúc, mọi nơi — máy tính hoặc điện thoại' },
+      { icon: 'fa-chart-line',           text: 'Tiến độ được lưu tự động theo phiên' },
+      { icon: 'fa-shield-halved',        text: 'Dành riêng cho nhân viên nội bộ MoMo' },
+    ]
+  },
+  {
+    icon: 'fa-layer-group',
+    color: '#7759d2',
+    bg: 'linear-gradient(135deg,#f0ecff 0%,#d4c8f8 100%)',
+    eyebrow: 'BƯỚC 2 / 5',
+    title: 'Chọn Module để bắt đầu',
+    desc: 'Tất cả module được chia theo 3 danh mục rõ ràng. Dùng bộ lọc hoặc thanh tìm kiếm để tìm nhanh nội dung phù hợp.',
+    features: [
+      { icon: 'fa-file-shield',          text: 'Policy — chính sách, quy định nội bộ' },
+      { icon: 'fa-diagram-project',      text: 'Process — quy trình & thủ tục làm việc' },
+      { icon: 'fa-triangle-exclamation', text: 'Safety — an toàn lao động & PCCC' },
+      { icon: 'fa-magnifying-glass',     text: 'Tìm kiếm theo tên hoặc từ khóa' },
+    ]
+  },
+  {
+    icon: 'fa-book-open-reader',
+    color: '#0891b2',
+    bg: 'linear-gradient(135deg,#e0f7fc 0%,#b2ebf2 100%)',
+    eyebrow: 'BƯỚC 3 / 5',
+    title: 'Đọc nội dung từng bước',
+    desc: 'Mỗi module được trình bày theo từng bước tuần tự — rõ ràng, có trọng tâm. Thanh tiến trình bên phải giúp bạn luôn biết đang ở đâu.',
+    features: [
+      { icon: 'fa-list-check',     text: 'Quy trình chia bước — dễ theo và ghi nhớ' },
+      { icon: 'fa-circle-play',    text: 'Video hướng dẫn thực tế (nếu có)' },
+      { icon: 'fa-paperclip',      text: 'Tài liệu PDF / PPTX để tải về' },
+      { icon: 'fa-note-sticky',    text: 'Ghi chú cá nhân — tự lưu, không mất khi tắt tab' },
+    ]
+  },
+  {
+    icon: 'fa-circle-question',
+    color: '#5ea12a',
+    bg: 'linear-gradient(135deg,#e5f9f2 0%,#a2e6ce 100%)',
+    eyebrow: 'BƯỚC 4 / 5',
+    title: 'Kiểm tra kiến thức',
+    desc: 'Cuối mỗi module có bài quiz trắc nghiệm. Mỗi câu hỏi hiển thị giải thích ngay sau khi bạn chọn — dù đúng hay sai.',
+    features: [
+      { icon: 'fa-bullseye',        text: 'Cần đạt ≥ 75% để qua bài và nhận chứng chỉ' },
+      { icon: 'fa-lightbulb',       text: 'Giải thích chi tiết cho từng đáp án' },
+      { icon: 'fa-rotate-right',    text: 'Làm lại không giới hạn số lần' },
+      { icon: 'fa-circle-check',    text: 'Đạt quiz → tự động đánh dấu module hoàn thành' },
+    ]
+  },
+  {
+    icon: 'fa-trophy',
+    color: '#c07c00',
+    bg: 'linear-gradient(135deg,#fffbea 0%,#fde68a 100%)',
+    eyebrow: 'BƯỚC 5 / 5',
+    title: 'Nhận thành quả của bạn',
+    desc: 'Hoàn thành quiz với kết quả tốt → nhận chứng chỉ cá nhân có thể in. Chia sẻ link module để đồng nghiệp cùng học.',
+    features: [
+      { icon: 'fa-certificate',    text: 'Chứng chỉ hoàn thành — nhập tên và in trực tiếp' },
+      { icon: 'fa-circle-check',   text: 'Badge ✓ xuất hiện trên card module đã học xong' },
+      { icon: 'fa-share-nodes',    text: 'Copy link module chia sẻ cho đồng nghiệp' },
+      { icon: 'fa-envelope',       text: 'Câu hỏi thêm: liên hệ HR-L&OD qua email nội bộ' },
+    ]
+  },
+];
+
 function showGuide() {
-  var steps = [
-    '📚 Chọn một module từ danh sách để bắt đầu học',
-    '📖 Đọc nội dung, xem video và tải tài liệu đính kèm',
-    '✅ Làm quiz cuối bài — đạt ≥75% để nhận chứng chỉ',
-    '🏅 Đánh dấu hoàn thành để theo dõi tiến độ của bạn',
-    '📎 Dùng nút Chia sẻ để copy link module gửi đồng nghiệp',
-  ];
-  // Show a guide modal built on existing modal infrastructure
+  _guideStep = 0;
   var overlay = document.getElementById('modal-guide');
   if (!overlay) {
     overlay = document.createElement('div');
-    overlay.id = 'modal-guide';
+    overlay.id        = 'modal-guide';
     overlay.className = 'modal-overlay';
-    overlay.innerHTML = '<div class="modal-box"><div class="modal-header"><h3 class="modal-title"><i class="fa-solid fa-circle-question" style="color:var(--accent);margin-right:8px"></i>Hướng dẫn sử dụng</h3><button class="btn modal-close" onclick="document.getElementById(\'modal-guide\').classList.remove(\'open\')"><i class="fa-solid fa-xmark"></i></button></div>'
-      + '<ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">'
-      + steps.map(function (s) { return '<li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5;color:var(--text-secondary)">' + s + '</li>'; }).join('')
-      + '</ul>'
-      + '<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary)">Mọi câu hỏi liên hệ HR-L&OD qua email nội bộ.</div>'
+    overlay.innerHTML =
+      '<div class="modal-box guide-box">'
+      // Header: dots + close
+      + '<div class="guide-header">'
+      +   '<div class="guide-dots" id="guide-dots"></div>'
+      +   '<button class="btn btn-ghost btn-icon guide-close-btn" id="guide-close"><i class="fa-solid fa-xmark"></i></button>'
+      + '</div>'
+      // Visual illustration area
+      + '<div class="guide-visual" id="guide-visual"><i class="fa-solid fa-graduation-cap guide-visual-icon" id="guide-icon"></i></div>'
+      // Animated content area
+      + '<div class="guide-content" id="guide-content">'
+      +   '<div class="guide-eyebrow" id="guide-eyebrow"></div>'
+      +   '<div class="guide-title" id="guide-title"></div>'
+      +   '<div class="guide-desc" id="guide-desc"></div>'
+      +   '<ul class="guide-features" id="guide-features"></ul>'
+      + '</div>'
+      // Footer nav
+      + '<div class="guide-footer">'
+      +   '<button class="btn btn-ghost btn-sm" id="guide-prev"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>'
+      +   '<button class="btn btn-primary btn-sm" id="guide-next">Tiếp theo <i class="fa-solid fa-chevron-right"></i></button>'
+      +   '<button class="btn btn-primary btn-sm" id="guide-start" style="display:none"><i class="fa-solid fa-rocket"></i> Bắt đầu học!</button>'
+      + '</div>'
       + '</div>';
     overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.classList.remove('open'); });
+    overlay.querySelector('#guide-close').addEventListener('click', function () { overlay.classList.remove('open'); });
+    overlay.querySelector('#guide-prev').addEventListener('click', function () { _goGuideStep(-1); });
+    overlay.querySelector('#guide-next').addEventListener('click', function () { _goGuideStep(1); });
+    overlay.querySelector('#guide-start').addEventListener('click', function () {
+      overlay.classList.remove('open');
+      document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
+      showToast('Chọn một module để bắt đầu! 🚀', 'success');
+    });
     document.body.appendChild(overlay);
   }
+  _renderGuideStep(0, 0);
   overlay.classList.add('open');
+}
+
+function _goGuideStep(dir) {
+  var next = _guideStep + dir;
+  if (next < 0 || next >= _GUIDE_STEPS.length) return;
+  _renderGuideStep(next, dir);
+}
+
+function _renderGuideStep(idx, dir) {
+  var step    = _GUIDE_STEPS[idx];
+  var content = document.getElementById('guide-content');
+  var visual  = document.getElementById('guide-visual');
+
+  // Animate out
+  content.style.transition = 'opacity .18s ease, transform .18s ease';
+  content.style.opacity    = '0';
+  content.style.transform  = 'translateX(' + (dir >= 0 ? '18px' : '-18px') + ')';
+
+  setTimeout(function () {
+    _guideStep = idx;
+
+    // Update visual blob
+    visual.style.background = step.bg;
+    document.getElementById('guide-icon').className = 'fa-solid ' + step.icon + ' guide-visual-icon';
+    document.getElementById('guide-icon').style.color = step.color;
+
+    // Update dots
+    var dotsEl = document.getElementById('guide-dots');
+    dotsEl.innerHTML = _GUIDE_STEPS.map(function (_, i) {
+      return '<span class="guide-dot' + (i === idx ? ' active' : '') + '"></span>';
+    }).join('');
+
+    // Update text
+    document.getElementById('guide-eyebrow').textContent = step.eyebrow;
+    document.getElementById('guide-title').textContent   = step.title;
+    document.getElementById('guide-desc').textContent    = step.desc;
+
+    // Update features
+    document.getElementById('guide-features').innerHTML = step.features.map(function (f) {
+      return '<li class="guide-feature">'
+        + '<span class="guide-feat-icon"><i class="fa-solid ' + f.icon + '"></i></span>'
+        + '<span>' + f.text + '</span>'
+        + '</li>';
+    }).join('');
+
+    // Toggle buttons
+    var isFirst = idx === 0;
+    var isLast  = idx === _GUIDE_STEPS.length - 1;
+    document.getElementById('guide-prev').style.visibility  = isFirst ? 'hidden' : '';
+    document.getElementById('guide-next').style.display     = isLast  ? 'none'   : '';
+    document.getElementById('guide-start').style.display    = isLast  ? ''       : 'none';
+
+    // Animate in from opposite direction
+    content.style.transition = 'none';
+    content.style.transform  = 'translateX(' + (dir >= 0 ? '-18px' : '18px') + ')';
+    content.offsetWidth; // force reflow
+    content.style.transition = 'opacity .22s ease, transform .22s ease';
+    content.style.opacity    = '1';
+    content.style.transform  = 'translateX(0)';
+  }, 185);
 }
 function applyCertName() {
   var name = document.getElementById('cert-name-input').value.trim() || 'Học viên';
