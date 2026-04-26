@@ -144,8 +144,9 @@ body {
 .admin-card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius-lg); box-shadow: var(--shadow-neo);
-  overflow: hidden; margin-bottom: 20px;
+  overflow: hidden; overflow-x: auto; margin-bottom: 20px;
 }
+.admin-card .data-table { min-width: 780px; }
 .admin-card-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 20px; border-bottom: 1px solid var(--border);
@@ -167,6 +168,7 @@ body {
 .data-table tr:hover td { background: var(--bg); }
 .loading-cell { text-align: center; color: var(--text-tertiary); padding: 32px !important; }
 .empty-cell   { text-align: center; color: var(--text-tertiary); padding: 40px !important; font-size: 13px; }
+.empty-cell i, .loading-cell i { margin-right: 6px; }
 
 /* Inline badges */
 .badge {
@@ -225,6 +227,14 @@ body {
   transition: border-color .15s, color .15s;
 }
 .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary:disabled,
+.btn-outline:disabled,
+.btn-ghost:disabled,
+.btn-sm:disabled,
+.btn-danger:disabled {
+  opacity: .55;
+  cursor: wait;
+}
 
 /* ── KPI Target Bars ─────────────────────────────── */
 .stat-target { margin-top: 8px; }
@@ -383,6 +393,8 @@ body {
   padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
   white-space: nowrap;
 }
+.status-stack { display: inline-flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.status-hint { font-size: 10px; color: var(--text-tertiary); line-height: 1.2; }
 .status-published { background: #dcfce7; color: #166534; }
 .status-draft     { background: #fef9c3; color: #854d0e; }
 .status-hidden    { background: #f3f4f6; color: #6b7280; }
@@ -401,6 +413,25 @@ body {
   align-items: center; gap: 4px; transition: opacity .15s;
 }
 .btn-publish:hover { opacity: .85; }
+.module-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.module-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
 /* ── Announcements ─────────────────────────────── */
 .ann-item {
@@ -413,6 +444,7 @@ body {
 .ann-content { flex: 1; }
 .ann-msg { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
 .ann-meta { font-size: 11px; color: var(--text-tertiary); }
+.ann-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ── Toast ─────────────────────────────────────── */
 .admin-toast {
@@ -428,6 +460,14 @@ body {
 
 /* ── Spinner ───────────────────────────────────── */
 .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+.btn-sm .spinner,
+.btn-danger .spinner,
+.btn-ghost .spinner {
+  width: 14px;
+  height: 14px;
+  border-color: rgba(75,85,104,.22);
+  border-top-color: currentColor;
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── Responsive ────────────────────────────────── */
