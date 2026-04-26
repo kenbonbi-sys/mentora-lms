@@ -104,6 +104,23 @@
           </div>
         </div>
 
+        <!-- Charts row -->
+        <div class="charts-row">
+          <div class="admin-card chart-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Traffic theo ngày (14 ngày gần nhất)</div>
+            </div>
+            <canvas id="chart-daily" height="110"></canvas>
+          </div>
+          <div class="admin-card chart-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Nguồn truy cập</div>
+            </div>
+            <canvas id="chart-source" height="110"></canvas>
+            <div id="source-legend" class="source-legend"></div>
+          </div>
+        </div>
+
         <!-- Per-module breakdown -->
         <div class="admin-card">
           <div class="admin-card-header">
@@ -269,6 +286,7 @@
   <div id="admin-toast" class="admin-toast" style="display:none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="/admin/admin.js"></script>
 </body>
 </html>

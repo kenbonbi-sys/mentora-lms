@@ -101,7 +101,7 @@ function initTabs() {
 }
 
 async function loadDashData() {
-  await Promise.all([loadStats(), loadCmsModules()]);
+  await Promise.all([loadStats(), loadCharts(), loadCmsModules()]);
 }
 
 // ══════════════════════════════════════════════════════════
@@ -165,6 +165,107 @@ async function loadStats() {
     }).join('');
   } catch (err) {
     console.error('loadStats:', err.message);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  CHARTS — Daily traffic + Traffic source
+// ══════════════════════════════════════════════════════════
+let _chartDaily  = null;
+let _chartSource = null;
+
+async function loadCharts() {
+  try {
+    const { data: rows } = await sb.from('page_views').select('created_at, source');
+    if (!rows) return;
+
+    // ── Daily traffic (last 14 days) ──────────────────────
+    const labels = [];
+    const counts = {};
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10); // "2026-04-12"
+      const label = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }); // "12/04"
+      labels.push(label);
+      counts[key] = 0;
+    }
+    rows.forEach(r => {
+      const day = (r.created_at || '').slice(0, 10);
+      if (counts[day] !== undefined) counts[day]++;
+    });
+    const dailyData = Object.values(counts);
+
+    const ctxDaily = document.getElementById('chart-daily').getContext('2d');
+    if (_chartDaily) _chartDaily.destroy();
+    _chartDaily = new Chart(ctxDaily, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Lượt xem',
+          data: dailyData,
+          borderColor: '#a50064',
+          backgroundColor: 'rgba(165,0,100,0.08)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#a50064',
+          fill: true,
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: { beginAtZero: true, ticks: { precision: 0, font: { size: 11 } }, grid: { color: '#f0f0f4' } }
+        }
+      }
+    });
+
+    // ── Traffic source (doughnut) ─────────────────────────
+    const srcCount = { direct: 0, search: 0, referral: 0 };
+    rows.forEach(r => {
+      const s = r.source || 'direct';
+      if (srcCount[s] !== undefined) srcCount[s]++;
+      else srcCount.direct++;
+    });
+    const total = rows.length || 1;
+    const srcLabels = ['Direct', 'Search', 'Referral'];
+    const srcData   = [srcCount.direct, srcCount.search, srcCount.referral];
+    const srcColors = ['#a50064', '#7c3aed', '#0891b2'];
+
+    const ctxSrc = document.getElementById('chart-source').getContext('2d');
+    if (_chartSource) _chartSource.destroy();
+    _chartSource = new Chart(ctxSrc, {
+      type: 'doughnut',
+      data: {
+        labels: srcLabels,
+        datasets: [{ data: srcData, backgroundColor: srcColors, borderWidth: 0, hoverOffset: 4 }]
+      },
+      options: {
+        responsive: true,
+        cutout: '65%',
+        plugins: { legend: { display: false }, tooltip: { callbacks: {
+          label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw / total * 100)}%)`
+        }}}
+      }
+    });
+
+    // Legend
+    const legendEl = document.getElementById('source-legend');
+    legendEl.innerHTML = srcLabels.map((l, i) => {
+      const pct = Math.round(srcData[i] / total * 100);
+      return `<div class="source-legend-item">
+        <span class="source-dot" style="background:${srcColors[i]}"></span>
+        <span style="flex:1;color:#4b5568">${l}</span>
+        <span style="font-weight:600;color:#0f1623">${srcData[i]}</span>
+        <span style="color:#9ca3af;margin-left:4px">(${pct}%)</span>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    console.error('loadCharts:', err.message);
   }
 }
 

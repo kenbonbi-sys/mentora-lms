@@ -194,8 +194,18 @@ function _sbInsert(table, payload) {
   }).catch(function (e) { console.warn('[SB] insert failed:', e.message); });
 }
 
+function _detectSource() {
+  var ref = document.referrer;
+  if (!ref || ref.indexOf(location.hostname) !== -1) return 'direct';
+  var searchEngines = ['google.', 'bing.', 'yahoo.', 'coccoc.', 'duckduckgo.', 'baidu.', 'yandex.'];
+  for (var i = 0; i < searchEngines.length; i++) {
+    if (ref.indexOf(searchEngines[i]) !== -1) return 'search';
+  }
+  return 'referral';
+}
+
 function trackPageView(moduleId, moduleName) {
-  _sbInsert('page_views', { module_id: moduleId, module_name: moduleName, session_id: _getSession() });
+  _sbInsert('page_views', { module_id: moduleId, module_name: moduleName, session_id: _getSession(), source: _detectSource() });
 }
 
 function trackQuizAttempt(moduleId, moduleName, score, total, pct) {
