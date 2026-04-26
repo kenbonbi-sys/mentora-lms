@@ -15,6 +15,9 @@ let editingModuleId = null;
 let stepCount       = 0;
 let quizCount       = 0;
 let localModules    = [];
+let currentDays     = 30;
+let _lastModStats   = [];
+let _chartHour      = null;
 
 // ══════════════════════════════════════════════════════════
 //  AUTH — Supabase email/password
@@ -101,7 +104,41 @@ function initTabs() {
 }
 
 async function loadDashData() {
-  await Promise.all([loadStats(), loadCharts(), loadCmsModules()]);
+  await Promise.all([loadStats(), loadCharts(), loadHeatmap(), loadCmsModules()]);
+}
+
+// ── Date filter helpers ───────────────────────────────────
+function setDayFilter(days) {
+  currentDays = days;
+  document.querySelectorAll('.day-filter-btn').forEach(b => {
+    b.classList.toggle('active', Number(b.dataset.days) === days);
+  });
+  const titleMap = { 7: '7 ngày', 30: '30 ngày', 90: '90 ngày', 0: 'tất cả' };
+  const el = document.getElementById('chart-daily-title');
+  if (el) el.textContent = 'Traffic theo ngày' + (days ? ' (' + titleMap[days] + ')' : '');
+  Promise.all([loadStats(), loadCharts(), loadHeatmap()]);
+}
+
+function _dateRange() {
+  if (!currentDays) return { curr: null, prev: null };
+  const now = Date.now();
+  const ms  = currentDays * 864e5;
+  return {
+    curr: new Date(now - ms).toISOString(),
+    prev: new Date(now - ms * 2).toISOString(),
+  };
+}
+
+function _renderDelta(elId, curr, prev) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (prev === 0 && curr === 0) { el.innerHTML = ''; return; }
+  if (prev === 0) { el.innerHTML = '<span class="delta up">Mới</span>'; return; }
+  const pct = Math.round(((curr - prev) / prev) * 100);
+  if (pct === 0) { el.innerHTML = '<span class="delta neutral">= kỳ trước</span>'; return; }
+  const cls = pct > 0 ? 'up' : 'down';
+  const icon = pct > 0 ? '▲' : '▼';
+  el.innerHTML = `<span class="delta ${cls}">${icon} ${Math.abs(pct)}% so kỳ trước</span>`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -109,10 +146,24 @@ async function loadDashData() {
 // ══════════════════════════════════════════════════════════
 async function loadStats() {
   try {
-    const { count: viewCount } = await sb.from('page_views').select('*', { count: 'exact', head: true });
+    const { curr, prev } = _dateRange();
+
+    // ── Views ─────────────────────────────────────────────
+    let vq = sb.from('page_views').select('*', { count: 'exact', head: true });
+    if (curr) vq = vq.gte('created_at', curr);
+    const { count: viewCount } = await vq;
     document.getElementById('stat-total-views').textContent = (viewCount || 0).toLocaleString('vi');
 
-    const { data: quizData } = await sb.from('quiz_attempts').select('module_id, module_name, pct, passed');
+    if (prev) {
+      const { count: prevViews } = await sb.from('page_views').select('*', { count: 'exact', head: true })
+        .gte('created_at', prev).lt('created_at', curr);
+      _renderDelta('delta-views', viewCount || 0, prevViews || 0);
+    }
+
+    // ── Quiz ──────────────────────────────────────────────
+    let qq = sb.from('quiz_attempts').select('module_id, module_name, pct, passed');
+    if (curr) qq = qq.gte('created_at', curr);
+    const { data: quizData } = await qq;
     const qTotal = quizData ? quizData.length : 0;
     document.getElementById('stat-total-quiz').textContent = qTotal.toLocaleString('vi');
 
@@ -126,8 +177,26 @@ async function loadStats() {
       document.getElementById('stat-pass-rate').textContent = '—';
     }
 
-    // Per-module
-    const { data: viewRows } = await sb.from('page_views').select('module_id, module_name');
+    if (prev) {
+      const { data: prevQuiz } = await sb.from('quiz_attempts').select('pct, passed')
+        .gte('created_at', prev).lt('created_at', curr);
+      const pqTotal = prevQuiz ? prevQuiz.length : 0;
+      _renderDelta('delta-quiz', qTotal, pqTotal);
+      if (pqTotal > 0 && qTotal > 0) {
+        const prevAvg  = Math.round(prevQuiz.reduce((s, r) => s + r.pct, 0) / pqTotal);
+        const currAvg  = Math.round(quizData.reduce((s, r) => s + r.pct, 0) / qTotal);
+        const prevPass = Math.round((prevQuiz.filter(r => r.passed).length / pqTotal) * 100);
+        const currPass = Math.round((quizData.filter(r => r.passed).length / qTotal) * 100);
+        _renderDelta('delta-score', currAvg, prevAvg);
+        _renderDelta('delta-pass',  currPass, prevPass);
+      }
+    }
+
+    // ── Per-module ────────────────────────────────────────
+    let vr = sb.from('page_views').select('module_id, module_name');
+    if (curr) vr = vr.gte('created_at', curr);
+    const { data: viewRows } = await vr;
+
     const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
     const modMap = {};
     localModules.forEach(m => {
@@ -144,16 +213,26 @@ async function loadStats() {
       if (r.passed) modMap[r.module_id].passCount++;
     });
 
-    const tbody = document.getElementById('module-stats-body');
-    const rows  = Object.values(modMap);
-    if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">Chưa có dữ liệu. Người dùng sẽ xuất hiện khi họ mở module.</td></tr>';
+    _lastModStats = Object.values(modMap);
+    const tbody   = document.getElementById('module-stats-body');
+    if (!_lastModStats.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có dữ liệu. Người dùng sẽ xuất hiện khi họ mở module.</td></tr>';
       return;
     }
-    tbody.innerHTML = rows.map(m => {
-      const avgQ  = m.attempts ? Math.round(m.pctSum / m.attempts) : null;
-      const pRate = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : null;
-      const cls   = avgQ === null ? '' : avgQ >= 75 ? 'good' : avgQ >= 50 ? 'medium' : 'bad';
+    tbody.innerHTML = _lastModStats.map(m => {
+      const avgQ   = m.attempts ? Math.round(m.pctSum / m.attempts) : null;
+      const pRate  = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : null;
+      const cls    = avgQ === null ? '' : avgQ >= 75 ? 'good' : avgQ >= 50 ? 'medium' : 'bad';
+      // Funnel: views → quiz rate → pass rate
+      const quizRate = m.views ? Math.round((m.attempts / m.views) * 100) : 0;
+      const passRate2 = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : 0;
+      const funnel = `<div class="funnel-mini">
+        <span class="funnel-step" title="Xem module">👁 ${m.views}</span>
+        <span class="funnel-arrow">→</span>
+        <span class="funnel-step ${quizRate >= 50 ? 'good' : 'low'}" title="Tỉ lệ làm quiz">📝 ${quizRate}%</span>
+        <span class="funnel-arrow">→</span>
+        <span class="funnel-step ${passRate2 >= 75 ? 'good' : passRate2 >= 50 ? 'med' : 'low'}" title="Tỉ lệ qua quiz">✅ ${passRate2}%</span>
+      </div>`;
       return `<tr>
         <td style="font-weight:600">${esc(m.name)}</td>
         <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + m.category + '</span>' : '—'}</td>
@@ -161,6 +240,7 @@ async function loadStats() {
         <td>${m.attempts.toLocaleString('vi')}</td>
         <td>${avgQ !== null ? '<div class="pct-bar"><div class="pct-bar-track"><div class="pct-bar-fill ' + cls + '" style="width:' + avgQ + '%"></div></div><span class="pct-bar-label">' + avgQ + '%</span></div>' : '<span style="color:#9ca3af">—</span>'}</td>
         <td>${pRate !== null ? pRate + '%' : '<span style="color:#9ca3af">—</span>'}</td>
+        <td>${funnel}</td>
       </tr>`;
     }).join('');
   } catch (err) {
@@ -176,13 +256,18 @@ let _chartSource = null;
 
 async function loadCharts() {
   try {
-    const { data: rows } = await sb.from('page_views').select('created_at, source');
+    const { curr } = _dateRange();
+    let q = sb.from('page_views').select('created_at, source');
+    if (curr) q = q.gte('created_at', curr);
+    const { data: rows } = await q;
     if (!rows) return;
 
-    // ── Daily traffic (last 14 days) ──────────────────────
+    // ── Daily traffic ─────────────────────────────────────
+    const days = currentDays || 30;
+    const displayDays = Math.min(days, 30);
     const labels = [];
     const counts = {};
-    for (let i = 13; i >= 0; i--) {
+    for (let i = displayDays - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const key = d.toISOString().slice(0, 10); // "2026-04-12"
@@ -270,6 +355,72 @@ async function loadCharts() {
 }
 
 // ══════════════════════════════════════════════════════════
+//  HEATMAP — Traffic by hour of day
+// ══════════════════════════════════════════════════════════
+async function loadHeatmap() {
+  try {
+    const { curr } = _dateRange();
+    let q = sb.from('page_views').select('created_at');
+    if (curr) q = q.gte('created_at', curr);
+    const { data: rows } = await q;
+    const hours = new Array(24).fill(0);
+    (rows || []).forEach(r => {
+      const h = new Date(r.created_at).getHours();
+      if (h >= 0 && h < 24) hours[h]++;
+    });
+    const labels = Array.from({ length: 24 }, (_, i) => i + 'h');
+    const maxVal = Math.max(...hours, 1);
+    const colors = hours.map(v => {
+      const intensity = v / maxVal;
+      return `rgba(165,0,100,${0.15 + intensity * 0.75})`;
+    });
+    const ctx = document.getElementById('chart-hour').getContext('2d');
+    if (_chartHour) _chartHour.destroy();
+    _chartHour = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{ data: hours, backgroundColor: colors, borderRadius: 3, borderSkipped: false }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: {
+          title: ctx => 'Khung giờ ' + ctx[0].label,
+          label: ctx => ctx.raw + ' lượt xem',
+        }}},
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+          y: { beginAtZero: true, ticks: { precision: 0, font: { size: 10 } }, grid: { color: '#f0f0f4' } }
+        }
+      }
+    });
+  } catch (err) {
+    console.error('loadHeatmap:', err.message);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+//  EXPORT CSV
+// ══════════════════════════════════════════════════════════
+function exportCSV() {
+  if (!_lastModStats.length) { showToast('Chưa có dữ liệu để xuất', 'error'); return; }
+  const header = ['Module ID', 'Tên Module', 'Danh mục', 'Lượt xem', 'Lượt quiz', 'Điểm TB (%)', 'Tỉ lệ đạt (%)', 'Tỉ lệ làm quiz (%)'];
+  const rows   = _lastModStats.map(m => {
+    const avgQ    = m.attempts ? Math.round(m.pctSum / m.attempts) : '';
+    const pRate   = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : '';
+    const qRate   = m.views    ? Math.round((m.attempts / m.views) * 100) : 0;
+    return [m.id, m.name, m.category, m.views, m.attempts, avgQ, pRate, qRate];
+  });
+  const csv   = [header, ...rows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const bom   = '﻿'; // UTF-8 BOM for Excel
+  const blob  = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+  const url   = URL.createObjectURL(blob);
+  const a     = Object.assign(document.createElement('a'), { href: url, download: 'mentora-stats-' + new Date().toISOString().slice(0,10) + '.csv' });
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Đã xuất CSV!', 'success');
+}
+
+// ══════════════════════════════════════════════════════════
 //  ACTIVITY FEED
 // ══════════════════════════════════════════════════════════
 async function loadActivity() {
@@ -309,27 +460,30 @@ async function loadCmsModules() {
   const tbody = document.getElementById('modules-cms-body');
   tbody.innerHTML = '<tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
   try {
-    const { data: cmsRows, error } = await sb.from('modules_cms').select('id,data,updated_at').order('updated_at', { ascending: false });
+    const { data: cmsRows, error } = await sb.from('modules_cms').select('id,data,updated_at,active').order('updated_at', { ascending: false });
     if (error) throw error;
     const localIds = new Set(localModules.map(m => m.id));
     const combined = [];
     localModules.forEach(m => {
       const cms = (cmsRows || []).find(r => r.id === m.id);
-      combined.push({ id: m.id, name: m.name, category: m.category, updated: m.updated, source: cms ? 'CMS + JSON' : 'JSON', updated_at: cms?.updated_at });
+      combined.push({ id: m.id, name: m.name, category: m.category, updated: m.updated, source: cms ? 'CMS + JSON' : 'JSON', updated_at: cms?.updated_at, active: cms ? (cms.active !== false) : true, hasCms: !!cms });
     });
     (cmsRows || []).filter(r => !localIds.has(r.id)).forEach(r => {
       const d = typeof r.data === 'string' ? JSON.parse(r.data) : r.data;
-      combined.push({ id: r.id, name: d.name || r.id, category: d.category, updated: d.updated || '—', source: 'CMS', updated_at: r.updated_at });
+      combined.push({ id: r.id, name: d.name || r.id, category: d.category, updated: d.updated || '—', source: 'CMS', updated_at: r.updated_at, active: r.active !== false, hasCms: true });
     });
     document.getElementById('cms-module-count').textContent = '(' + combined.length + ' modules)';
-    if (!combined.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-cell">Chưa có module nào.</td></tr>'; return; }
+    if (!combined.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có module nào.</td></tr>'; return; }
     const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
     tbody.innerHTML = combined.map(m => `<tr>
       <td><code style="font-size:12px;background:#f5f6fa;padding:2px 6px;border-radius:4px">${esc(m.id)}</code></td>
-      <td style="font-weight:600;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</td>
+      <td style="font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</td>
       <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + m.category + '</span>' : '—'}</td>
       <td style="color:#9ca3af;font-size:12px">${m.updated || '—'}</td>
       <td><span style="font-size:11px;color:#9ca3af">${m.source}</span></td>
+      <td>${m.hasCms ? `<button class="active-toggle ${m.active ? 'on' : 'off'}" onclick="toggleActive('${m.id}',${m.active})" title="${m.active ? 'Đang hiện — click để ẩn' : 'Đang ẩn — click để hiện'}">
+        <span class="toggle-knob"></span><span class="toggle-label">${m.active ? 'Hiện' : 'Ẩn'}</span>
+      </button>` : '<span style="font-size:11px;color:#9ca3af">—</span>'}</td>
       <td style="white-space:nowrap;display:flex;gap:6px">
         <button class="btn-sm" onclick="openEditModule('${m.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
         ${m.source === 'CMS' ? '<button class="btn-danger" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
@@ -345,6 +499,14 @@ async function deleteModule(id, name) {
   const { error } = await sb.from('modules_cms').delete().eq('id', id);
   if (error) { showToast('Lỗi xóa: ' + error.message, 'error'); return; }
   showToast('Đã xóa module "' + name + '"', 'success');
+  loadCmsModules();
+}
+
+async function toggleActive(id, currentActive) {
+  const newVal = !currentActive;
+  const { error } = await sb.from('modules_cms').update({ active: newVal }).eq('id', id);
+  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
+  showToast(newVal ? 'Module đã được bật hiển thị' : 'Module đã bị ẩn', 'success');
   loadCmsModules();
 }
 

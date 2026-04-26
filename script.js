@@ -313,11 +313,15 @@ function loadModules() {
     .catch(function () { return []; });
 
   var fetchCms = _sbReady()
-    ? fetch(SB_URL + '/rest/v1/modules_cms?select=data&order=created_at.asc', {
+    ? fetch(SB_URL + '/rest/v1/modules_cms?select=id,data,active&order=created_at.asc', {
         headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
       })
       .then(function (r) { return r.ok ? r.json() : []; })
-      .then(function (rows) { return rows.map(function (r) { return JSON.parse(r.data || '{}'); }); })
+      .then(function (rows) {
+        return rows
+          .filter(function (r) { return r.active !== false; }) // hide inactive modules
+          .map(function (r) { return JSON.parse(r.data || '{}'); });
+      })
       .catch(function () { return []; })
     : Promise.resolve([]);
 

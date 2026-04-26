@@ -72,13 +72,27 @@
       <!-- ── TAB: OVERVIEW ── -->
       <div id="tab-overview" class="tab-content">
 
+        <!-- Filter row -->
+        <div class="overview-header">
+          <div class="day-filters">
+            <button class="day-filter-btn" data-days="7"  onclick="setDayFilter(7)">7 ngày</button>
+            <button class="day-filter-btn active" data-days="30" onclick="setDayFilter(30)">30 ngày</button>
+            <button class="day-filter-btn" data-days="90" onclick="setDayFilter(90)">90 ngày</button>
+            <button class="day-filter-btn" data-days="0"  onclick="setDayFilter(0)">Tất cả</button>
+          </div>
+          <button class="btn-ghost" onclick="exportCSV()">
+            <i class="fa-solid fa-download"></i> Xuất CSV
+          </button>
+        </div>
+
         <!-- Stat cards -->
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-icon views"><i class="fa-solid fa-eye"></i></div>
             <div class="stat-body">
-              <div class="stat-label">Tổng lượt xem</div>
+              <div class="stat-label">Lượt xem</div>
               <div class="stat-value" id="stat-total-views">—</div>
+              <div class="stat-delta" id="delta-views"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -86,6 +100,7 @@
             <div class="stat-body">
               <div class="stat-label">Lượt làm quiz</div>
               <div class="stat-value" id="stat-total-quiz">—</div>
+              <div class="stat-delta" id="delta-quiz"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -93,6 +108,7 @@
             <div class="stat-body">
               <div class="stat-label">Điểm trung bình</div>
               <div class="stat-value" id="stat-avg-score">—</div>
+              <div class="stat-delta" id="delta-score"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -100,6 +116,7 @@
             <div class="stat-body">
               <div class="stat-label">Tỉ lệ đạt (≥75%)</div>
               <div class="stat-value" id="stat-pass-rate">—</div>
+              <div class="stat-delta" id="delta-pass"></div>
             </div>
           </div>
         </div>
@@ -108,7 +125,7 @@
         <div class="charts-row">
           <div class="admin-card chart-card">
             <div class="admin-card-header">
-              <div class="admin-card-title">Traffic theo ngày (14 ngày gần nhất)</div>
+              <div class="admin-card-title" id="chart-daily-title">Traffic theo ngày</div>
             </div>
             <canvas id="chart-daily" height="110"></canvas>
           </div>
@@ -121,11 +138,19 @@
           </div>
         </div>
 
+        <!-- Heatmap -->
+        <div class="admin-card chart-card" style="margin-bottom:20px">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Traffic theo giờ trong ngày</div>
+          </div>
+          <canvas id="chart-hour" height="55"></canvas>
+        </div>
+
         <!-- Per-module breakdown -->
         <div class="admin-card">
           <div class="admin-card-header">
             <div class="admin-card-title">Thống kê theo Module</div>
-            <button class="btn-ghost" id="btn-refresh-stats" onclick="loadStats()">
+            <button class="btn-ghost" onclick="Promise.all([loadStats(),loadCharts(),loadHeatmap()])">
               <i class="fa-solid fa-rotate-right"></i> Làm mới
             </button>
           </div>
@@ -138,10 +163,11 @@
                 <th>Lượt quiz</th>
                 <th>Điểm TB</th>
                 <th>Đạt quiz</th>
+                <th>Funnel</th>
               </tr>
             </thead>
             <tbody id="module-stats-body">
-              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
             </tbody>
           </table>
         </div>
@@ -165,11 +191,12 @@
                 <th>Danh mục</th>
                 <th>Cập nhật</th>
                 <th>Nguồn</th>
+                <th>Trạng thái</th>
                 <th style="width:80px"></th>
               </tr>
             </thead>
             <tbody id="modules-cms-body">
-              <tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
             </tbody>
           </table>
         </div>
