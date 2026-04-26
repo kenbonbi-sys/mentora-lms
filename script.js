@@ -349,13 +349,24 @@ function isDone(id) { return !!localStorage.getItem('lms-done-' + id); }
 
 function updateDoneBtn(done) {
   var btn = document.getElementById('btn-mark-done');
+  var note = document.getElementById('detail-completion-note');
   if (!btn) return;
   if (done) {
     btn.className   = 'btn btn-sm btn-success-outline';
+    btn.setAttribute('aria-pressed', 'true');
+    if (note) {
+      note.className = 'detail-completion-note done';
+      note.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>Đã hoàn thành</span>';
+    }
     btn.innerHTML   = '<i class="fa-solid fa-circle-check"></i> Đã hoàn thành';
   } else {
     btn.className   = 'btn btn-sm btn-outline';
+    btn.setAttribute('aria-pressed', 'false');
     btn.innerHTML   = '<i class="fa-regular fa-circle-check"></i> Đánh dấu hoàn thành';
+    if (note) {
+      note.className = 'detail-completion-note';
+      note.innerHTML = '<i class="fa-regular fa-circle"></i><span>Chưa hoàn thành</span>';
+    }
   }
 }
 
@@ -742,6 +753,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var card = e.target.closest('.module-card[data-id]');
     if (card) openDetail(card.dataset.id);
   });
+  document.getElementById('modules-grid').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var card = e.target.closest('.module-card[data-id]');
+    if (!card) return;
+    e.preventDefault();
+    openDetail(card.dataset.id);
+  });
 
   // ── Reading progress bar ──
   window.addEventListener('scroll', updateReadingProgress, { passive: true });
@@ -887,6 +905,13 @@ function renderModules(list) {
 
   if (!list.length) {
     grid.innerHTML = '';
+    var searchValue = (document.getElementById('input-search').value || '').trim();
+    var emptyText = empty.querySelector('p');
+    if (emptyText) {
+      emptyText.textContent = searchValue
+        ? 'Không có module phù hợp với "' + searchValue + '".'
+        : 'Chưa có module phù hợp với bộ lọc này.';
+    }
     empty.style.display = 'block';
     updateCount(0);
     return;
@@ -949,12 +974,17 @@ function renderModules(list) {
     }
 
     var doneBadge = isDone(m.id) ? '<div class="card-done-badge"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</div>' : '';
-    return '<div class="module-card" data-id="' + escAttr(m.id || '') + '">'
+    var done = isDone(m.id);
+    var statusPill = done
+      ? '<div class="card-status done"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</div>'
+      : '<div class="card-status"><i class="fa-regular fa-circle"></i> Chưa học</div>';
+    return '<div class="module-card" role="button" tabindex="0" aria-label="Open module ' + escAttr(m.name || m.id || '') + '" data-id="' + escAttr(m.id || '') + '">'
       + thumbHtml
       + doneBadge
       + '<div class="card-body">'
       + '<div class="card-title">' + esc(m.name || '') + '</div>'
       + '<div class="card-desc">' + esc(m.subtitle || '') + '</div>'
+      + statusPill
       + '</div>'
       + '<div class="card-footer">'
       + '<div class="card-owner">'
@@ -1072,16 +1102,19 @@ function openDetail(id) {
     var type = safeResourceType(r.type);
     var href = safeResourceUrl(r.url);
     r = Object.assign({}, r, { url: escAttr(href) });
+    var actionHtml = href === '#'
+      ? '<span class="resource-dl disabled" title="Tài liệu chưa sẵn sàng"><i class="fa-solid fa-lock"></i></span>'
+      : '<a href="' + r.url + '" class="resource-dl" title="Tải xuống" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i></a>';
     return '<div class="resource-item">'
       + '<div class="resource-icon ' + type + '"><i class="fa-solid ' + (iconMap[type] || 'fa-file') + '"></i></div>'
       + '<div class="resource-meta">'
       + '<div class="resource-name">' + esc(r.name || '') + '</div>'
       + '<div class="resource-size">' + esc(r.size || '') + '</div>'
       + '</div>'
-      + '<a href="' + r.url + '" class="resource-dl" title="Tải xuống" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i></a>'
+      + actionHtml
       + '</div>';
   }).join('');
-  document.getElementById('detail-resources').innerHTML = resHtml || '<p style="color:var(--text-tertiary);font-size:13px">Chưa có tài liệu.</p>';
+  document.getElementById('detail-resources').innerHTML = resHtml || '<div class="resource-empty"><i class="fa-regular fa-folder-open"></i><span>Chưa có tài liệu đính kèm.</span></div>';
 
   // Quiz
   renderQuiz(m.quiz || []);
@@ -1160,7 +1193,8 @@ function renderQuiz(questions) {
 
   var html = '<div class="quiz-intro">'
     + '<i class="fa-solid fa-lightbulb"></i>'
-    + '<span>' + questions.length + ' câu hỏi · Chọn đáp án đúng để xem giải thích</span>'
+    + '<span id="quiz-progress-label">0/' + questions.length + ' câu đã trả lời</span>'
+    + '<div class="quiz-progress" aria-hidden="true"><span class="quiz-progress-fill" id="quiz-progress-fill"></span></div>'
     + '</div>';
 
   html += questions.map(function (q, qi) {
@@ -1193,6 +1227,17 @@ function renderQuiz(questions) {
     + '</div>';
 
   wrap.innerHTML = html;
+  updateQuizProgress();
+}
+
+function updateQuizProgress() {
+  var label = document.getElementById('quiz-progress-label');
+  var fill  = document.getElementById('quiz-progress-fill');
+  if (!label || !fill || !quizState.total) return;
+  var done = quizState.answered.filter(Boolean).length;
+  var pct = Math.round((done / quizState.total) * 100);
+  label.textContent = done + '/' + quizState.total + ' câu đã trả lời';
+  fill.style.width = pct + '%';
 }
 
 function handleQuizOption(btn, qi, oi, correct) {
@@ -1201,6 +1246,7 @@ function handleQuizOption(btn, qi, oi, correct) {
 
   var optsEl = document.getElementById('quiz-opts-' + qi);
   var expEl  = document.getElementById('quiz-exp-' + qi);
+  var cardEl = document.getElementById('quiz-card-' + qi);
 
   // Disable all options in this question
   optsEl.querySelectorAll('.quiz-option').forEach(function (b) {
@@ -1217,6 +1263,8 @@ function handleQuizOption(btn, qi, oi, correct) {
   // Track score
   var isCorrect = (oi === correct);
   if (isCorrect) quizState.score++;
+  if (cardEl) cardEl.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  updateQuizProgress();
 
   // Track per-question to Supabase — only on FIRST attempt per session (prevents duplicates on "Làm lại")
   var answerKey = (currentModuleId || '') + '-' + qi;

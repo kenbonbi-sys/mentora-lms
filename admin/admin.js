@@ -510,16 +510,17 @@ const STATUS_CFG = {
 
 function statusBadge(s) {
   const c = STATUS_CFG[s] || STATUS_CFG.draft;
-  return `<span class="mod-status ${c.cls}"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>`;
+  const hint = { published: 'Learner thấy', draft: 'Chỉ admin thấy', hidden: 'Tạm ẩn' }[s] || 'Chỉ admin thấy';
+  return `<span class="status-stack"><span class="mod-status ${c.cls}"><i class="fa-solid ${c.icon}"></i> ${c.label}</span><span class="status-hint">${hint}</span></span>`;
 }
 
 function statusActions(id, s, hasCms) {
   if (!hasCms) return '<span style="font-size:11px;color:#9ca3af">—</span>';
   const btns = [];
-  if (s !== 'published') btns.push(`<button class="btn-sm btn-publish" onclick="setModuleStatus('${id}','published')" title="Publish"><i class="fa-solid fa-rocket"></i> Đăng</button>`);
-  if (s !== 'draft')     btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','draft')" title="Về Draft"><i class="fa-solid fa-pen-ruler"></i></button>`);
-  if (s !== 'hidden')    btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','hidden')" title="Ẩn"><i class="fa-solid fa-eye-slash"></i></button>`);
-  return btns.join('');
+  if (s !== 'published') btns.push(`<button class="btn-sm btn-publish" onclick="setModuleStatus('${id}','published',this)" title="Publish"><i class="fa-solid fa-rocket"></i> Đăng</button>`);
+  if (s !== 'draft')     btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','draft',this)" title="Về Draft"><i class="fa-solid fa-pen-ruler"></i></button>`);
+  if (s !== 'hidden')    btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','hidden',this)" title="Ẩn"><i class="fa-solid fa-eye-slash"></i></button>`);
+  return '<div class="module-actions">' + btns.join('') + '</div>';
 }
 
 async function loadCmsModules() {
@@ -569,30 +570,39 @@ async function loadCmsModules() {
     const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
     tbody.innerHTML = combined.map(m => `<tr class="${m.status === 'draft' ? 'row-draft' : ''}">
       <td><code style="font-size:12px;background:#f5f6fa;padding:2px 6px;border-radius:4px">${esc(m.id)}</code></td>
-      <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-        ${esc(m.name)}
-        ${m.status === 'draft' ? '<span class="draft-inline">DRAFT</span>' : ''}
+      <td style="max-width:240px">
+        <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          ${esc(m.name)}
+          ${m.status === 'draft' ? '<span class="draft-inline">DRAFT</span>' : ''}
+        </div>
+        <span class="module-source"><i class="fa-solid fa-database"></i> ${esc(m.source)}</span>
       </td>
-      <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + m.category + '</span>' : '—'}</td>
+      <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + esc(m.category) + '</span>' : '—'}</td>
       <td style="color:#9ca3af;font-size:12px">${m.updated || '—'}</td>
       <td>${statusBadge(m.status)}</td>
       <td>${statusActions(m.id, m.status, m.hasCms)}</td>
-      <td style="white-space:nowrap;display:flex;gap:5px;align-items:center">
+      <td><div class="module-actions">
         <button class="btn-sm" title="Xem trước" onclick="previewModule('${m.id}')"><i class="fa-solid fa-eye"></i></button>
         <button class="btn-sm" title="Chỉnh sửa" onclick="openEditModule('${m.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
         ${m.hasCms ? '<button class="btn-sm" title="Lên" onclick="moveModule(\'' + m.id + '\',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-sm" title="Xuống" onclick="moveModule(\'' + m.id + '\',1)"><i class="fa-solid fa-chevron-down"></i></button>' : ''}
         ${m.source === 'CMS' ? '<button class="btn-danger" title="Xóa" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
-      </td>
+      </div></td>
     </tr>`).join('');
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
   }
 }
 
-async function setModuleStatus(id, status) {
+async function setModuleStatus(id, status, btn) {
   const labels = { published: 'Đã publish module!', draft: 'Đã chuyển về Draft', hidden: 'Đã ẩn module' };
+  const oldHtml = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
   const { error } = await sb.from('modules_cms').update({ status }).eq('id', id);
-  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
+  if (error) {
+    if (btn) { btn.disabled = false; btn.innerHTML = oldHtml; }
+    showToast('Lỗi: ' + error.message, 'error');
+    return;
+  }
   showToast(labels[status] || 'Đã cập nhật', 'success');
   loadCmsModules();
 }
@@ -655,9 +665,9 @@ async function loadAnnouncements() {
           <div class="ann-msg">${esc(a.message)}</div>
           <div class="ann-meta">${formatTime(a.created_at)} · ${a.active ? '<span style="color:#166534">Đang hiện</span>' : '<span style="color:#9ca3af">Đã tắt</span>'}</div>
         </div>
-        <div style="display:flex;gap:6px">
-          <button class="btn-sm" onclick="toggleAnnouncement('${a.id}',${a.active})">${a.active ? 'Tắt' : 'Bật'}</button>
-          <button class="btn-danger" onclick="deleteAnnouncement('${a.id}')"><i class="fa-solid fa-trash"></i></button>
+        <div class="ann-actions">
+          <button class="btn-sm" onclick="toggleAnnouncement('${a.id}',${a.active},this)">${a.active ? 'Tắt' : 'Bật'}</button>
+          <button class="btn-danger" onclick="deleteAnnouncement('${a.id}',this)"><i class="fa-solid fa-trash"></i></button>
         </div>
       </div>`).join('');
   } catch (err) {
@@ -669,20 +679,30 @@ async function createAnnouncement() {
   const msg  = document.getElementById('ann-message').value.trim();
   const type = document.getElementById('ann-type').value;
   if (!msg) { showToast('Vui lòng nhập nội dung thông báo', 'error'); return; }
+  const btn = document.getElementById('btn-create-announcement');
+  const oldHtml = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Đang đăng...'; }
   const { error } = await sb.from('announcements').insert({ message: msg, type, active: true });
-  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
+  if (error) {
+    if (btn) { btn.disabled = false; btn.innerHTML = oldHtml; }
+    showToast('Lỗi: ' + error.message, 'error');
+    return;
+  }
   document.getElementById('ann-message').value = '';
   showToast('Đã đăng thông báo!', 'success');
+  if (btn) { btn.disabled = false; btn.innerHTML = oldHtml; }
   loadAnnouncements();
 }
 
-async function toggleAnnouncement(id, current) {
+async function toggleAnnouncement(id, current, btn) {
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
   await sb.from('announcements').update({ active: !current }).eq('id', id);
   loadAnnouncements();
 }
 
-async function deleteAnnouncement(id) {
+async function deleteAnnouncement(id, btn) {
   if (!confirm('Xóa thông báo này?')) return;
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
   await sb.from('announcements').delete().eq('id', id);
   showToast('Đã xóa thông báo', 'success');
   loadAnnouncements();
