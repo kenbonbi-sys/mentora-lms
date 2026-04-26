@@ -31,6 +31,13 @@ var SAMPLE_MODULES = [
       { url: '/assets/images/promo/promo-01.jpg', caption: 'Form đánh giá thử việc' },
     ],
     videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    prerequisites: [],
+    hotspotImage: '/assets/images/hero/hero-02.jpg',
+    hotspots: [
+      { x: 18, y: 28, label: 'Bước 1: Chuẩn bị', description: 'HR gửi welcome email, IT chuẩn bị tài khoản và thiết bị trước ngày nhân viên vào.' },
+      { x: 52, y: 52, label: 'Bước 2: Ngày đầu tiên', description: 'Check-in lúc 8:30, nhận badge tạm, orientation với manager và tour văn phòng.' },
+      { x: 80, y: 30, label: 'Bước 3: Tuần 1', description: 'Đào tạo hệ thống nội bộ, hoàn thành các module LMS bắt buộc trong 7 ngày.' }
+    ],
     resources: [
       { name: 'Onboarding Checklist.pdf', type: 'pdf', size: '245 KB', url: '#' },
       { name: 'Slide Orientation 2026.pptx', type: 'pptx', size: '3.2 MB', url: '#' },
@@ -61,6 +68,8 @@ var SAMPLE_MODULES = [
       { url: '/assets/images/promo/promo-04.jpg', caption: 'Quy trình xử lý vi phạm' },
     ],
     videoUrl: '',
+    prerequisites: ['M001'],
+    hotspotImage: '', hotspots: [],
     resources: [
       { name: 'PDPA Policy v2.1.pdf', type: 'pdf', size: '890 KB', url: '#' },
       { name: 'Data Classification Guide.pdf', type: 'pdf', size: '320 KB', url: '#' },
@@ -91,6 +100,13 @@ var SAMPLE_MODULES = [
       { url: '/assets/images/promo/promo-06.jpg', caption: 'Cửa thoát hiểm' },
     ],
     videoUrl: '',
+    prerequisites: ['M001'],
+    hotspotImage: '/assets/images/hero/hero-07.jpg',
+    hotspots: [
+      { x: 22, y: 35, label: 'Lối thoát hiểm', description: 'Cửa thoát hiểm chính nằm đầu hành lang, luôn giữ thông thoáng, không được khóa trong giờ làm việc.' },
+      { x: 68, y: 25, label: 'Bình chữa cháy', description: 'Kiểm tra định kỳ 6 tháng/lần. Báo ngay cho Security nếu phát hiện bình hỏng hoặc hết hạn.' },
+      { x: 45, y: 65, label: 'Điểm tập trung', description: 'Khi có báo động, tập trung tại sân trước tòa nhà. Không quay lại trong khi chưa có lệnh an toàn.' }
+    ],
     resources: [
       { name: 'Nội quy An toàn Lao động.pdf', type: 'pdf', size: '560 KB', url: '#' },
       { name: 'Sơ đồ Thoát hiểm.pdf', type: 'pdf', size: '2.1 MB', url: '#' },
@@ -120,6 +136,8 @@ var SAMPLE_MODULES = [
       { url: '/assets/images/promo/promo-08.jpg', caption: 'Quy trình phê duyệt' },
     ],
     videoUrl: '',
+    prerequisites: ['M002', 'M003'],
+    hotspotImage: '', hotspots: [],
     resources: [
       { name: 'Form Đề xuất Chi phí EF-001.xlsx', type: 'doc', size: '48 KB', url: '#' },
       { name: 'Form Thanh toán PT-002.xlsx', type: 'doc', size: '52 KB', url: '#' },
@@ -151,6 +169,8 @@ var SAMPLE_MODULES = [
       { url: '/assets/images/promo/promo-03.jpg', caption: 'Đạo đức nghề nghiệp' },
     ],
     videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    prerequisites: ['M002'],
+    hotspotImage: '', hotspots: [],
     resources: [
       { name: 'Code of Conduct 2026.pdf', type: 'pdf', size: '1.3 MB', url: '#' },
       { name: 'Slide Ethics Training.pptx', type: 'pptx', size: '6.2 MB', url: '#' },
@@ -343,6 +363,7 @@ function markDone() {
   }
   filterAndRender(); // update cards
   updateStatsStrip();
+  renderAiRecommend();
 }
 
 function isDone(id) { return !!localStorage.getItem('lms-done-' + id); }
@@ -848,6 +869,7 @@ function loadModules() {
       renderModules(allModules);
       updateHeroCount();
       updateStatsStrip();
+      renderAiRecommend();
     })
     .catch(function (err) {
       console.warn('loadModules error:', err.message);
@@ -856,6 +878,7 @@ function loadModules() {
       renderModules(allModules);
       updateHeroCount();
       updateStatsStrip();
+      renderAiRecommend();
     });
 }
 
@@ -865,18 +888,205 @@ function updateHeroCount() {
 }
 
 // ════════════════════════════════════════
+//  AI RECOMMENDATION
+// ════════════════════════════════════════
+function getAiRecommendation() {
+  var undone = allModules.filter(function (m) { return !isDone(m.id); });
+  if (!undone.length) return null;
+
+  var completedCats = {};
+  allModules.forEach(function (m) {
+    if (isDone(m.id)) completedCats[m.category] = (completedCats[m.category] || 0) + 1;
+  });
+
+  var scored = undone.map(function (m) {
+    var score = 50;
+    score += (completedCats[m.category] || 0) * 20;          // boost same category streak
+    if (!localStorage.getItem('lms-quiz-score-' + m.id)) score += 15; // never attempted
+    var unmet = (m.prerequisites || []).filter(function (pid) { return !isDone(pid); }).length;
+    score -= unmet * 40;                                      // penalise locked prereqs
+    score += Math.min(getStreak(), 5) * 2;                    // streak momentum
+    return { m: m, score: score };
+  });
+  scored.sort(function (a, b) { return b.score - a.score; });
+  return scored[0] ? scored[0].m : null;
+}
+
+function renderAiRecommend() {
+  var banner = document.getElementById('ai-recommend-banner');
+  if (!banner || !allModules.length) return;
+  var rec = getAiRecommendation();
+  if (!rec) { banner.style.display = 'none'; return; }
+
+  var completedCount = allModules.filter(function (m) { return isDone(m.id); }).length;
+  var doneSameCat    = allModules.filter(function (x) { return isDone(x.id) && x.category === rec.category; }).length;
+  var reason;
+  if (doneSameCat > 0)            reason = 'Bạn đang học tốt nhóm ' + rec.category + ' — tiếp tục chuỗi này';
+  else if (completedCount === 0)  reason = 'Module đề xuất để bắt đầu lộ trình của bạn';
+  else if (getStreak() >= 3)      reason = 'Bạn đang có streak ' + getStreak() + ' ngày — duy trì đà học!';
+  else                            reason = 'Module phù hợp với tiến độ hiện tại của bạn';
+
+  banner.style.display = '';
+  banner.innerHTML =
+    '<div class="ai-recommend-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>'
+    + '<div class="ai-recommend-body">'
+    + '<div class="ai-recommend-label">✦ AI Gợi ý tiếp theo</div>'
+    + '<div class="ai-recommend-name">' + esc(rec.name || '') + '</div>'
+    + '<div class="ai-recommend-reason">' + esc(reason) + ' · ' + esc(rec.duration || '') + '</div>'
+    + '</div>'
+    + '<button class="btn btn-primary btn-sm ai-recommend-btn" onclick="openDetail(\'' + escAttr(rec.id || '') + '\')">'
+    + '<i class="fa-solid fa-arrow-right"></i> Học ngay'
+    + '</button>';
+}
+
+// ════════════════════════════════════════
+//  INTERACTIVE HOTSPOTS
+// ════════════════════════════════════════
+function renderHotspots(m) {
+  var section = document.getElementById('section-hotspot');
+  var wrap    = document.getElementById('hotspot-wrap');
+  if (!section || !wrap) return;
+  if (!m.hotspotImage || !(m.hotspots && m.hotspots.length)) {
+    section.style.display = 'none';
+    return;
+  }
+  var imgSrc = safeImageUrl(m.hotspotImage, '');
+  if (!imgSrc) { section.style.display = 'none'; return; }
+
+  section.style.display = '';
+  var pinsHtml = (m.hotspots || []).map(function (h, i) {
+    return '<div class="hotspot-pin" id="hpin-' + i + '"'
+      + ' style="left:' + h.x + '%;top:' + h.y + '%"'
+      + ' tabindex="0" role="button" aria-label="' + escAttr(h.label || '') + '"'
+      + ' onclick="toggleHotspotPin(event,' + i + ')"'
+      + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){toggleHotspotPin(event,' + i + ');event.preventDefault();}">'
+      + '<div class="pin-dot"><i class="fa-solid fa-plus" aria-hidden="true"></i></div>'
+      + '<div class="pin-popup" role="tooltip">'
+      + '<div class="pin-label">' + esc(h.label || '') + '</div>'
+      + '<div class="pin-desc">'  + esc(h.description || '') + '</div>'
+      + '</div></div>';
+  }).join('');
+
+  wrap.innerHTML = '<img src="' + escAttr(imgSrc) + '" class="hotspot-img" alt="Sơ đồ tương tác" loading="lazy">'
+    + pinsHtml;
+}
+
+function toggleHotspotPin(e, idx) {
+  e.stopPropagation();
+  var pin      = document.getElementById('hpin-' + idx);
+  if (!pin) return;
+  var wasActive = pin.classList.contains('active');
+  document.querySelectorAll('.hotspot-pin').forEach(function (p) { p.classList.remove('active'); });
+  if (!wasActive) pin.classList.add('active');
+}
+
+// ════════════════════════════════════════
+//  KNOWLEDGE MAP
+// ════════════════════════════════════════
+function renderKnowledgeMap() {
+  var nodesEl = document.getElementById('map-nodes');
+  var svgEl   = document.getElementById('map-svg');
+  if (!nodesEl || !svgEl || !allModules.length) return;
+
+  var catCls = { Policy:'badge-policy', Process:'badge-process', Safety:'badge-safety' };
+
+  nodesEl.innerHTML = allModules.map(function (m) {
+    var done       = isDone(m.id);
+    var prereqs    = m.prerequisites || [];
+    var metPrereqs = prereqs.every(function (pid) { return isDone(pid); });
+    var locked     = prereqs.length > 0 && !metPrereqs && !done;
+    var state      = done ? 'done' : locked ? 'locked' : 'available';
+    var icon       = safeImageUrl(m.icon || '/assets/icons/education.png', '/assets/icons/education.png');
+
+    var stateHtml = done
+      ? '<span class="map-node-state done"><i class="fa-solid fa-circle-check"></i> Hoàn thành</span>'
+      : locked
+        ? '<span class="map-node-state locked"><i class="fa-solid fa-lock"></i> Chưa mở</span>'
+        : '<span class="map-node-state available"><i class="fa-solid fa-circle-play"></i> Sẵn sàng</span>';
+
+    var clickAttrs = locked ? '' :
+      ' onclick="openDetail(\'' + escAttr(m.id) + '\')" onkeydown="if(event.key===\'Enter\'){openDetail(\'' + escAttr(m.id) + '\');}"';
+
+    return '<div class="map-node ' + state + '" id="mnode-' + escAttr(m.id) + '"'
+      + (locked ? '' : ' role="button" tabindex="0"')
+      + clickAttrs
+      + ' data-id="' + escAttr(m.id) + '">'
+      + (prereqs.length ? '<div class="map-prereq-tag">Có điều kiện</div>' : '')
+      + '<div class="map-node-icon"><img src="' + escAttr(icon) + '" alt="" loading="lazy"></div>'
+      + '<div class="map-node-name">' + esc(m.name || '') + '</div>'
+      + '<div class="map-node-meta">'
+      + '<span class="badge ' + (catCls[m.category] || 'badge-cat') + '" style="font-size:10px;padding:2px 7px">'
+      + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
+      + esc(m.category || '') + '</span>'
+      + stateHtml
+      + '</div></div>';
+  }).join('');
+
+  // Draw SVG edges after layout settles
+  setTimeout(function () { drawMapEdges(svgEl); }, 120);
+}
+
+function drawMapEdges(svgEl) {
+  var wrapEl   = svgEl.parentElement;
+  var wrapRect = wrapEl.getBoundingClientRect();
+  if (!wrapRect.width) return;
+
+  var lines = [];
+  allModules.forEach(function (m) {
+    (m.prerequisites || []).forEach(function (pid) {
+      var fromEl = document.getElementById('mnode-' + pid);
+      var toEl   = document.getElementById('mnode-' + m.id);
+      if (!fromEl || !toEl) return;
+
+      var fromR = fromEl.getBoundingClientRect();
+      var toR   = toEl.getBoundingClientRect();
+      var x1    = fromR.right  - wrapRect.left;
+      var y1    = fromR.top    + fromR.height / 2 - wrapRect.top;
+      var x2    = toR.left     - wrapRect.left;
+      var y2    = toR.top      + toR.height  / 2 - wrapRect.top;
+      var cx    = (x1 + x2) / 2;
+      var done  = isDone(pid);
+      var dc    = done ? ' done' : '';
+
+      lines.push(
+        '<path class="map-edge' + dc + '" d="M' + x1 + ',' + y1
+        + ' C' + cx + ',' + y1 + ' ' + cx + ',' + y2 + ' ' + x2 + ',' + y2 + '"/>'
+        + '<polygon class="map-arrowhead' + dc + '" points="'
+        + x2 + ',' + y2 + ' '
+        + (x2 - 8) + ',' + (y2 - 5) + ' '
+        + (x2 - 8) + ',' + (y2 + 5) + '"/>'
+      );
+    });
+  });
+
+  svgEl.setAttribute('viewBox', '0 0 ' + wrapRect.width + ' ' + wrapRect.height);
+  svgEl.style.height = wrapRect.height + 'px';
+  svgEl.innerHTML    = lines.join('');
+}
+
+// ════════════════════════════════════════
 //  PAGE NAVIGATION (SPA)
 // ════════════════════════════════════════
 function showPage(page) {
   var pageList   = document.getElementById('page-list');
   var pageDetail = document.getElementById('page-detail');
+  var pageMap    = document.getElementById('page-map');
+  // Hide all pages
+  pageList.style.display   = 'none';
+  pageDetail.style.display = 'none';
+  if (pageMap) pageMap.style.display = 'none';
+
   if (page === 'list') {
-    pageDetail.style.display = 'none';
-    pageList.style.display   = '';
+    pageList.style.display = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateReadingProgress(); // reset bar to 0
+    updateReadingProgress();
+  } else if (page === 'map') {
+    if (pageMap) {
+      pageMap.style.display = '';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      renderKnowledgeMap();
+    }
   } else {
-    pageList.style.display   = 'none';
     pageDetail.style.display = '';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
@@ -1115,6 +1325,9 @@ function openDetail(id) {
       + '</div>';
   }).join('');
   document.getElementById('detail-resources').innerHTML = resHtml || '<div class="resource-empty"><i class="fa-regular fa-folder-open"></i><span>Chưa có tài liệu đính kèm.</span></div>';
+
+  // Hotspots
+  renderHotspots(m);
 
   // Quiz
   renderQuiz(m.quiz || []);

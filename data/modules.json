@@ -44,16 +44,43 @@
       }
     ],
     "images": [
-      { "url": "/assets/images/hero/hero-02.jpg",   "caption": "Workspace chuẩn bị sẵn sàng" },
-      { "url": "/assets/images/hero/hero-03.jpg",   "caption": "Orientation session" },
-      { "url": "/assets/images/hero/hero-04.jpg",   "caption": "On-the-job training" },
-      { "url": "/assets/images/promo/promo-01.jpg", "caption": "Form đánh giá thử việc" }
+      {
+        "url": "/assets/images/hero/hero-02.jpg",
+        "caption": "Workspace chuẩn bị sẵn sàng"
+      },
+      {
+        "url": "/assets/images/hero/hero-03.jpg",
+        "caption": "Orientation session"
+      },
+      {
+        "url": "/assets/images/hero/hero-04.jpg",
+        "caption": "On-the-job training"
+      },
+      {
+        "url": "/assets/images/promo/promo-01.jpg",
+        "caption": "Form đánh giá thử việc"
+      }
     ],
     "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
     "resources": [
-      { "name": "Onboarding Checklist.pdf",        "type": "pdf",  "size": "245 KB", "url": "#" },
-      { "name": "Slide Orientation 2026.pptx",     "type": "pptx", "size": "3.2 MB", "url": "#" },
-      { "name": "Hướng dẫn hệ thống nội bộ.pdf",  "type": "pdf",  "size": "1.1 MB", "url": "#" }
+      {
+        "name": "Onboarding Checklist.pdf",
+        "type": "pdf",
+        "size": "245 KB",
+        "url": "#"
+      },
+      {
+        "name": "Slide Orientation 2026.pptx",
+        "type": "pptx",
+        "size": "3.2 MB",
+        "url": "#"
+      },
+      {
+        "name": "Hướng dẫn hệ thống nội bộ.pdf",
+        "type": "pdf",
+        "size": "1.1 MB",
+        "url": "#"
+      }
     ],
     "quiz": [
       {
@@ -69,21 +96,58 @@
       },
       {
         "question": "Buddy được chỉ định phải có tối thiểu bao nhiêu tháng kinh nghiệm ở vị trí tương đương?",
-        "options": ["1 tháng", "2 tháng", "3 tháng", "6 tháng"],
+        "options": [
+          "1 tháng",
+          "2 tháng",
+          "3 tháng",
+          "6 tháng"
+        ],
         "correct": 2,
         "explanation": "Buddy (người hỗ trợ) phải có ít nhất 3 tháng kinh nghiệm ở vị trí tương đương và được chỉ định ngay từ buổi sáng ngày đầu tiên. Buddy sẽ đồng hành cùng nhân viên mới trong suốt 30 ngày đầu."
       },
       {
         "question": "Nhân viên mới phải đạt tối thiểu bao nhiêu % điểm mỗi bài kiểm tra trên LMS?",
-        "options": ["60%", "70%", "80%", "90%"],
+        "options": [
+          "60%",
+          "70%",
+          "80%",
+          "90%"
+        ],
         "correct": 2,
         "explanation": "Mỗi khóa học bắt buộc trên LMS yêu cầu đạt tối thiểu 80% điểm bài kiểm tra cuối. Nếu chưa đạt, nhân viên được phép làm lại tối đa 2 lần trong vòng 3 ngày."
       },
       {
         "question": "Điểm trung bình tối thiểu để đạt thử việc theo form đánh giá PE-001 là bao nhiêu?",
-        "options": ["3.0/5", "3.5/5", "4.0/5", "4.5/5"],
+        "options": [
+          "3.0/5",
+          "3.5/5",
+          "4.0/5",
+          "4.5/5"
+        ],
         "correct": 1,
         "explanation": "Điểm trung bình tối thiểu để đạt thử việc là 3.5/5. Nếu nhân viên không đồng ý với kết quả, có quyền gửi khiếu nại bằng văn bản lên HR Director trong vòng 2 ngày làm việc."
+      }
+    ],
+    "prerequisites": [],
+    "hotspotImage": "/assets/images/hero/hero-02.jpg",
+    "hotspots": [
+      {
+        "x": 18,
+        "y": 28,
+        "label": "Bước 1: Chuẩn bị",
+        "description": "HR gửi welcome email, IT chuẩn bị tài khoản và thiết bị trước ngày nhân viên vào."
+      },
+      {
+        "x": 52,
+        "y": 52,
+        "label": "Bước 2: Ngày đầu tiên",
+        "description": "Check-in lúc 8:30, nhận badge tạm, orientation với manager và tour văn phòng."
+      },
+      {
+        "x": 80,
+        "y": 30,
+        "label": "Bước 3: Tuần 1",
+        "description": "Đào tạo hệ thống nội bộ, hoàn thành các module LMS bắt buộc trong 7 ngày."
       }
     ]
   },
@@ -132,15 +196,39 @@
       }
     ],
     "images": [
-      { "url": "/assets/images/hero/hero-05.jpg",   "caption": "Bảo mật dữ liệu" },
-      { "url": "/assets/images/hero/hero-06.jpg",   "caption": "Phân loại dữ liệu" },
-      { "url": "/assets/images/promo/promo-04.jpg", "caption": "Quy trình xử lý vi phạm" }
+      {
+        "url": "/assets/images/hero/hero-05.jpg",
+        "caption": "Bảo mật dữ liệu"
+      },
+      {
+        "url": "/assets/images/hero/hero-06.jpg",
+        "caption": "Phân loại dữ liệu"
+      },
+      {
+        "url": "/assets/images/promo/promo-04.jpg",
+        "caption": "Quy trình xử lý vi phạm"
+      }
     ],
     "videoUrl": "",
     "resources": [
-      { "name": "PDPA Policy v2.1.pdf",          "type": "pdf",  "size": "890 KB", "url": "#" },
-      { "name": "Data Classification Guide.pdf", "type": "pdf",  "size": "320 KB", "url": "#" },
-      { "name": "Slide PDPA Training.pptx",      "type": "pptx", "size": "5.4 MB", "url": "#" }
+      {
+        "name": "PDPA Policy v2.1.pdf",
+        "type": "pdf",
+        "size": "890 KB",
+        "url": "#"
+      },
+      {
+        "name": "Data Classification Guide.pdf",
+        "type": "pdf",
+        "size": "320 KB",
+        "url": "#"
+      },
+      {
+        "name": "Slide PDPA Training.pptx",
+        "type": "pptx",
+        "size": "5.4 MB",
+        "url": "#"
+      }
     ],
     "quiz": [
       {
@@ -156,7 +244,12 @@
       },
       {
         "question": "Theo PDPA, sau khi phát hiện sự cố rò rỉ dữ liệu, công ty có bao lâu để thông báo cơ quan quản lý?",
-        "options": ["24 giờ", "48 giờ", "72 giờ", "7 ngày làm việc"],
+        "options": [
+          "24 giờ",
+          "48 giờ",
+          "72 giờ",
+          "7 ngày làm việc"
+        ],
         "correct": 2,
         "explanation": "Theo quy định PDPA, công ty có nghĩa vụ thông báo cho cơ quan quản lý trong vòng 72 giờ kể từ khi phát hiện sự cố rò rỉ dữ liệu. Che giấu hoặc trì hoãn báo cáo bị xem là vi phạm pháp luật."
       },
@@ -173,11 +266,21 @@
       },
       {
         "question": "Mật khẩu tài khoản công ty phải được thay đổi định kỳ mỗi bao nhiêu ngày theo quy định bảo mật?",
-        "options": ["30 ngày", "60 ngày", "90 ngày", "180 ngày"],
+        "options": [
+          "30 ngày",
+          "60 ngày",
+          "90 ngày",
+          "180 ngày"
+        ],
         "correct": 2,
         "explanation": "Quy định bảo mật hàng ngày yêu cầu thay đổi mật khẩu mỗi 90 ngày. Mật khẩu phải đủ mạnh với ít nhất 12 ký tự, kết hợp chữ hoa, thường, số và ký tự đặc biệt, đồng thời bật 2FA cho tất cả tài khoản công ty."
       }
-    ]
+    ],
+    "prerequisites": [
+      "M001"
+    ],
+    "hotspotImage": "",
+    "hotspots": []
   },
   {
     "id": "M003",
@@ -224,15 +327,39 @@
       }
     ],
     "images": [
-      { "url": "/assets/images/hero/hero-07.jpg",   "caption": "Vị trí bình chữa cháy" },
-      { "url": "/assets/images/hero/hero-08.jpg",   "caption": "Sơ đồ thoát hiểm tầng 3" },
-      { "url": "/assets/images/promo/promo-06.jpg", "caption": "Cửa thoát hiểm" }
+      {
+        "url": "/assets/images/hero/hero-07.jpg",
+        "caption": "Vị trí bình chữa cháy"
+      },
+      {
+        "url": "/assets/images/hero/hero-08.jpg",
+        "caption": "Sơ đồ thoát hiểm tầng 3"
+      },
+      {
+        "url": "/assets/images/promo/promo-06.jpg",
+        "caption": "Cửa thoát hiểm"
+      }
     ],
     "videoUrl": "",
     "resources": [
-      { "name": "Nội quy An toàn Lao động.pdf", "type": "pdf",  "size": "560 KB", "url": "#" },
-      { "name": "Sơ đồ Thoát hiểm.pdf",         "type": "pdf",  "size": "2.1 MB", "url": "#" },
-      { "name": "Slide PCCC Training.pptx",      "type": "pptx", "size": "8.7 MB", "url": "#" }
+      {
+        "name": "Nội quy An toàn Lao động.pdf",
+        "type": "pdf",
+        "size": "560 KB",
+        "url": "#"
+      },
+      {
+        "name": "Sơ đồ Thoát hiểm.pdf",
+        "type": "pdf",
+        "size": "2.1 MB",
+        "url": "#"
+      },
+      {
+        "name": "Slide PCCC Training.pptx",
+        "type": "pptx",
+        "size": "8.7 MB",
+        "url": "#"
+      }
     ],
     "quiz": [
       {
@@ -279,6 +406,30 @@
         "correct": 0,
         "explanation": "Bình chữa cháy tại MoMo dùng bột khô ABC — loại đa năng có thể dập các đám cháy từ giấy, gỗ (Class A), dầu mỡ (Class B) và thiết bị điện (Class C). Sau mỗi lần dùng, dù chỉ xịt một ít, phải báo ngay Admin để thay bình mới."
       }
+    ],
+    "prerequisites": [
+      "M001"
+    ],
+    "hotspotImage": "/assets/images/hero/hero-07.jpg",
+    "hotspots": [
+      {
+        "x": 22,
+        "y": 35,
+        "label": "Lối thoát hiểm",
+        "description": "Cửa thoát hiểm chính nằm đầu hành lang, luôn giữ thông thoáng, không được khóa trong giờ làm việc."
+      },
+      {
+        "x": 68,
+        "y": 25,
+        "label": "Bình chữa cháy",
+        "description": "Kiểm tra định kỳ 6 tháng/lần. Báo ngay cho Security nếu phát hiện bình hỏng hoặc hết hạn."
+      },
+      {
+        "x": 45,
+        "y": 65,
+        "label": "Điểm tập trung",
+        "description": "Khi có báo động, tập trung tại sân trước tòa nhà. Không quay lại trong khi chưa có lệnh."
+      }
     ]
   },
   {
@@ -321,15 +472,41 @@
       }
     ],
     "images": [
-      { "url": "/assets/images/hero/hero-09.jpg",   "caption": "Form đề xuất chi phí" },
-      { "url": "/assets/images/promo/promo-08.jpg", "caption": "Quy trình phê duyệt" }
+      {
+        "url": "/assets/images/hero/hero-09.jpg",
+        "caption": "Form đề xuất chi phí"
+      },
+      {
+        "url": "/assets/images/promo/promo-08.jpg",
+        "caption": "Quy trình phê duyệt"
+      }
     ],
     "videoUrl": "",
     "resources": [
-      { "name": "Form Đề xuất Chi phí EF-001.xlsx", "type": "doc",  "size": "48 KB",  "url": "#" },
-      { "name": "Form Thanh toán PT-002.xlsx",       "type": "doc",  "size": "52 KB",  "url": "#" },
-      { "name": "Chính sách Chi phí 2026.pdf",       "type": "pdf",  "size": "430 KB", "url": "#" },
-      { "name": "Slide Finance Process.pptx",        "type": "pptx", "size": "4.1 MB", "url": "#" }
+      {
+        "name": "Form Đề xuất Chi phí EF-001.xlsx",
+        "type": "doc",
+        "size": "48 KB",
+        "url": "#"
+      },
+      {
+        "name": "Form Thanh toán PT-002.xlsx",
+        "type": "doc",
+        "size": "52 KB",
+        "url": "#"
+      },
+      {
+        "name": "Chính sách Chi phí 2026.pdf",
+        "type": "pdf",
+        "size": "430 KB",
+        "url": "#"
+      },
+      {
+        "name": "Slide Finance Process.pptx",
+        "type": "pptx",
+        "size": "4.1 MB",
+        "url": "#"
+      }
     ],
     "quiz": [
       {
@@ -345,23 +522,44 @@
       },
       {
         "question": "Hồ sơ hoàn ứng chi phí phải được nộp cho Finance trong vòng bao nhiêu ngày làm việc kể từ ngày chi?",
-        "options": ["3 ngày làm việc", "5 ngày làm việc", "7 ngày làm việc", "10 ngày làm việc"],
+        "options": [
+          "3 ngày làm việc",
+          "5 ngày làm việc",
+          "7 ngày làm việc",
+          "10 ngày làm việc"
+        ],
         "correct": 1,
         "explanation": "Hồ sơ hoàn ứng phải nộp trong vòng 5 ngày làm việc kể từ ngày chi tiêu. Nộp trễ sẽ tự động chuyển vào kỳ thanh toán tháng sau. Hồ sơ cần có hóa đơn VAT gốc, form PT-002 và bản sao phê duyệt EF-001."
       },
       {
         "question": "Quy trình phê duyệt chi phí khẩn cấp chỉ được áp dụng cho khoản chi dưới bao nhiêu?",
-        "options": ["5 triệu đồng", "10 triệu đồng", "20 triệu đồng", "50 triệu đồng"],
+        "options": [
+          "5 triệu đồng",
+          "10 triệu đồng",
+          "20 triệu đồng",
+          "50 triệu đồng"
+        ],
         "correct": 2,
         "explanation": "Quy trình khẩn cấp chỉ áp dụng cho chi phí dưới 20 triệu đồng. Sau khi chi, phải hoàn thiện form EF-001 chính thức trong vòng 24 giờ và đính kèm bằng chứng phê duyệt (tin nhắn/ghi âm). Lạm dụng quy trình này là vi phạm quy định tài chính."
       },
       {
         "question": "Mọi khoản mua sắm trên bao nhiêu triệu đồng bắt buộc phải có tối thiểu 2 báo giá?",
-        "options": ["1 triệu đồng", "5 triệu đồng", "10 triệu đồng", "20 triệu đồng"],
+        "options": [
+          "1 triệu đồng",
+          "5 triệu đồng",
+          "10 triệu đồng",
+          "20 triệu đồng"
+        ],
         "correct": 1,
         "explanation": "Theo quy định, tất cả khoản mua sắm thiết bị, vật tư, phần mềm có giá trị trên 5 triệu đồng đều cần có tối thiểu 2 báo giá từ nhà cung cấp khác nhau trước khi đệ trình phê duyệt."
       }
-    ]
+    ],
+    "prerequisites": [
+      "M002",
+      "M003"
+    ],
+    "hotspotImage": "",
+    "hotspots": []
   },
   {
     "id": "M005",
@@ -408,20 +606,49 @@
       }
     ],
     "images": [
-      { "url": "/assets/images/hero/hero-10.jpg",   "caption": "Môi trường làm việc đa dạng" },
-      { "url": "/assets/images/hero/hero-01.jpg",   "caption": "Giao tiếp chuyên nghiệp" },
-      { "url": "/assets/images/promo/promo-03.jpg", "caption": "Đạo đức nghề nghiệp" }
+      {
+        "url": "/assets/images/hero/hero-10.jpg",
+        "caption": "Môi trường làm việc đa dạng"
+      },
+      {
+        "url": "/assets/images/hero/hero-01.jpg",
+        "caption": "Giao tiếp chuyên nghiệp"
+      },
+      {
+        "url": "/assets/images/promo/promo-03.jpg",
+        "caption": "Đạo đức nghề nghiệp"
+      }
     ],
     "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
     "resources": [
-      { "name": "Code of Conduct 2026.pdf",            "type": "pdf",  "size": "1.3 MB", "url": "#" },
-      { "name": "Slide Ethics Training.pptx",          "type": "pptx", "size": "6.2 MB", "url": "#" },
-      { "name": "Form Khai báo Xung đột Lợi ích.pdf", "type": "pdf",  "size": "180 KB", "url": "#" }
+      {
+        "name": "Code of Conduct 2026.pdf",
+        "type": "pdf",
+        "size": "1.3 MB",
+        "url": "#"
+      },
+      {
+        "name": "Slide Ethics Training.pptx",
+        "type": "pptx",
+        "size": "6.2 MB",
+        "url": "#"
+      },
+      {
+        "name": "Form Khai báo Xung đột Lợi ích.pdf",
+        "type": "pdf",
+        "size": "180 KB",
+        "url": "#"
+      }
     ],
     "quiz": [
       {
         "question": "Form khai báo xung đột lợi ích có mã số là gì?",
-        "options": ["EF-001", "PE-001", "SF-001", "COI-001"],
+        "options": [
+          "EF-001",
+          "PE-001",
+          "SF-001",
+          "COI-001"
+        ],
         "correct": 3,
         "explanation": "Form khai báo xung đột lợi ích có mã COI-001 (Conflict of Interest). Khi phát hiện xung đột lợi ích thực tế hoặc tiềm ẩn, phải điền form COI-001 nộp cho HR ngay và rút lui khỏi quá trình ra quyết định liên quan."
       },
@@ -449,10 +676,20 @@
       },
       {
         "question": "MoMo xây dựng văn hóa làm việc trên nền tảng bao nhiêu giá trị cốt lõi?",
-        "options": ["3 giá trị", "4 giá trị", "5 giá trị", "6 giá trị"],
+        "options": [
+          "3 giá trị",
+          "4 giá trị",
+          "5 giá trị",
+          "6 giá trị"
+        ],
         "correct": 2,
         "explanation": "MoMo có 5 giá trị cốt lõi: Khách hàng là trung tâm, Chính trực, Đổi mới sáng tạo, Hợp tác và Trách nhiệm. Đây không phải khẩu hiệu mà là tiêu chuẩn thực tế trong mỗi quyết định và hành vi hàng ngày của mọi nhân viên."
       }
-    ]
+    ],
+    "prerequisites": [
+      "M002"
+    ],
+    "hotspotImage": "",
+    "hotspots": []
   }
 ]

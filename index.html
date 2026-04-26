@@ -30,6 +30,7 @@
       <ul class="nav-links" id="nav-links">
         <li><a class="nav-link active" href="javascript:void(0)" data-scroll="hero">Trang chủ</a></li>
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="courses">Modules</a></li>
+        <li><a class="nav-link" href="javascript:void(0)" onclick="showPage('map')"><i class="fa-solid fa-diagram-project" style="margin-right:5px"></i>Lộ trình</a></li>
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
       </ul>
       <div class="nav-actions" id="nav-actions">
@@ -141,6 +142,9 @@
           <p>Không tìm thấy module nào.</p>
         </div>
 
+        <!-- AI RECOMMENDATION BANNER -->
+        <div id="ai-recommend-banner" class="ai-recommend-banner" style="display:none" role="region" aria-label="Gợi ý module tiếp theo"></div>
+
         <div class="modules-grid" id="modules-grid" role="region" aria-live="polite" aria-label="Danh sách module"></div>
       </div>
 
@@ -200,6 +204,10 @@
           <section class="detail-section">
             <div class="section-title"><i class="fa-solid fa-list-check"></i> Nội dung & Quy trình</div>
             <div class="process-steps" id="detail-steps"></div>
+          </section>
+          <section class="detail-section" id="section-hotspot" style="display:none">
+            <div class="section-title"><i class="fa-solid fa-map-pin"></i> Sơ đồ tương tác</div>
+            <div class="hotspot-wrap" id="hotspot-wrap"></div>
           </section>
           <section class="detail-section" id="section-images">
             <div class="section-title"><i class="fa-solid fa-layer-group"></i> Bài viết liên quan</div>
@@ -322,6 +330,40 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- PAGE: KNOWLEDGE MAP -->
+  <div id="page-map" style="display:none">
+    <div class="container">
+      <div class="breadcrumb">
+        <button class="btn btn-ghost btn-sm" onclick="showPage('list')">
+          <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </button>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Lộ trình học tập</span>
+      </div>
+      <div class="map-header">
+        <h2>Lộ trình <span class="sig">học tập</span></h2>
+        <p class="map-subtitle">Khám phá mối liên hệ giữa các module và lộ trình học tối ưu của bạn.</p>
+        <div class="map-legend">
+          <span class="legend-item legend-done"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</span>
+          <span class="legend-item legend-available"><i class="fa-solid fa-circle-play"></i> Sẵn sàng học</span>
+          <span class="legend-item legend-locked"><i class="fa-solid fa-lock"></i> Chưa mở khóa</span>
+        </div>
+      </div>
+      <div class="map-canvas-wrap">
+        <svg id="map-svg" class="map-svg" aria-hidden="true"></svg>
+        <div id="map-nodes" class="map-nodes"></div>
+      </div>
+    </div>
+    <footer class="lms-footer">
+      <div class="container">
+        <div class="footer-brand">
+          <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo" style="height:24px;">
+        </div>
+        <p>&copy; 2026 Mentora LMS — Compliance Training Portal</p>
+      </div>
+    </footer>
   </div>
 
   <div class="toast-wrap" id="toast-wrap" role="status" aria-live="polite" aria-atomic="true"></div>
