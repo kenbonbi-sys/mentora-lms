@@ -168,6 +168,71 @@ var _answeredKeys   = new Set(); // dedup quiz_answers inserts: "moduleId-qi" pe
 // Category icon map — for badge accessibility (color + icon, not color alone)
 var CAT_ICONS = { Policy: 'fa-file-shield', Process: 'fa-diagram-project', Safety: 'fa-triangle-exclamation' };
 
+function esc(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[ch];
+  });
+}
+
+function escAttr(value) {
+  return esc(value);
+}
+
+function safeUrl(value, fallback, opts) {
+  fallback = fallback || '';
+  opts = opts || {};
+  var raw = String(value == null ? '' : value).trim();
+  if (!raw) return fallback;
+  if (raw === '#') return opts.allowHash ? '#' : fallback;
+
+  try {
+    var parsed = new URL(raw, window.location.origin);
+    var isLocal = parsed.origin === window.location.origin;
+    var localOk = (opts.localPrefixes || []).some(function (prefix) {
+      return parsed.pathname.indexOf(prefix) === 0;
+    }) || (opts.localFiles || []).indexOf(parsed.pathname) >= 0;
+
+    if (isLocal && localOk) return parsed.pathname + parsed.search + parsed.hash;
+    if (opts.allowHttps && parsed.protocol === 'https:') return parsed.href;
+  } catch (err) {}
+
+  return fallback;
+}
+
+function safeImageUrl(value, fallback) {
+  return safeUrl(value, fallback || '', {
+    allowHttps: true,
+    localPrefixes: ['/assets/'],
+    localFiles: ['/hero-bg.png', '/hero.png']
+  });
+}
+
+function safeResourceUrl(value) {
+  return safeUrl(value, '#', {
+    allowHash: true,
+    allowHttps: true,
+    localPrefixes: ['/assets/', '/fonts/', '/data/'],
+    localFiles: ['/hero-bg.png', '/hero.png']
+  });
+}
+
+function safeVideoUrl(value) {
+  var raw = String(value == null ? '' : value).trim();
+  if (!raw) return '';
+  try {
+    var parsed = new URL(raw);
+    var allowedHost = parsed.hostname === 'www.youtube.com' || parsed.hostname === 'www.youtube-nocookie.com';
+    if (parsed.protocol === 'https:' && allowedHost && parsed.pathname.indexOf('/embed/') === 0) {
+      return parsed.href;
+    }
+  } catch (err) {}
+  return '';
+}
+
+function safeResourceType(value) {
+  return ({ pdf:true, pptx:true, doc:true, video:true })[value] ? value : 'doc';
+}
+
 // ════════════════════════════════════════
 //  SUPABASE CONFIG
 //  Điền URL và anon key sau khi tạo project
@@ -854,44 +919,49 @@ function renderModules(list) {
     var avatarBg = avatarColors[dept] || '#1c66bb';
     var initials = (m.owner || '??').split(' ').map(function (w) { return w[0]; }).slice(-2).join('').toUpperCase();
     var catCls   = catClass[m.category] || 'badge-cat';
+    var catText  = esc(m.category || '');
+    var duration = esc(m.duration || '');
+    var iconHtml = CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '';
 
     var iconFile = m.icon || iconById[m.id] || iconByCat[m.category];
     var thumbHtml;
     if (iconFile) {
-      var iconSrc = iconFile.startsWith('/') ? iconFile : '/assets/icons/' + iconFile;
+      var iconRaw = String(iconFile || '');
+      var iconSrc = safeImageUrl(iconRaw.indexOf('/') === 0 ? iconRaw : '/assets/icons/' + iconRaw, '/assets/icons/education.png');
       var bg = catGradient[m.category] || 'linear-gradient(135deg,#ffeff4 0%,#fec8dc 100%)';
       thumbHtml = '<div class="card-thumb card-thumb--icon" style="background:' + bg + '">'
-        + '<img src="' + iconSrc + '" alt="" loading="lazy">'
+        + '<img src="' + escAttr(iconSrc) + '" alt="" loading="lazy">'
         + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">'
-        + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
-        + m.category + '</span></div>'
-        + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + m.duration + '</div>'
+        + iconHtml
+        + catText + '</span></div>'
+        + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + duration + '</div>'
         + '</div>';
     } else {
+      var thumbSrc = safeImageUrl(m.thumbnail || '', '');
       thumbHtml = '<div class="card-thumb">'
-        + '<img src="' + (m.thumbnail || '') + '" alt="' + m.name + '" loading="lazy" onerror="this.src=\'https://loremflickr.com/480/280/office\'">'
+        + '<img src="' + escAttr(thumbSrc) + '" alt="' + escAttr(m.name || '') + '" loading="lazy" onerror="this.src=\'https://loremflickr.com/480/280/office\'">'
         + '<div class="card-thumb-overlay"></div>'
         + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">'
-        + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
-        + m.category + '</span></div>'
-        + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + m.duration + '</div>'
+        + iconHtml
+        + catText + '</span></div>'
+        + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + duration + '</div>'
         + '</div>';
     }
 
     var doneBadge = isDone(m.id) ? '<div class="card-done-badge"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</div>' : '';
-    return '<div class="module-card" data-id="' + m.id + '">'
+    return '<div class="module-card" data-id="' + escAttr(m.id || '') + '">'
       + thumbHtml
       + doneBadge
       + '<div class="card-body">'
-      + '<div class="card-title">' + m.name + '</div>'
-      + '<div class="card-desc">' + (m.subtitle || '') + '</div>'
+      + '<div class="card-title">' + esc(m.name || '') + '</div>'
+      + '<div class="card-desc">' + esc(m.subtitle || '') + '</div>'
       + '</div>'
       + '<div class="card-footer">'
       + '<div class="card-owner">'
-      + '<div class="avatar" style="background:' + avatarBg + '">' + initials + '</div>'
-      + '<span>' + m.owner + '</span>'
+      + '<div class="avatar" style="background:' + avatarBg + '">' + esc(initials) + '</div>'
+      + '<span>' + esc(m.owner || '') + '</span>'
       + '</div>'
-      + '<div class="card-updated"><i class="fa-solid fa-calendar-days" style="margin-right:4px;opacity:.5"></i>' + m.updated + '</div>'
+      + '<div class="card-updated"><i class="fa-solid fa-calendar-days" style="margin-right:4px;opacity:.5"></i>' + esc(m.updated || '') + '</div>'
       + '</div>'
       + '</div>';
   }).join('');
@@ -930,26 +1000,26 @@ function openDetail(id) {
   document.getElementById('detail-owner').textContent    = m.owner;
   document.getElementById('detail-updated').textContent  = m.updated;
   document.getElementById('detail-duration').textContent = m.duration;
-  document.getElementById('detail-thumb').src            = m.thumbnail || '';
+  document.getElementById('detail-thumb').src            = safeImageUrl(m.thumbnail || '', '');
 
   var catClass = { Policy:'badge-policy', Process:'badge-process', Safety:'badge-safety' };
   var lvlClass = { 'Bắt buộc':'badge-level-adv', 'Theo phòng ban':'badge-level-mid', 'Tự nguyện':'badge-level-basic' };
   var stClass  = { 'Đang hoạt động':'badge-open', 'Sắp ra mắt':'badge-soon' };
   document.getElementById('detail-badges').innerHTML =
-    '<span class="badge ' + (lvlClass[m.level] || 'badge-level-basic') + '">' + (m.level || '') + '</span> '
+    '<span class="badge ' + (lvlClass[m.level] || 'badge-level-basic') + '">' + esc(m.level || '') + '</span> '
     + '<span class="badge ' + (catClass[m.category] || 'badge-cat') + '">'
     + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
-    + m.category + '</span> '
-    + '<span class="badge ' + (stClass[m.status] || 'badge-open') + '">' + m.status + '</span>';
+    + esc(m.category || '') + '</span> '
+    + '<span class="badge ' + (stClass[m.status] || 'badge-open') + '">' + esc(m.status || '') + '</span>';
 
   // Steps
   var stepsHtml = (m.steps || []).map(function (s, i) {
     return '<div class="process-step">'
       + '<div class="step-number">' + (i + 1) + '</div>'
       + '<div class="step-body">'
-      + '<div class="step-title">' + s.title + '</div>'
-      + '<div class="step-desc">' + s.desc + '</div>'
-      + (s.note ? '<div class="step-note"><i class="fa-solid fa-circle-info"></i> ' + s.note + '</div>' : '')
+      + '<div class="step-title">' + esc(s.title || '') + '</div>'
+      + '<div class="step-desc">' + esc(s.desc || '') + '</div>'
+      + (s.note ? '<div class="step-note"><i class="fa-solid fa-circle-info"></i> ' + esc(s.note) + '</div>' : '')
       + '</div></div>';
   }).join('');
   document.getElementById('detail-steps').innerHTML = stepsHtml || '<p style="color:var(--text-tertiary);font-size:13px">Chưa có nội dung.</p>';
@@ -964,19 +1034,19 @@ function openDetail(id) {
       Safety:  'linear-gradient(135deg,#fff9d9 0%,#ffeb76 100%)'
     };
     document.getElementById('detail-gallery').innerHTML = relatedModules.map(function (rel) {
-      var icon = rel.icon || '/assets/icons/education.png';
+      var icon = safeImageUrl(rel.icon || '/assets/icons/education.png', '/assets/icons/education.png');
       var bg   = catGradientMap[rel.category] || 'linear-gradient(135deg,#ffeff4 0%,#fec8dc 100%)';
       var catClass = { Policy:'badge-policy', Process:'badge-process', Safety:'badge-safety' };
-      return '<div class="gallery-item gallery-item--module" onclick="openDetail(\'' + rel.id + '\')" style="cursor:pointer">'
+      return '<div class="gallery-item gallery-item--module" data-id="' + escAttr(rel.id || '') + '" onclick="openDetail(this.dataset.id)" style="cursor:pointer">'
         + '<div class="gallery-module-thumb" style="background:' + bg + '">'
-        + '<img src="' + icon + '" alt="" loading="lazy">'
+        + '<img src="' + escAttr(icon) + '" alt="" loading="lazy">'
         + '</div>'
         + '<div class="gallery-module-info">'
         + '<span class="badge ' + (catClass[rel.category] || 'badge-cat') + '" style="font-size:10px;padding:2px 8px">'
         + (CAT_ICONS[rel.category] ? '<i class="fa-solid ' + CAT_ICONS[rel.category] + '" aria-hidden="true"></i> ' : '')
-        + rel.category + '</span>'
-        + '<div class="gallery-caption">' + rel.name + '</div>'
-        + '<div style="font-size:11px;color:var(--text-tertiary);margin-top:2px"><i class="fa-solid fa-clock" style="margin-right:4px"></i>' + rel.duration + '</div>'
+        + esc(rel.category || '') + '</span>'
+        + '<div class="gallery-caption">' + esc(rel.name || '') + '</div>'
+        + '<div style="font-size:11px;color:var(--text-tertiary);margin-top:2px"><i class="fa-solid fa-clock" style="margin-right:4px"></i>' + esc(rel.duration || '') + '</div>'
         + '</div>'
         + '</div>';
     }).join('');
@@ -988,8 +1058,9 @@ function openDetail(id) {
   // Video
   var videoEl      = document.getElementById('detail-video');
   var sectionVideo = document.getElementById('section-video');
-  if (m.videoUrl) {
-    videoEl.innerHTML = '<iframe src="' + m.videoUrl + '" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>';
+  var safeVideo = safeVideoUrl(m.videoUrl);
+  if (safeVideo) {
+    videoEl.innerHTML = '<iframe src="' + escAttr(safeVideo) + '" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>';
   } else {
     videoEl.innerHTML = '<div class="video-placeholder"><i class="fa-solid fa-circle-play"></i><p>Video chưa được cập nhật.</p></div>';
   }
@@ -998,13 +1069,16 @@ function openDetail(id) {
   // Resources
   var iconMap = { pdf:'fa-file-pdf', pptx:'fa-file-powerpoint', doc:'fa-file-excel', video:'fa-video' };
   var resHtml = (m.resources || []).map(function (r) {
+    var type = safeResourceType(r.type);
+    var href = safeResourceUrl(r.url);
+    r = Object.assign({}, r, { url: escAttr(href) });
     return '<div class="resource-item">'
-      + '<div class="resource-icon ' + r.type + '"><i class="fa-solid ' + (iconMap[r.type] || 'fa-file') + '"></i></div>'
+      + '<div class="resource-icon ' + type + '"><i class="fa-solid ' + (iconMap[type] || 'fa-file') + '"></i></div>'
       + '<div class="resource-meta">'
-      + '<div class="resource-name">' + r.name + '</div>'
-      + '<div class="resource-size">' + r.size + '</div>'
+      + '<div class="resource-name">' + esc(r.name || '') + '</div>'
+      + '<div class="resource-size">' + esc(r.size || '') + '</div>'
       + '</div>'
-      + '<a href="' + (r.url || '#') + '" class="resource-dl" title="Tải xuống" target="_blank"><i class="fa-solid fa-download"></i></a>'
+      + '<a href="' + r.url + '" class="resource-dl" title="Tải xuống" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i></a>'
       + '</div>';
   }).join('');
   document.getElementById('detail-resources').innerHTML = resHtml || '<p style="color:var(--text-tertiary);font-size:13px">Chưa có tài liệu.</p>';
@@ -1020,13 +1094,14 @@ function openDetail(id) {
 
   var trackerEl = document.getElementById('step-tracker');
   trackerEl.innerHTML = (m.steps || []).map(function (s, i) {
+    var stepTitle = esc(s.title || '');
     return '<div class="step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '"'
       + ' role="listitem" tabindex="0"'
-      + ' aria-label="Bước ' + (i + 1) + ': ' + s.title + '"'
+      + ' aria-label="Bước ' + (i + 1) + ': ' + stepTitle + '"'
       + ' onclick="scrollToStep(' + i + ')"'
       + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){scrollToStep(' + i + ');event.preventDefault();}">'
       + '<div class="step-dot"></div>'
-      + '<div class="step-dot-label">' + s.title + '</div>'
+      + '<div class="step-dot-label">' + stepTitle + '</div>'
       + '</div>';
   }).join('');
 
@@ -1040,12 +1115,12 @@ function openDetail(id) {
 //  TOAST
 // ════════════════════════════════════════
 function showToast(message, type) {
-  type = type || 'info';
+  type = ({ success:true, error:true, info:true })[type] ? type : 'info';
   var icons = { success:'fa-circle-check', error:'fa-circle-xmark', info:'fa-circle-info' };
   var wrap  = document.getElementById('toast-wrap');
   var toast = document.createElement('div');
   toast.className = 'toast ' + type;
-  toast.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i><span>' + message + '</span>';
+  toast.innerHTML = '<i class="fa-solid ' + icons[type] + '"></i><span>' + esc(message) + '</span>';
   wrap.appendChild(toast);
   requestAnimationFrame(function () { requestAnimationFrame(function () { toast.classList.add('show'); }); });
   setTimeout(function () {
@@ -1089,20 +1164,23 @@ function renderQuiz(questions) {
     + '</div>';
 
   html += questions.map(function (q, qi) {
-    var optHtml = q.options.map(function (opt, oi) {
-      return '<button class="quiz-option" data-qi="' + qi + '" data-oi="' + oi + '" data-correct="' + q.correct + '" onclick="handleQuizOption(this,' + qi + ',' + oi + ',' + q.correct + ')">'
+    var options = Array.isArray(q.options) ? q.options : [];
+    var correctIndex = parseInt(q.correct, 10);
+    var correct = Number.isFinite(correctIndex) && correctIndex >= 0 && correctIndex < options.length ? correctIndex : 0;
+    var optHtml = options.map(function (opt, oi) {
+      return '<button class="quiz-option" data-qi="' + qi + '" data-oi="' + oi + '" data-correct="' + correct + '" onclick="handleQuizOption(this,' + qi + ',' + oi + ',' + correct + ')">'
         + '<span class="quiz-option-label">' + String.fromCharCode(65 + oi) + '</span>'
-        + '<span class="quiz-option-text">' + opt + '</span>'
+        + '<span class="quiz-option-text">' + esc(opt || '') + '</span>'
         + '</button>';
     }).join('');
 
     return '<div class="quiz-card" id="quiz-card-' + qi + '">'
       + '<div class="quiz-q-num">Câu ' + (qi + 1) + '/' + questions.length + '</div>'
-      + '<div class="quiz-question">' + q.question + '</div>'
+      + '<div class="quiz-question">' + esc(q.question || '') + '</div>'
       + '<div class="quiz-options" id="quiz-opts-' + qi + '">' + optHtml + '</div>'
       + '<div class="quiz-explanation" id="quiz-exp-' + qi + '" style="display:none">'
       + '<i class="fa-solid fa-circle-info"></i>'
-      + '<span>' + q.explanation + '</span>'
+      + '<span>' + esc(q.explanation || '') + '</span>'
       + '</div>'
       + '</div>';
   }).join('');

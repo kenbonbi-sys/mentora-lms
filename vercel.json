@@ -1,6 +1,7 @@
 {
   "version": 2,
   "routes": [
+    { "src": "/api/modules", "dest": "/api/modules.js" },
     { "src": "/(.*\\.(css|js|json|png|jpg|jpeg|svg|ico|woff|woff2|ttf|otf|sql))", "dest": "/$1" },
     { "src": "/admin",           "dest": "/admin/index.html" },
     { "src": "/admin/",          "dest": "/admin/index.html" },

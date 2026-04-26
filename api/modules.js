@@ -1,5 +1,3 @@
-const { google } = require('googleapis');
-
 /**
  * Vercel Serverless Function — GET /api/modules
  * Đọc danh sách modules từ Google Sheets và trả về JSON.
@@ -8,7 +6,7 @@ const { google } = require('googleapis');
  *   GOOGLE_SHEET_ID            — ID của Google Sheet
  *   GOOGLE_SERVICE_ACCOUNT_KEY — Nội dung file JSON service account (toàn bộ, stringify)
  */
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS headers (nếu cần gọi từ domain khác)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -21,6 +19,14 @@ export default async function handler(req, res) {
   if (!process.env.GOOGLE_SHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_KEY) {
     console.error('Missing env vars: GOOGLE_SHEET_ID or GOOGLE_SERVICE_ACCOUNT_KEY');
     return res.status(500).json({ error: 'Server misconfigured — missing env vars' });
+  }
+
+  let google;
+  try {
+    ({ google } = require('googleapis'));
+  } catch (err) {
+    console.error('Missing dependency googleapis:', err.message);
+    return res.status(500).json({ error: 'Server misconfigured - googleapis dependency is not installed' });
   }
 
   try {
@@ -66,4 +72,4 @@ export default async function handler(req, res) {
     console.error('Sheets API error:', err.message);
     return res.status(500).json({ error: 'Failed to fetch from Google Sheets', detail: err.message });
   }
-}
+};
