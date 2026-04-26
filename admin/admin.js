@@ -481,11 +481,22 @@ async function loadCmsModules() {
   const tbody = document.getElementById('modules-cms-body');
   tbody.innerHTML = '<tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
   try {
-    const { data: cmsRows, error } = await sb.from('modules_cms')
+    let cmsRows, queryErr;
+    // Try full query with sort_order + status first; fall back if columns missing
+    ({ data: cmsRows, error: queryErr } = await sb.from('modules_cms')
       .select('id,data,updated_at,status,sort_order')
       .order('sort_order', { ascending: true })
-      .order('updated_at',  { ascending: false });
-    if (error) throw error;
+      .order('updated_at',  { ascending: false }));
+    if (queryErr) {
+      // If the error is about missing columns, fall back to a minimal query
+      if (queryErr.message && (queryErr.message.includes('sort_order') || queryErr.message.includes('status'))) {
+        const fallback = await sb.from('modules_cms').select('id,data,updated_at').order('updated_at', { ascending: false });
+        if (fallback.error) throw fallback.error;
+        cmsRows = (fallback.data || []).map(r => ({ ...r, status: 'published', sort_order: 0 }));
+      } else {
+        throw queryErr;
+      }
+    }
 
     const localIds = new Set(localModules.map(m => m.id));
     const combined = [];
@@ -555,8 +566,9 @@ function previewModule(id) {
 
 async function moveModule(id, dir) {
   // Fetch current sort_order
-  const { data } = await sb.from('modules_cms').select('id, sort_order').order('sort_order', { ascending: true });
-  if (!data) return;
+  const { data, error } = await sb.from('modules_cms').select('id, sort_order').order('sort_order', { ascending: true });
+  if (error) { showToast('Cần chạy SQL migration để thêm cột sort_order', 'error'); return; }
+  if (!data || data.length < 2) return;
   const idx = data.findIndex(r => r.id === id);
   if (idx < 0) return;
   const swapIdx = idx + dir;
@@ -581,7 +593,14 @@ async function loadAnnouncements() {
   el.innerHTML = '<div class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
   try {
     const { data, error } = await sb.from('announcements').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
+    if (error) {
+      if (error.message && (error.message.includes('relation') || error.message.includes('does not exist'))) {
+        el.innerHTML = '<div class="empty-cell">⚠️ Chưa tạo bảng <code>announcements</code>. Vui lòng chạy SQL migration trong Supabase.</div>';
+      } else {
+        throw error;
+      }
+      return;
+    }
     if (!data || !data.length) { el.innerHTML = '<div class="empty-cell">Chưa có thông báo nào.</div>'; return; }
     const typeIcon = { info: '🔵', warning: '🟡', success: '🟢', danger: '🔴' };
     el.innerHTML = data.map(a => `
@@ -633,7 +652,14 @@ async function loadQuestionAnalysis() {
   tbody.innerHTML = '<tr><td colspan="5" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
   try {
     const { data, error } = await sb.from('quiz_answers').select('module_id, question_index, question_text, is_correct');
-    if (error) throw error;
+    if (error) {
+      if (error.message && (error.message.includes('relation') || error.message.includes('does not exist'))) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">⚠️ Chưa tạo bảng <code>quiz_answers</code>. Vui lòng chạy SQL migration trong Supabase.</td></tr>';
+      } else {
+        throw error;
+      }
+      return;
+    }
     if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">Chưa có dữ liệu. Người dùng cần làm quiz trước.</td></tr>'; return; }
 
     // Group by module_id + question_index

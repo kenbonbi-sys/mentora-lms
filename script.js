@@ -244,14 +244,16 @@ function dismissAnnouncement() {
 //  READING PROGRESS BAR
 // ════════════════════════════════════════
 function updateReadingProgress() {
+  var bar = document.getElementById('reading-progress-bar');
+  if (!bar) return;
   var pageDetail = document.getElementById('page-detail');
   if (!pageDetail || pageDetail.style.display === 'none') {
-    document.getElementById('reading-progress-bar').style.width = '0%';
+    bar.style.width = '0%';
     return;
   }
   var total = document.documentElement.scrollHeight - window.innerHeight;
   var pct   = total > 0 ? Math.min(100, Math.round((window.scrollY / total) * 100)) : 0;
-  document.getElementById('reading-progress-bar').style.width = pct + '%';
+  bar.style.width = pct + '%';
 }
 
 // ════════════════════════════════════════
@@ -448,14 +450,21 @@ document.addEventListener('DOMContentLoaded', function () {
   setTimeout(function () {
     var params = new URLSearchParams(window.location.search);
     var mid    = params.get('module');
-    if (mid) {
-      var tryOpen = function (attempts) {
-        var m = allModules.find(function (x) { return x.id === mid; });
-        if (m) { openDetail(mid); }
-        else if (attempts > 0) { setTimeout(function () { tryOpen(attempts - 1); }, 300); }
-      };
-      tryOpen(10);
-    }
+    if (!mid) return;
+    var tryOpen = function (attempts) {
+      var m = allModules.find(function (x) { return x.id === mid; });
+      if (m) {
+        openDetail(mid);
+      } else if (attempts > 0) {
+        setTimeout(function () { tryOpen(attempts - 1); }, 300);
+      } else {
+        // Module not found after all retries — show helpful message
+        showToast('Không tìm thấy module "' + mid + '". Link có thể đã hết hạn.', 'error');
+        // Clean URL so user isn't confused on refresh
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    };
+    tryOpen(10);
   }, 200);
 });
 
@@ -532,6 +541,7 @@ function showPage(page) {
     pageDetail.style.display = 'none';
     pageList.style.display   = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateReadingProgress(); // reset bar to 0
   } else {
     pageList.style.display   = 'none';
     pageDetail.style.display = '';
@@ -653,6 +663,10 @@ function updateCount(n) {
 function openDetail(id) {
   var m = allModules.find(function (x) { return x.id === id; });
   if (!m) return;
+
+  // Flush pending notes for previous module before switching
+  if (_notesTimer) { clearTimeout(_notesTimer); _notesTimer = null; saveNotes(); }
+
   currentModuleId = id;
   trackPageView(m.id, m.name);
 
