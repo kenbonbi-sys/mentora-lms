@@ -363,6 +363,31 @@ body {
 .source-legend-item:last-child { border-bottom: none; }
 .source-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
+/* ── Module status badges ───────────────────────── */
+.mod-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-published { background: #dcfce7; color: #166534; }
+.status-draft     { background: #fef9c3; color: #854d0e; }
+.status-hidden    { background: #f3f4f6; color: #6b7280; }
+
+.row-draft td { opacity: .75; }
+.draft-inline {
+  display: inline-block; font-size: 9px; font-weight: 800;
+  background: #fef9c3; color: #854d0e; padding: 1px 5px;
+  border-radius: 4px; margin-left: 6px; vertical-align: middle;
+  letter-spacing: .5px;
+}
+.btn-publish {
+  background: #a50064; color: #fff; border: none;
+  padding: 4px 10px; border-radius: 6px; font-size: 11px;
+  font-weight: 700; cursor: pointer; display: inline-flex;
+  align-items: center; gap: 4px; transition: opacity .15s;
+}
+.btn-publish:hover { opacity: .85; }
+
 /* ── Announcements ─────────────────────────────── */
 .ann-item {
   display: flex; align-items: flex-start; gap: 12px;

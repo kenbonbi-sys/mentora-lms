@@ -193,9 +193,9 @@
                 <th>Tên Module</th>
                 <th>Danh mục</th>
                 <th>Cập nhật</th>
-                <th>Nguồn</th>
                 <th>Trạng thái</th>
-                <th style="width:80px"></th>
+                <th>Thao tác nhanh</th>
+                <th style="width:120px"></th>
               </tr>
             </thead>
             <tbody id="modules-cms-body">
@@ -326,6 +326,14 @@
           <div class="form-group">
             <label>Ngày cập nhật</label>
             <input type="text" id="mod-updated" placeholder="25/04/2026">
+          </div>
+          <div class="form-group">
+            <label>Trạng thái</label>
+            <select id="mod-status">
+              <option value="draft">📝 Draft — chưa đăng</option>
+              <option value="published">✅ Published — hiện trên site</option>
+              <option value="hidden">🔒 Hidden — tạm ẩn</option>
+            </select>
           </div>
           <div class="form-group form-full">
             <label>Mô tả ngắn</label>

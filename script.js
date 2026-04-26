@@ -471,13 +471,17 @@ function loadModules() {
     .catch(function () { return []; });
 
   var fetchCms = _sbReady()
-    ? fetch(SB_URL + '/rest/v1/modules_cms?select=id,data,active&order=created_at.asc', {
+    ? fetch(SB_URL + '/rest/v1/modules_cms?select=id,data,status,sort_order&order=sort_order.asc,created_at.asc', {
         headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
       })
       .then(function (r) { return r.ok ? r.json() : []; })
       .then(function (rows) {
         return rows
-          .filter(function (r) { return r.active !== false; }) // hide inactive modules
+          .filter(function (r) {
+            // Only show published modules; fall back to active check for legacy rows
+            if (r.status) return r.status === 'published';
+            return r.active !== false;
+          })
           .map(function (r) { return JSON.parse(r.data || '{}'); });
       })
       .catch(function () { return []; })

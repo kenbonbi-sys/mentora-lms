@@ -457,44 +457,88 @@ function formatTime(iso) {
 // ══════════════════════════════════════════════════════════
 //  MODULES CMS
 // ══════════════════════════════════════════════════════════
+const STATUS_CFG = {
+  published: { label: 'Đã đăng',  cls: 'status-published', icon: 'fa-circle-check' },
+  draft:     { label: 'Draft',     cls: 'status-draft',     icon: 'fa-pen-ruler'    },
+  hidden:    { label: 'Ẩn',        cls: 'status-hidden',    icon: 'fa-eye-slash'    },
+};
+
+function statusBadge(s) {
+  const c = STATUS_CFG[s] || STATUS_CFG.draft;
+  return `<span class="mod-status ${c.cls}"><i class="fa-solid ${c.icon}"></i> ${c.label}</span>`;
+}
+
+function statusActions(id, s, hasCms) {
+  if (!hasCms) return '<span style="font-size:11px;color:#9ca3af">—</span>';
+  const btns = [];
+  if (s !== 'published') btns.push(`<button class="btn-sm btn-publish" onclick="setModuleStatus('${id}','published')" title="Publish"><i class="fa-solid fa-rocket"></i> Đăng</button>`);
+  if (s !== 'draft')     btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','draft')" title="Về Draft"><i class="fa-solid fa-pen-ruler"></i></button>`);
+  if (s !== 'hidden')    btns.push(`<button class="btn-sm" onclick="setModuleStatus('${id}','hidden')" title="Ẩn"><i class="fa-solid fa-eye-slash"></i></button>`);
+  return btns.join('');
+}
+
 async function loadCmsModules() {
   const tbody = document.getElementById('modules-cms-body');
-  tbody.innerHTML = '<tr><td colspan="6" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
   try {
-    const { data: cmsRows, error } = await sb.from('modules_cms').select('id,data,updated_at,active').order('updated_at', { ascending: false });
+    const { data: cmsRows, error } = await sb.from('modules_cms')
+      .select('id,data,updated_at,status,sort_order')
+      .order('sort_order', { ascending: true })
+      .order('updated_at',  { ascending: false });
     if (error) throw error;
+
     const localIds = new Set(localModules.map(m => m.id));
     const combined = [];
     localModules.forEach(m => {
       const cms = (cmsRows || []).find(r => r.id === m.id);
-      combined.push({ id: m.id, name: m.name, category: m.category, updated: m.updated, source: cms ? 'CMS + JSON' : 'JSON', updated_at: cms?.updated_at, active: cms ? (cms.active !== false) : true, hasCms: !!cms });
+      combined.push({
+        id: m.id, name: m.name, category: m.category, updated: m.updated,
+        source: cms ? 'CMS + JSON' : 'JSON',
+        status: cms ? (cms.status || 'published') : 'published',
+        hasCms: !!cms,
+      });
     });
     (cmsRows || []).filter(r => !localIds.has(r.id)).forEach(r => {
       const d = typeof r.data === 'string' ? JSON.parse(r.data) : r.data;
-      combined.push({ id: r.id, name: d.name || r.id, category: d.category, updated: d.updated || '—', source: 'CMS', updated_at: r.updated_at, active: r.active !== false, hasCms: true });
+      combined.push({
+        id: r.id, name: d.name || r.id, category: d.category,
+        updated: d.updated || '—', source: 'CMS',
+        status: r.status || 'published', hasCms: true,
+      });
     });
+
     document.getElementById('cms-module-count').textContent = '(' + combined.length + ' modules)';
     if (!combined.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có module nào.</td></tr>'; return; }
+
     const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
-    tbody.innerHTML = combined.map(m => `<tr>
+    tbody.innerHTML = combined.map(m => `<tr class="${m.status === 'draft' ? 'row-draft' : ''}">
       <td><code style="font-size:12px;background:#f5f6fa;padding:2px 6px;border-radius:4px">${esc(m.id)}</code></td>
-      <td style="font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.name)}</td>
+      <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        ${esc(m.name)}
+        ${m.status === 'draft' ? '<span class="draft-inline">DRAFT</span>' : ''}
+      </td>
       <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + m.category + '</span>' : '—'}</td>
       <td style="color:#9ca3af;font-size:12px">${m.updated || '—'}</td>
-      <td><span style="font-size:11px;color:#9ca3af">${m.source}</span></td>
-      <td>${m.hasCms ? `<button class="active-toggle ${m.active ? 'on' : 'off'}" onclick="toggleActive('${m.id}',${m.active})" title="${m.active ? 'Đang hiện — click để ẩn' : 'Đang ẩn — click để hiện'}">
-        <span class="toggle-knob"></span><span class="toggle-label">${m.active ? 'Hiện' : 'Ẩn'}</span>
-      </button>` : '<span style="font-size:11px;color:#9ca3af">—</span>'}</td>
+      <td>${statusBadge(m.status)}</td>
+      <td>${statusActions(m.id, m.status, m.hasCms)}</td>
       <td style="white-space:nowrap;display:flex;gap:5px;align-items:center">
         <button class="btn-sm" title="Xem trước" onclick="previewModule('${m.id}')"><i class="fa-solid fa-eye"></i></button>
         <button class="btn-sm" title="Chỉnh sửa" onclick="openEditModule('${m.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-        ${m.hasCms ? '<button class="btn-sm btn-up" title="Lên" onclick="moveModule(\'' + m.id + '\',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-sm btn-up" title="Xuống" onclick="moveModule(\'' + m.id + '\',1)"><i class="fa-solid fa-chevron-down"></i></button>' : ''}
+        ${m.hasCms ? '<button class="btn-sm" title="Lên" onclick="moveModule(\'' + m.id + '\',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-sm" title="Xuống" onclick="moveModule(\'' + m.id + '\',1)"><i class="fa-solid fa-chevron-down"></i></button>' : ''}
         ${m.source === 'CMS' ? '<button class="btn-danger" title="Xóa" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
       </td>
     </tr>`).join('');
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
   }
+}
+
+async function setModuleStatus(id, status) {
+  const labels = { published: 'Đã publish module!', draft: 'Đã chuyển về Draft', hidden: 'Đã ẩn module' };
+  const { error } = await sb.from('modules_cms').update({ status }).eq('id', id);
+  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
+  showToast(labels[status] || 'Đã cập nhật', 'success');
+  loadCmsModules();
 }
 
 async function deleteModule(id, name) {
@@ -502,14 +546,6 @@ async function deleteModule(id, name) {
   const { error } = await sb.from('modules_cms').delete().eq('id', id);
   if (error) { showToast('Lỗi xóa: ' + error.message, 'error'); return; }
   showToast('Đã xóa module "' + name + '"', 'success');
-  loadCmsModules();
-}
-
-async function toggleActive(id, currentActive) {
-  const newVal = !currentActive;
-  const { error } = await sb.from('modules_cms').update({ active: newVal }).eq('id', id);
-  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
-  showToast(newVal ? 'Module đã được bật hiển thị' : 'Module đã bị ẩn', 'success');
   loadCmsModules();
 }
 
@@ -638,6 +674,7 @@ function openAddModule() {
   document.getElementById('mod-category').value = 'Process';
   document.getElementById('mod-level').value    = 'Bắt buộc';
   document.getElementById('mod-updated').value  = new Date().toLocaleDateString('vi-VN');
+  document.getElementById('mod-status').value   = 'draft'; // new modules default to Draft
   stepCount = quizCount = 0;
   document.getElementById('steps-builder').innerHTML = '';
   document.getElementById('quiz-builder').innerHTML  = '';
@@ -649,10 +686,13 @@ function openAddModule() {
 async function openEditModule(id) {
   editingModuleId = id;
   document.getElementById('modal-module-title').textContent = 'Chỉnh sửa Module';
-  let mod = null;
+  let mod = null; let cmsStatus = 'published';
   try {
-    const { data } = await sb.from('modules_cms').select('data').eq('id', id).single();
-    if (data) mod = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
+    const { data } = await sb.from('modules_cms').select('data,status').eq('id', id).single();
+    if (data) {
+      mod = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
+      cmsStatus = data.status || 'published';
+    }
   } catch {}
   if (!mod) mod = localModules.find(m => m.id === id);
   if (!mod) { showToast('Không tìm thấy module', 'error'); return; }
@@ -667,6 +707,7 @@ async function openEditModule(id) {
   document.getElementById('mod-video').value     = mod.videoUrl || '';
   document.getElementById('mod-category').value  = mod.category || 'Process';
   document.getElementById('mod-level').value     = mod.level || 'Bắt buộc';
+  document.getElementById('mod-status').value    = cmsStatus;
   stepCount = quizCount = 0;
   document.getElementById('steps-builder').innerHTML = '';
   document.getElementById('quiz-builder').innerHTML  = '';
@@ -747,10 +788,15 @@ async function saveModule() {
       videoUrl: document.getElementById('mod-video').value.trim() || '',
       steps, quiz, images: [], resources: [],
     };
-    const { error } = await sb.from('modules_cms').upsert({ id, data: JSON.stringify(moduleData) }, { onConflict: 'id' });
+    const modStatus = document.getElementById('mod-status').value || 'draft';
+    const { error } = await sb.from('modules_cms').upsert(
+      { id, data: JSON.stringify(moduleData), status: modStatus },
+      { onConflict: 'id' }
+    );
     if (error) throw error;
     closeModuleModal();
-    showToast('Module "' + name + '" đã được lưu!', 'success');
+    const statusLabel = { draft: '(Draft)', published: '(Đã đăng)', hidden: '(Ẩn)' }[modStatus] || '';
+    showToast('Module "' + name + '" đã được lưu! ' + statusLabel, 'success');
     loadCmsModules();
   } catch (err) {
     showToast('Lỗi: ' + err.message, 'error');
