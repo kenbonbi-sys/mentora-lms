@@ -57,23 +57,23 @@
     <div class="admin-body">
 
       <!-- Tabs -->
-      <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="overview">
+      <div class="admin-tabs" role="tablist" aria-label="Chức năng Admin">
+        <button class="admin-tab active" data-tab="overview" role="tab" aria-selected="true" id="atab-overview" aria-controls="tab-overview">
           <i class="fa-solid fa-chart-bar"></i> Tổng quan
         </button>
-        <button class="admin-tab" data-tab="modules">
+        <button class="admin-tab" data-tab="modules" role="tab" aria-selected="false" id="atab-modules" aria-controls="tab-modules">
           <i class="fa-solid fa-book-open"></i> Modules
         </button>
-        <button class="admin-tab" data-tab="activity">
+        <button class="admin-tab" data-tab="activity" role="tab" aria-selected="false" id="atab-activity" aria-controls="tab-activity">
           <i class="fa-solid fa-clock-rotate-left"></i> Hoạt động
         </button>
-        <button class="admin-tab" data-tab="announce">
+        <button class="admin-tab" data-tab="announce" role="tab" aria-selected="false" id="atab-announce" aria-controls="tab-announce">
           <i class="fa-solid fa-bullhorn"></i> Thông báo & Phân tích
         </button>
       </div>
 
       <!-- ── TAB: OVERVIEW ── -->
-      <div id="tab-overview" class="tab-content">
+      <div id="tab-overview" class="tab-content" role="tabpanel" aria-labelledby="atab-overview">
 
         <!-- Filter row -->
         <div class="overview-header">
@@ -96,6 +96,7 @@
               <div class="stat-label">Lượt xem</div>
               <div class="stat-value" id="stat-total-views">—</div>
               <div class="stat-delta" id="delta-views"></div>
+              <div class="stat-target" id="target-views"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -104,6 +105,7 @@
               <div class="stat-label">Lượt làm quiz</div>
               <div class="stat-value" id="stat-total-quiz">—</div>
               <div class="stat-delta" id="delta-quiz"></div>
+              <div class="stat-target" id="target-quiz"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -112,6 +114,7 @@
               <div class="stat-label">Điểm trung bình</div>
               <div class="stat-value" id="stat-avg-score">—</div>
               <div class="stat-delta" id="delta-score"></div>
+              <div class="stat-target" id="target-score"></div>
             </div>
           </div>
           <div class="stat-card">
@@ -120,6 +123,7 @@
               <div class="stat-label">Tỉ lệ đạt (≥75%)</div>
               <div class="stat-value" id="stat-pass-rate">—</div>
               <div class="stat-delta" id="delta-pass"></div>
+              <div class="stat-target" id="target-pass"></div>
             </div>
           </div>
         </div>
@@ -130,13 +134,13 @@
             <div class="admin-card-header">
               <div class="admin-card-title" id="chart-daily-title">Traffic theo ngày</div>
             </div>
-            <canvas id="chart-daily" height="110"></canvas>
+            <canvas id="chart-daily" height="110" role="img" aria-label="Biểu đồ traffic theo ngày"></canvas>
           </div>
           <div class="admin-card chart-card">
             <div class="admin-card-header">
               <div class="admin-card-title">Nguồn truy cập</div>
             </div>
-            <canvas id="chart-source" height="110"></canvas>
+            <canvas id="chart-source" height="110" role="img" aria-label="Biểu đồ nguồn truy cập"></canvas>
             <div id="source-legend" class="source-legend"></div>
           </div>
         </div>
@@ -146,7 +150,7 @@
           <div class="admin-card-header">
             <div class="admin-card-title">Traffic theo giờ trong ngày</div>
           </div>
-          <canvas id="chart-hour" height="55"></canvas>
+          <canvas id="chart-hour" height="55" role="img" aria-label="Biểu đồ traffic theo giờ trong ngày"></canvas>
         </div>
 
         <!-- Per-module breakdown -->
@@ -178,7 +182,7 @@
       </div><!-- /tab-overview -->
 
       <!-- ── TAB: MODULES ── -->
-      <div id="tab-modules" class="tab-content" style="display:none">
+      <div id="tab-modules" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-modules">
         <div class="tab-header">
           <h3>Danh sách Modules <span id="cms-module-count" style="font-weight:400;color:#9ca3af;font-size:13px"></span></h3>
           <button class="btn-primary" id="btn-add-module">
@@ -206,7 +210,7 @@
       </div><!-- /tab-modules -->
 
       <!-- ── TAB: ACTIVITY ── -->
-      <div id="tab-activity" class="tab-content" style="display:none">
+      <div id="tab-activity" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-activity">
         <div class="admin-card">
           <div class="admin-card-header">
             <div class="admin-card-title">50 sự kiện gần nhất</div>
@@ -216,7 +220,7 @@
       </div><!-- /tab-activity -->
 
       <!-- ── TAB: ANNOUNCE ── -->
-      <div id="tab-announce" class="tab-content" style="display:none">
+      <div id="tab-announce" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-announce">
 
         <!-- Create announcement -->
         <div class="admin-card" style="margin-bottom:20px">

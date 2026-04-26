@@ -165,6 +165,9 @@ var currentModuleId = null;
 var currentQuizData = [];  // store current quiz questions for per-question tracking
 var _answeredKeys   = new Set(); // dedup quiz_answers inserts: "moduleId-qi" per session
 
+// Category icon map — for badge accessibility (color + icon, not color alone)
+var CAT_ICONS = { Policy: 'fa-file-shield', Process: 'fa-diagram-project', Safety: 'fa-triangle-exclamation' };
+
 // ════════════════════════════════════════
 //  SUPABASE CONFIG
 //  Điền URL và anon key sau khi tạo project
@@ -274,6 +277,7 @@ function markDone() {
     showToast('Đã đánh dấu hoàn thành!', 'success');
   }
   filterAndRender(); // update cards
+  updateStatsStrip();
 }
 
 function isDone(id) { return !!localStorage.getItem('lms-done-' + id); }
@@ -534,9 +538,65 @@ function applyCertName() {
 }
 
 // ════════════════════════════════════════
+//  STREAK COUNTER
+// ════════════════════════════════════════
+function updateStreak() {
+  var today = new Date().toISOString().slice(0, 10);
+  var last  = localStorage.getItem('lms-streak-date');
+  var count = parseInt(localStorage.getItem('lms-streak-count') || '0', 10);
+  if (last === today) return; // already counted today
+  var yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+  count = (last === yesterday.toISOString().slice(0, 10)) ? count + 1 : 1;
+  localStorage.setItem('lms-streak-date',  today);
+  localStorage.setItem('lms-streak-count', String(count));
+}
+function getStreak() {
+  return parseInt(localStorage.getItem('lms-streak-count') || '0', 10);
+}
+
+// ════════════════════════════════════════
+//  LEARNER STATS STRIP
+// ════════════════════════════════════════
+function updateStatsStrip() {
+  if (!allModules.length) return;
+  var total     = allModules.length;
+  var completed = allModules.filter(function(m) { return isDone(m.id); }).length;
+  var pct       = Math.round((completed / total) * 100);
+  var scores    = allModules.map(function(m) {
+    var s = localStorage.getItem('lms-quiz-score-' + m.id);
+    return s !== null ? parseFloat(s) : null;
+  }).filter(function(s) { return s !== null; });
+  var avgScore  = scores.length
+    ? Math.round(scores.reduce(function(a,b){return a+b;},0) / scores.length) + '%'
+    : '—';
+
+  var el = document.getElementById('stats-strip');
+  if (!el) return;
+  document.getElementById('strip-completed').textContent     = completed;
+  document.getElementById('strip-total').textContent         = total;
+  document.getElementById('strip-avg-score').textContent     = avgScore;
+  document.getElementById('strip-streak').textContent        = getStreak();
+  document.getElementById('strip-progress-label').textContent = pct + '%';
+  var fill = document.getElementById('strip-progress-fill');
+  var bar  = el.querySelector('[role="progressbar"]');
+  if (fill) fill.style.width = pct + '%';
+  if (bar)  bar.setAttribute('aria-valuenow', pct);
+
+  // Streak color boost (gamification)
+  var streakEl = document.getElementById('strip-streak');
+  var streak   = getStreak();
+  if (streakEl) {
+    streakEl.style.color = streak >= 7 ? '#f6c315' : streak >= 3 ? '#a50064' : '';
+  }
+}
+
+// ════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
+
+  // ── Streak — counted on every daily visit ──
+  updateStreak();
 
   // ── Theme ──
   var themeBtn  = document.getElementById('btn-theme');
@@ -544,6 +604,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function applyTheme(dark) {
     document.body.classList.toggle('dark', dark);
     themeIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    themeIcon.setAttribute('aria-hidden', 'true');
+    themeBtn.setAttribute('aria-label', dark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
   }
   applyTheme(localStorage.getItem('lms-theme') === 'dark');
   themeBtn.addEventListener('click', function () {
@@ -601,6 +663,10 @@ document.addEventListener('DOMContentLoaded', function () {
     tab.classList.add('active');
     activeCat = tab.dataset.cat;
     filterAndRender();
+    // ARIA: update aria-selected state
+    document.querySelectorAll('#filter-tabs [role="tab"]').forEach(function(t) {
+      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+    });
   });
 
   // ── Search ──
@@ -698,6 +764,7 @@ function loadModules() {
       showSkeleton(false);
       renderModules(allModules);
       updateHeroCount();
+      updateStatsStrip();
     })
     .catch(function (err) {
       console.warn('loadModules error:', err.message);
@@ -705,6 +772,7 @@ function loadModules() {
       showSkeleton(false);
       renderModules(allModules);
       updateHeroCount();
+      updateStatsStrip();
     });
 }
 
@@ -794,14 +862,18 @@ function renderModules(list) {
       var bg = catGradient[m.category] || 'linear-gradient(135deg,#ffeff4 0%,#fec8dc 100%)';
       thumbHtml = '<div class="card-thumb card-thumb--icon" style="background:' + bg + '">'
         + '<img src="' + iconSrc + '" alt="" loading="lazy">'
-        + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">' + m.category + '</span></div>'
+        + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">'
+        + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
+        + m.category + '</span></div>'
         + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + m.duration + '</div>'
         + '</div>';
     } else {
       thumbHtml = '<div class="card-thumb">'
         + '<img src="' + (m.thumbnail || '') + '" alt="' + m.name + '" loading="lazy" onerror="this.src=\'https://loremflickr.com/480/280/office\'">'
         + '<div class="card-thumb-overlay"></div>'
-        + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">' + m.category + '</span></div>'
+        + '<div class="card-thumb-badge"><span class="badge ' + catCls + '">'
+        + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
+        + m.category + '</span></div>'
         + '<div class="card-thumb-duration"><i class="fa-solid fa-clock"></i> ' + m.duration + '</div>'
         + '</div>';
     }
@@ -865,7 +937,9 @@ function openDetail(id) {
   var stClass  = { 'Đang hoạt động':'badge-open', 'Sắp ra mắt':'badge-soon' };
   document.getElementById('detail-badges').innerHTML =
     '<span class="badge ' + (lvlClass[m.level] || 'badge-level-basic') + '">' + (m.level || '') + '</span> '
-    + '<span class="badge ' + (catClass[m.category] || 'badge-cat') + '">' + m.category + '</span> '
+    + '<span class="badge ' + (catClass[m.category] || 'badge-cat') + '">'
+    + (CAT_ICONS[m.category] ? '<i class="fa-solid ' + CAT_ICONS[m.category] + '" aria-hidden="true"></i> ' : '')
+    + m.category + '</span> '
     + '<span class="badge ' + (stClass[m.status] || 'badge-open') + '">' + m.status + '</span>';
 
   // Steps
@@ -898,7 +972,9 @@ function openDetail(id) {
         + '<img src="' + icon + '" alt="" loading="lazy">'
         + '</div>'
         + '<div class="gallery-module-info">'
-        + '<span class="badge ' + (catClass[rel.category] || 'badge-cat') + '" style="font-size:10px;padding:2px 8px">' + rel.category + '</span>'
+        + '<span class="badge ' + (catClass[rel.category] || 'badge-cat') + '" style="font-size:10px;padding:2px 8px">'
+        + (CAT_ICONS[rel.category] ? '<i class="fa-solid ' + CAT_ICONS[rel.category] + '" aria-hidden="true"></i> ' : '')
+        + rel.category + '</span>'
         + '<div class="gallery-caption">' + rel.name + '</div>'
         + '<div style="font-size:11px;color:var(--text-tertiary);margin-top:2px"><i class="fa-solid fa-clock" style="margin-right:4px"></i>' + rel.duration + '</div>'
         + '</div>'
@@ -944,7 +1020,11 @@ function openDetail(id) {
 
   var trackerEl = document.getElementById('step-tracker');
   trackerEl.innerHTML = (m.steps || []).map(function (s, i) {
-    return '<div class="step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '" onclick="scrollToStep(' + i + ')">'
+    return '<div class="step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '"'
+      + ' role="listitem" tabindex="0"'
+      + ' aria-label="Bước ' + (i + 1) + ': ' + s.title + '"'
+      + ' onclick="scrollToStep(' + i + ')"'
+      + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){scrollToStep(' + i + ');event.preventDefault();}">'
       + '<div class="step-dot"></div>'
       + '<div class="step-dot-label">' + s.title + '</div>'
       + '</div>';
@@ -1083,6 +1163,13 @@ function showQuizResult() {
   var s = quizState.score;
   var t = quizState.total;
   var pct = Math.round((s / t) * 100);
+
+  // Persist best quiz score for learner stats strip
+  if (currentModuleId) {
+    var existing = parseFloat(localStorage.getItem('lms-quiz-score-' + currentModuleId) || '-1');
+    if (pct > existing) localStorage.setItem('lms-quiz-score-' + currentModuleId, String(pct));
+    updateStatsStrip();
+  }
 
   if (pct === 100) {
     iconEl.innerHTML = '<i class="fa-solid fa-trophy" style="color:#f6c315"></i>';

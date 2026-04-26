@@ -19,6 +19,9 @@ let currentDays     = 30;
 let _lastModStats   = [];
 let _chartHour      = null;
 
+// ── KPI benchmark targets ──────────────────────────────────
+const KPI_TARGETS = { views: 500, quiz: 200, avgScore: 80, passRate: 85 };
+
 // ══════════════════════════════════════════════════════════
 //  AUTH — Supabase email/password
 // ══════════════════════════════════════════════════════════
@@ -91,15 +94,38 @@ async function loadLocalModules() {
 //  TABS
 // ══════════════════════════════════════════════════════════
 function initTabs() {
-  document.querySelectorAll('.admin-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-      tab.classList.add('active');
-      document.getElementById('tab-' + tab.dataset.tab).style.display = '';
-      if (tab.dataset.tab === 'activity') loadActivity();
-      if (tab.dataset.tab === 'modules')  loadCmsModules();
-      if (tab.dataset.tab === 'announce') { loadAnnouncements(); loadQuestionAnalysis(); }
+  const tabEls   = Array.from(document.querySelectorAll('.admin-tab'));
+  const panelEls = Array.from(document.querySelectorAll('.tab-content'));
+
+  function activateTab(tab) {
+    tabEls.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+      t.setAttribute('tabindex', '-1');
+    });
+    panelEls.forEach(p => { p.style.display = 'none'; });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('tabindex', '0');
+    tab.focus();
+    const panel = document.getElementById('tab-' + tab.dataset.tab);
+    if (panel) panel.style.display = '';
+    if (tab.dataset.tab === 'activity') loadActivity();
+    if (tab.dataset.tab === 'modules')  loadCmsModules();
+    if (tab.dataset.tab === 'announce') { loadAnnouncements(); loadQuestionAnalysis(); }
+  }
+
+  tabEls.forEach(tab => {
+    tab.setAttribute('tabindex', tab.classList.contains('active') ? '0' : '-1');
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', e => {
+      const idx = tabEls.indexOf(tab);
+      let next  = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % tabEls.length;
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   next = (idx - 1 + tabEls.length) % tabEls.length;
+      if (e.key === 'Home') next = 0;
+      if (e.key === 'End')  next = tabEls.length - 1;
+      if (next !== null) { e.preventDefault(); activateTab(tabEls[next]); }
     });
   });
 }
@@ -130,6 +156,21 @@ function _dateRange() {
   };
 }
 
+function _renderTarget(elId, value, target, isPercent) {
+  const el = document.getElementById(elId);
+  if (!el || !target || isNaN(value)) return;
+  const pct = Math.min(100, Math.round((value / target) * 100));
+  const fmt = v => isPercent ? v + '%' : v.toLocaleString('vi');
+  el.innerHTML = `<div class="target-bar-wrap">
+    <div class="target-bar-track" role="progressbar"
+         aria-label="Mục tiêu: ${fmt(target)}"
+         aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
+      <div class="target-bar-fill${pct >= 100 ? ' target-met' : ''}" style="width:${pct}%"></div>
+    </div>
+    <span class="target-label">Mục tiêu ${fmt(target)} · ${pct}%</span>
+  </div>`;
+}
+
 function _renderDelta(elId, curr, prev) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -154,6 +195,7 @@ async function loadStats() {
     if (curr) vq = vq.gte('created_at', curr);
     const { count: viewCount } = await vq;
     document.getElementById('stat-total-views').textContent = (viewCount || 0).toLocaleString('vi');
+    _renderTarget('target-views', viewCount || 0, KPI_TARGETS.views, false);
 
     if (prev) {
       const { count: prevViews } = await sb.from('page_views').select('*', { count: 'exact', head: true })
@@ -167,12 +209,15 @@ async function loadStats() {
     const { data: quizData } = await qq;
     const qTotal = quizData ? quizData.length : 0;
     document.getElementById('stat-total-quiz').textContent = qTotal.toLocaleString('vi');
+    _renderTarget('target-quiz', qTotal, KPI_TARGETS.quiz, false);
 
     if (qTotal > 0) {
       const avgPct   = Math.round(quizData.reduce((s, r) => s + r.pct, 0) / qTotal);
       const passRate = Math.round((quizData.filter(r => r.passed).length / qTotal) * 100);
       document.getElementById('stat-avg-score').textContent = avgPct + '%';
       document.getElementById('stat-pass-rate').textContent = passRate + '%';
+      _renderTarget('target-score', avgPct,   KPI_TARGETS.avgScore, true);
+      _renderTarget('target-pass',  passRate, KPI_TARGETS.passRate, true);
     } else {
       document.getElementById('stat-avg-score').textContent = '—';
       document.getElementById('stat-pass-rate').textContent = '—';

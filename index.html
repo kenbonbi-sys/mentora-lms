@@ -33,8 +33,8 @@
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
       </ul>
       <div class="nav-actions" id="nav-actions">
-        <button class="btn btn-ghost btn-icon" id="btn-theme" title="Chuyển giao diện sáng/tối">
-          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        <button class="btn btn-ghost btn-icon" id="btn-theme" title="Chuyển giao diện sáng/tối" aria-label="Chuyển sang giao diện tối">
+          <i class="fa-solid fa-moon" id="theme-icon" aria-hidden="true"></i>
         </button>
       </div>
       <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle">
@@ -68,14 +68,44 @@
         <div class="hero-image">
           <div class="hero-blob-wrap">
             <img src="/assets/images/hero/hero-01.jpg" alt="Training">
-            <div class="hero-deco hero-deco-1"></div>
-            <div class="hero-deco hero-deco-2"></div>
-            <div class="hero-deco hero-deco-3"></div>
+            <div class="hero-deco hero-deco-1" aria-hidden="true"></div>
+            <div class="hero-deco hero-deco-2" aria-hidden="true"></div>
+            <div class="hero-deco hero-deco-3" aria-hidden="true"></div>
           </div>
           <div class="hero-float-card">
-            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            <i class="fa-solid fa-circle-check" style="color:var(--green)" aria-hidden="true"></i>
             <span id="hero-module-count">5 modules đang hoạt động</span>
           </div>
+        </div>
+      </div>
+
+      <!-- LEARNER STATS STRIP -->
+      <div class="stats-strip" id="stats-strip" aria-label="Tiến độ học tập của bạn">
+        <div class="stats-strip-item">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          <span class="stats-strip-value" id="strip-completed">0</span>
+          <span class="stats-strip-label">/ <span id="strip-total">0</span> hoàn thành</span>
+        </div>
+        <div class="stats-strip-divider" aria-hidden="true"></div>
+        <div class="stats-strip-item">
+          <i class="fa-solid fa-star" aria-hidden="true"></i>
+          <span class="stats-strip-value" id="strip-avg-score">—</span>
+          <span class="stats-strip-label">điểm TB quiz</span>
+        </div>
+        <div class="stats-strip-divider" aria-hidden="true"></div>
+        <div class="stats-strip-item">
+          <i class="fa-solid fa-fire" aria-hidden="true"></i>
+          <span class="stats-strip-value" id="strip-streak">0</span>
+          <span class="stats-strip-label">ngày liên tiếp</span>
+        </div>
+        <div class="stats-strip-divider" aria-hidden="true"></div>
+        <div class="stats-strip-item stats-strip-progress">
+          <div class="strip-progress-bar"
+               role="progressbar" aria-label="Tiến độ hoàn thành"
+               aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            <div class="strip-progress-fill" id="strip-progress-fill"></div>
+          </div>
+          <span class="stats-strip-label" id="strip-progress-label">0%</span>
         </div>
       </div>
 
@@ -87,11 +117,11 @@
             <span class="courses-count" id="courses-count"></span>
           </div>
           <div class="courses-header-right">
-            <div class="filter-tabs" id="filter-tabs">
-              <button class="filter-tab active" data-cat="all">Tất cả</button>
-              <button class="filter-tab" data-cat="Policy">Policy</button>
-              <button class="filter-tab" data-cat="Process">Process</button>
-              <button class="filter-tab" data-cat="Safety">Safety</button>
+            <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Lọc theo danh mục">
+              <button class="filter-tab active" data-cat="all" role="tab" aria-selected="true">Tất cả</button>
+              <button class="filter-tab" data-cat="Policy" role="tab" aria-selected="false">Policy</button>
+              <button class="filter-tab" data-cat="Process" role="tab" aria-selected="false">Process</button>
+              <button class="filter-tab" data-cat="Safety" role="tab" aria-selected="false">Safety</button>
             </div>
             <div class="search-wrap">
               <i class="fa-solid fa-magnifying-glass"></i>
@@ -111,7 +141,7 @@
           <p>Không tìm thấy module nào.</p>
         </div>
 
-        <div class="modules-grid" id="modules-grid"></div>
+        <div class="modules-grid" id="modules-grid" role="region" aria-live="polite" aria-label="Danh sách module"></div>
       </div>
 
     </div>
@@ -188,7 +218,7 @@
           </div>
           <div class="sidebar-card">
             <div class="sidebar-card-title"><i class="fa-solid fa-list"></i> Nội dung bài</div>
-            <div class="step-tracker" id="step-tracker"></div>
+            <div class="step-tracker" id="step-tracker" role="list"></div>
           </div>
           <div class="sidebar-card">
             <div class="sidebar-card-title"><i class="fa-solid fa-note-sticky"></i> Ghi chú cá nhân</div>
@@ -290,7 +320,7 @@
     </div>
   </div>
 
-  <div class="toast-wrap" id="toast-wrap"></div>
+  <div class="toast-wrap" id="toast-wrap" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script src="script.js" defer></script>
 </body>
