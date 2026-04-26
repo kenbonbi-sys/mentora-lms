@@ -363,6 +363,18 @@ body {
 .source-legend-item:last-child { border-bottom: none; }
 .source-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
+/* ── Announcements ─────────────────────────────── */
+.ann-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+}
+.ann-item:last-child { border-bottom: none; }
+.ann-inactive { opacity: .5; }
+.ann-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.ann-content { flex: 1; }
+.ann-msg { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+.ann-meta { font-size: 11px; color: var(--text-tertiary); }
+
 /* ── Toast ─────────────────────────────────────── */
 .admin-toast {
   position: fixed; bottom: 24px; right: 24px; z-index: 9999;

@@ -162,6 +162,7 @@ var SAMPLE_MODULES = [
 var allModules      = [];
 var activeCat       = 'all';
 var currentModuleId = null;
+var currentQuizData = [];  // store current quiz questions for per-question tracking
 
 // ════════════════════════════════════════
 //  SUPABASE CONFIG
@@ -210,6 +211,142 @@ function trackPageView(moduleId, moduleName) {
 
 function trackQuizAttempt(moduleId, moduleName, score, total, pct) {
   _sbInsert('quiz_attempts', { module_id: moduleId, module_name: moduleName, score: score, total: total, pct: pct, passed: pct >= 75, session_id: _getSession() });
+}
+
+// ════════════════════════════════════════
+//  ANNOUNCEMENT BANNER
+// ════════════════════════════════════════
+function loadAnnouncement() {
+  if (!_sbReady()) return;
+  fetch(SB_URL + '/rest/v1/announcements?select=id,message,type&active=eq.true&order=created_at.desc&limit=1', {
+    headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
+  })
+  .then(function (r) { return r.ok ? r.json() : []; })
+  .then(function (rows) {
+    if (!rows || !rows.length) return;
+    var ann = rows[0];
+    if (localStorage.getItem('lms-ann-' + ann.id)) return;
+    window._announcementId = ann.id;
+    document.getElementById('announcement-text').textContent = ann.message;
+    var banner = document.getElementById('announcement-banner');
+    banner.className = 'announcement-banner ann-' + (ann.type || 'info');
+    banner.style.display = '';
+  })
+  .catch(function () {});
+}
+
+function dismissAnnouncement() {
+  if (window._announcementId) localStorage.setItem('lms-ann-' + window._announcementId, '1');
+  document.getElementById('announcement-banner').style.display = 'none';
+}
+
+// ════════════════════════════════════════
+//  READING PROGRESS BAR
+// ════════════════════════════════════════
+function updateReadingProgress() {
+  var pageDetail = document.getElementById('page-detail');
+  if (!pageDetail || pageDetail.style.display === 'none') {
+    document.getElementById('reading-progress-bar').style.width = '0%';
+    return;
+  }
+  var total = document.documentElement.scrollHeight - window.innerHeight;
+  var pct   = total > 0 ? Math.min(100, Math.round((window.scrollY / total) * 100)) : 0;
+  document.getElementById('reading-progress-bar').style.width = pct + '%';
+}
+
+// ════════════════════════════════════════
+//  MARK AS DONE
+// ════════════════════════════════════════
+function markDone() {
+  if (!currentModuleId) return;
+  var key  = 'lms-done-' + currentModuleId;
+  var done = !!localStorage.getItem(key);
+  if (done) {
+    localStorage.removeItem(key);
+    updateDoneBtn(false);
+    showToast('Đã bỏ đánh dấu hoàn thành', 'info');
+  } else {
+    localStorage.setItem(key, '1');
+    updateDoneBtn(true);
+    showToast('Đã đánh dấu hoàn thành!', 'success');
+  }
+  filterAndRender(); // update cards
+}
+
+function isDone(id) { return !!localStorage.getItem('lms-done-' + id); }
+
+function updateDoneBtn(done) {
+  var btn = document.getElementById('btn-mark-done');
+  if (!btn) return;
+  if (done) {
+    btn.className   = 'btn btn-sm btn-success-outline';
+    btn.innerHTML   = '<i class="fa-solid fa-circle-check"></i> Đã hoàn thành';
+  } else {
+    btn.className   = 'btn btn-sm btn-outline';
+    btn.innerHTML   = '<i class="fa-regular fa-circle-check"></i> Đánh dấu hoàn thành';
+  }
+}
+
+// ════════════════════════════════════════
+//  SHARE MODULE
+// ════════════════════════════════════════
+function shareModule() {
+  if (!currentModuleId) return;
+  var url = window.location.origin + window.location.pathname + '?module=' + currentModuleId;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function () { showToast('Đã copy link module!', 'success'); });
+  } else {
+    var inp = document.createElement('input');
+    inp.value = url; document.body.appendChild(inp); inp.select();
+    document.execCommand('copy'); inp.remove();
+    showToast('Đã copy link module!', 'success');
+  }
+}
+
+// ════════════════════════════════════════
+//  PERSONAL NOTES
+// ════════════════════════════════════════
+var _notesTimer = null;
+function loadNotes(id) {
+  var ta = document.getElementById('notes-textarea');
+  if (ta) ta.value = localStorage.getItem('lms-notes-' + id) || '';
+  document.getElementById('notes-saved').textContent = '';
+}
+function saveNotes() {
+  if (!currentModuleId) return;
+  var ta = document.getElementById('notes-textarea');
+  if (!ta) return;
+  localStorage.setItem('lms-notes-' + currentModuleId, ta.value);
+  var el = document.getElementById('notes-saved');
+  if (el) { el.textContent = 'Đã lưu ✓'; setTimeout(function () { el.textContent = ''; }, 2000); }
+}
+function clearNotes() {
+  var ta = document.getElementById('notes-textarea');
+  if (!ta || !ta.value) return;
+  if (!confirm('Xóa toàn bộ ghi chú cho module này?')) return;
+  ta.value = '';
+  if (currentModuleId) localStorage.removeItem('lms-notes-' + currentModuleId);
+}
+
+// ════════════════════════════════════════
+//  COMPLETION CERTIFICATE
+// ════════════════════════════════════════
+var _certScore = 0; var _certTotal = 0;
+function showCertificate(score, total) {
+  _certScore = score; _certTotal = total;
+  var mod = allModules.find(function (m) { return m.id === currentModuleId; });
+  document.getElementById('cert-module-name').textContent  = mod ? mod.name : '';
+  document.getElementById('cert-score-display').textContent = 'Kết quả: ' + score + '/' + total + ' (' + Math.round((score / total) * 100) + '%)';
+  document.getElementById('cert-date').textContent = 'Ngày ' + new Date().toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+  document.getElementById('cert-name-input').value = localStorage.getItem('lms-cert-name') || '';
+  document.getElementById('cert-learner-name').textContent = localStorage.getItem('lms-cert-name') || 'Học viên';
+  document.getElementById('modal-certificate').style.display = '';
+}
+function applyCertName() {
+  var name = document.getElementById('cert-name-input').value.trim() || 'Học viên';
+  localStorage.setItem('lms-cert-name', name);
+  document.getElementById('cert-learner-name').textContent = name;
+  showToast('Đã cập nhật tên!', 'success');
 }
 
 // ════════════════════════════════════════
@@ -291,14 +428,35 @@ document.addEventListener('DOMContentLoaded', function () {
     if (card) openDetail(card.dataset.id);
   });
 
-  // ── (mark-done removed — replaced by scroll tracker) ──
-  (function () { // no-op block to avoid syntax gap
-    void 0;
-    showToast('Đã đánh dấu hoàn thành module!', 'success');
-  });
+  // ── Reading progress bar ──
+  window.addEventListener('scroll', updateReadingProgress, { passive: true });
 
-  // ── Load modules from API ──
+  // ── Notes auto-save ──
+  var notesEl = document.getElementById('notes-textarea');
+  if (notesEl) {
+    notesEl.addEventListener('input', function () {
+      clearTimeout(_notesTimer);
+      _notesTimer = setTimeout(saveNotes, 800);
+    });
+  }
+
+  // ── Announcement ──
+  loadAnnouncement();
+
+  // ── Load modules, then check URL param ──
   loadModules();
+  setTimeout(function () {
+    var params = new URLSearchParams(window.location.search);
+    var mid    = params.get('module');
+    if (mid) {
+      var tryOpen = function (attempts) {
+        var m = allModules.find(function (x) { return x.id === mid; });
+        if (m) { openDetail(mid); }
+        else if (attempts > 0) { setTimeout(function () { tryOpen(attempts - 1); }, 300); }
+      };
+      tryOpen(10);
+    }
+  }, 200);
 });
 
 // ════════════════════════════════════════
@@ -452,8 +610,10 @@ function renderModules(list) {
         + '</div>';
     }
 
+    var doneBadge = isDone(m.id) ? '<div class="card-done-badge"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</div>' : '';
     return '<div class="module-card" data-id="' + m.id + '">'
       + thumbHtml
+      + doneBadge
       + '<div class="card-body">'
       + '<div class="card-title">' + m.name + '</div>'
       + '<div class="card-desc">' + (m.subtitle || '') + '</div>'
@@ -576,6 +736,10 @@ function openDetail(id) {
   // Quiz
   renderQuiz(m.quiz || []);
 
+  // Done button state + notes
+  updateDoneBtn(isDone(id));
+  loadNotes(id);
+
   // Reset + build step tracker
 
   var trackerEl = document.getElementById('step-tracker');
@@ -636,6 +800,7 @@ function renderQuiz(questions) {
   }
   section.style.display = '';
 
+  currentQuizData = questions;
   quizState = { answered: new Array(questions.length).fill(false), score: 0, total: questions.length };
 
   var html = '<div class="quiz-intro">'
@@ -692,7 +857,12 @@ function handleQuizOption(btn, qi, oi, correct) {
   expEl.style.display = 'flex';
 
   // Track score
-  if (oi === correct) quizState.score++;
+  var isCorrect = (oi === correct);
+  if (isCorrect) quizState.score++;
+
+  // Track per-question to Supabase
+  var qText = currentQuizData[qi] ? currentQuizData[qi].question : '';
+  _sbInsert('quiz_answers', { module_id: currentModuleId, question_index: qi, question_text: qText, is_correct: isCorrect, session_id: _getSession() });
 
   // Check if all answered
   var allDone = quizState.answered.every(function (v) { return v; });
@@ -725,6 +895,26 @@ function showQuizResult() {
   }
 
   scoreEl.innerHTML = '<span class="quiz-score-num">' + s + '</span><span class="quiz-score-sep">/</span><span class="quiz-score-den">' + t + '</span><span class="quiz-score-pct">(' + pct + '%)</span>';
+
+  // Certificate button when passing
+  var certBtn = document.getElementById('quiz-cert-btn');
+  if (pct >= 75) {
+    if (!certBtn) {
+      certBtn = document.createElement('button');
+      certBtn.id = 'quiz-cert-btn';
+      certBtn.className = 'btn btn-primary btn-sm';
+      certBtn.innerHTML = '<i class="fa-solid fa-certificate"></i> Nhận chứng chỉ';
+      certBtn.onclick = function () { showCertificate(s, t); };
+      resultEl.appendChild(certBtn);
+    }
+    // Auto mark done
+    if (!isDone(currentModuleId)) {
+      localStorage.setItem('lms-done-' + currentModuleId, '1');
+      updateDoneBtn(true);
+      filterAndRender();
+    }
+  } else if (certBtn) { certBtn.remove(); }
+
   resultEl.style.display = 'flex';
   resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 

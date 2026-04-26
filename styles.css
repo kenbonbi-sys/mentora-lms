@@ -698,6 +698,82 @@ body.dark .lms-footer { background: #060d1a; }
 .toast.error   i { color: var(--red); }
 .toast.info    i { color: var(--accent); }
 
+/* ══════════════════════════════ READING PROGRESS BAR */
+#reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999; background: transparent; pointer-events: none; }
+#reading-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent-light)); transition: width .1s linear; }
+
+/* ══════════════════════════════ ANNOUNCEMENT BANNER */
+.announcement-banner {
+  display: flex; align-items: center;
+  padding: 10px 0; font-size: 13px; font-weight: 500;
+}
+.announcement-banner.ann-info    { background: #eff6ff; color: #1e40af; }
+.announcement-banner.ann-warning { background: #fffbeb; color: #92400e; }
+.announcement-banner.ann-success { background: #f0fdf4; color: #166534; }
+.announcement-banner.ann-danger  { background: #fef2f2; color: #991b1b; }
+.announcement-inner { display: flex; align-items: center; gap: 10px; width: 100%; }
+.announcement-inner i { flex-shrink: 0; }
+.announcement-inner span { flex: 1; }
+.announcement-close { background: none; border: none; cursor: pointer; opacity: .6; font-size: 14px; padding: 2px 6px; border-radius: 4px; }
+.announcement-close:hover { opacity: 1; background: rgba(0,0,0,.08); }
+
+/* ══════════════════════════════ DETAIL ACTIONS */
+.detail-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.btn-success-outline { border: 1.5px solid #5ea12a; color: #5ea12a; background: #f0fdf4; }
+.btn-success-outline:hover { background: #dcfce7; }
+
+/* ══════════════════════════════ DONE BADGE ON CARD */
+.card-done-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: #166534; color: #fff;
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 12px; display: flex; align-items: center; gap: 4px;
+  z-index: 2;
+}
+.module-card { position: relative; }
+
+/* ══════════════════════════════ PERSONAL NOTES */
+.notes-textarea {
+  width: 100%; min-height: 100px; max-height: 200px;
+  border: 1.5px solid var(--border-light); border-radius: var(--radius);
+  padding: 10px 12px; font-size: 13px; resize: vertical;
+  font-family: inherit; background: var(--bg-card); color: var(--text-primary);
+  transition: border-color .15s;
+}
+.notes-textarea:focus { outline: none; border-color: var(--accent); }
+.notes-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+.notes-saved { font-size: 11px; color: var(--green); }
+
+/* ══════════════════════════════ CERTIFICATE MODAL */
+.cert-modal-box { max-width: 560px; width: 100%; padding: 0; overflow: hidden; }
+.cert-inner {
+  padding: 40px 36px 32px; text-align: center;
+  background: linear-gradient(160deg, #fff 60%, #ffeff4 100%);
+}
+.cert-logo { height: 36px; margin-bottom: 16px; }
+.cert-badge { font-size: 48px; color: #f6c315; margin-bottom: 8px; }
+.cert-title { font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: 1px; margin-bottom: 4px; }
+.cert-org { font-size: 12px; color: var(--text-tertiary); margin-bottom: 24px; }
+.cert-body { margin-bottom: 20px; }
+.cert-label { font-size: 13px; color: var(--text-secondary); margin: 6px 0 2px; }
+.cert-name { font-size: 26px; font-weight: 800; color: var(--text-primary); border-bottom: 2px solid var(--accent); display: inline-block; padding: 0 16px 4px; margin: 4px 0 12px; }
+.cert-module-name { font-size: 16px; font-weight: 700; color: var(--accent); margin: 4px 0 8px; }
+.cert-score-display { font-size: 13px; color: var(--green); font-weight: 600; }
+.cert-date { font-size: 12px; color: var(--text-tertiary); margin-bottom: 24px; }
+.cert-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.cert-name-input { border: 1.5px solid var(--border-light); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; width: 100%; margin-bottom: 10px; }
+.cert-name-input:focus { outline: none; border-color: var(--accent); }
+
+@media print {
+  body > *:not(#modal-certificate) { display: none !important; }
+  #modal-certificate { display: block !important; position: fixed !important; inset: 0; background: #fff; z-index: 99999; }
+  .no-print { display: none !important; }
+  .cert-inner { box-shadow: none; padding: 60px 80px; }
+  .cert-badge { font-size: 72px; }
+  .cert-title { font-size: 28px; }
+  .cert-name  { font-size: 34px; }
+}
+
 /* ══════════════════════════════ ANIMATIONS */
 @keyframes fadeSlideIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
 @keyframes shimmer     { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }

@@ -99,6 +99,7 @@ function initTabs() {
       document.getElementById('tab-' + tab.dataset.tab).style.display = '';
       if (tab.dataset.tab === 'activity') loadActivity();
       if (tab.dataset.tab === 'modules')  loadCmsModules();
+      if (tab.dataset.tab === 'announce') { loadAnnouncements(); loadQuestionAnalysis(); }
     });
   });
 }
@@ -484,9 +485,11 @@ async function loadCmsModules() {
       <td>${m.hasCms ? `<button class="active-toggle ${m.active ? 'on' : 'off'}" onclick="toggleActive('${m.id}',${m.active})" title="${m.active ? 'Đang hiện — click để ẩn' : 'Đang ẩn — click để hiện'}">
         <span class="toggle-knob"></span><span class="toggle-label">${m.active ? 'Hiện' : 'Ẩn'}</span>
       </button>` : '<span style="font-size:11px;color:#9ca3af">—</span>'}</td>
-      <td style="white-space:nowrap;display:flex;gap:6px">
-        <button class="btn-sm" onclick="openEditModule('${m.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-        ${m.source === 'CMS' ? '<button class="btn-danger" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
+      <td style="white-space:nowrap;display:flex;gap:5px;align-items:center">
+        <button class="btn-sm" title="Xem trước" onclick="previewModule('${m.id}')"><i class="fa-solid fa-eye"></i></button>
+        <button class="btn-sm" title="Chỉnh sửa" onclick="openEditModule('${m.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+        ${m.hasCms ? '<button class="btn-sm btn-up" title="Lên" onclick="moveModule(\'' + m.id + '\',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-sm btn-up" title="Xuống" onclick="moveModule(\'' + m.id + '\',1)"><i class="fa-solid fa-chevron-down"></i></button>' : ''}
+        ${m.source === 'CMS' ? '<button class="btn-danger" title="Xóa" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
       </td>
     </tr>`).join('');
   } catch (err) {
@@ -508,6 +511,120 @@ async function toggleActive(id, currentActive) {
   if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
   showToast(newVal ? 'Module đã được bật hiển thị' : 'Module đã bị ẩn', 'success');
   loadCmsModules();
+}
+
+function previewModule(id) {
+  window.open('/?module=' + id, '_blank');
+}
+
+async function moveModule(id, dir) {
+  // Fetch current sort_order
+  const { data } = await sb.from('modules_cms').select('id, sort_order').order('sort_order', { ascending: true });
+  if (!data) return;
+  const idx = data.findIndex(r => r.id === id);
+  if (idx < 0) return;
+  const swapIdx = idx + dir;
+  if (swapIdx < 0 || swapIdx >= data.length) return;
+  const a = data[idx];
+  const b = data[swapIdx];
+  const aOrder = a.sort_order ?? idx;
+  const bOrder = b.sort_order ?? swapIdx;
+  await Promise.all([
+    sb.from('modules_cms').update({ sort_order: bOrder }).eq('id', a.id),
+    sb.from('modules_cms').update({ sort_order: aOrder }).eq('id', b.id),
+  ]);
+  loadCmsModules();
+}
+
+// ══════════════════════════════════════════════════════════
+//  ANNOUNCEMENTS
+// ══════════════════════════════════════════════════════════
+async function loadAnnouncements() {
+  const el = document.getElementById('announcements-list');
+  if (!el) return;
+  el.innerHTML = '<div class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
+  try {
+    const { data, error } = await sb.from('announcements').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || !data.length) { el.innerHTML = '<div class="empty-cell">Chưa có thông báo nào.</div>'; return; }
+    const typeIcon = { info: '🔵', warning: '🟡', success: '🟢', danger: '🔴' };
+    el.innerHTML = data.map(a => `
+      <div class="ann-item ${a.active ? '' : 'ann-inactive'}">
+        <span class="ann-icon">${typeIcon[a.type] || '🔵'}</span>
+        <div class="ann-content">
+          <div class="ann-msg">${esc(a.message)}</div>
+          <div class="ann-meta">${formatTime(a.created_at)} · ${a.active ? '<span style="color:#166534">Đang hiện</span>' : '<span style="color:#9ca3af">Đã tắt</span>'}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn-sm" onclick="toggleAnnouncement('${a.id}',${a.active})">${a.active ? 'Tắt' : 'Bật'}</button>
+          <button class="btn-danger" onclick="deleteAnnouncement('${a.id}')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>`).join('');
+  } catch (err) {
+    el.innerHTML = '<div class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</div>';
+  }
+}
+
+async function createAnnouncement() {
+  const msg  = document.getElementById('ann-message').value.trim();
+  const type = document.getElementById('ann-type').value;
+  if (!msg) { showToast('Vui lòng nhập nội dung thông báo', 'error'); return; }
+  const { error } = await sb.from('announcements').insert({ message: msg, type, active: true });
+  if (error) { showToast('Lỗi: ' + error.message, 'error'); return; }
+  document.getElementById('ann-message').value = '';
+  showToast('Đã đăng thông báo!', 'success');
+  loadAnnouncements();
+}
+
+async function toggleAnnouncement(id, current) {
+  await sb.from('announcements').update({ active: !current }).eq('id', id);
+  loadAnnouncements();
+}
+
+async function deleteAnnouncement(id) {
+  if (!confirm('Xóa thông báo này?')) return;
+  await sb.from('announcements').delete().eq('id', id);
+  showToast('Đã xóa thông báo', 'success');
+  loadAnnouncements();
+}
+
+// ══════════════════════════════════════════════════════════
+//  QUESTION ANALYSIS
+// ══════════════════════════════════════════════════════════
+async function loadQuestionAnalysis() {
+  const tbody = document.getElementById('qa-body');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>';
+  try {
+    const { data, error } = await sb.from('quiz_answers').select('module_id, question_index, question_text, is_correct');
+    if (error) throw error;
+    if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-cell">Chưa có dữ liệu. Người dùng cần làm quiz trước.</td></tr>'; return; }
+
+    // Group by module_id + question_index
+    const map = {};
+    data.forEach(r => {
+      const key = r.module_id + '||' + r.question_index;
+      if (!map[key]) map[key] = { module_id: r.module_id, qi: r.question_index, text: r.question_text || ('Câu ' + (r.question_index + 1)), total: 0, wrong: 0 };
+      map[key].total++;
+      if (!r.is_correct) map[key].wrong++;
+    });
+
+    const rows = Object.values(map).sort((a, b) => (b.wrong / b.total) - (a.wrong / a.total));
+    tbody.innerHTML = rows.map(r => {
+      const wrongRate = Math.round((r.wrong / r.total) * 100);
+      const diff = wrongRate >= 70 ? '<span class="badge badge-policy">Khó</span>' : wrongRate >= 40 ? '<span class="badge badge-process">Trung bình</span>' : '<span class="badge badge-open">Dễ</span>';
+      const barCls = wrongRate >= 70 ? 'bad' : wrongRate >= 40 ? 'medium' : 'good';
+      return `<tr>
+        <td><code style="font-size:11px;background:#f5f6fa;padding:2px 6px;border-radius:4px">${esc(r.module_id)}</code></td>
+        <td style="max-width:280px;font-size:13px">${esc(r.text)}</td>
+        <td>${r.total}</td>
+        <td><div class="pct-bar"><div class="pct-bar-track"><div class="pct-bar-fill ${barCls}" style="width:${wrongRate}%"></div></div><span class="pct-bar-label">${wrongRate}%</span></div></td>
+        <td>${diff}</td>
+      </tr>`;
+    }).join('');
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
+  }
 }
 
 // ══════════════════════════════════════════════════════════

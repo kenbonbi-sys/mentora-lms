@@ -67,6 +67,9 @@
         <button class="admin-tab" data-tab="activity">
           <i class="fa-solid fa-clock-rotate-left"></i> Hoạt động
         </button>
+        <button class="admin-tab" data-tab="announce">
+          <i class="fa-solid fa-bullhorn"></i> Thông báo
+        </button>
       </div>
 
       <!-- ── TAB: OVERVIEW ── -->
@@ -211,6 +214,68 @@
           <div id="activity-feed"></div>
         </div>
       </div><!-- /tab-activity -->
+
+      <!-- ── TAB: ANNOUNCE ── -->
+      <div id="tab-announce" class="tab-content" style="display:none">
+
+        <!-- Create announcement -->
+        <div class="admin-card" style="margin-bottom:20px">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Tạo thông báo mới</div>
+          </div>
+          <div class="form-grid" style="padding:0 0 16px">
+            <div class="form-group form-full">
+              <label>Nội dung thông báo *</label>
+              <input type="text" id="ann-message" placeholder="Hệ thống sẽ bảo trì vào 22h tối nay...">
+            </div>
+            <div class="form-group">
+              <label>Loại</label>
+              <select id="ann-type">
+                <option value="info">ℹ️ Info (xanh)</option>
+                <option value="warning">⚠️ Warning (vàng)</option>
+                <option value="success">✅ Success (xanh lá)</option>
+                <option value="danger">🔴 Danger (đỏ)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="createAnnouncement()">
+            <i class="fa-solid fa-bullhorn"></i> Đăng thông báo
+          </button>
+        </div>
+
+        <!-- Active announcements list -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Thông báo đang hiển thị</div>
+            <button class="btn-ghost" onclick="loadAnnouncements()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <div id="announcements-list">
+            <div class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>
+          </div>
+        </div>
+
+        <!-- Question analysis -->
+        <div class="admin-card" style="margin-top:20px">
+          <div class="admin-card-header">
+            <div class="admin-card-title">Phân tích câu hỏi — tỉ lệ sai</div>
+            <button class="btn-ghost" onclick="loadQuestionAnalysis()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <table class="data-table" id="qa-table">
+            <thead>
+              <tr>
+                <th>Module</th>
+                <th>Câu hỏi</th>
+                <th>Số lần trả lời</th>
+                <th>Tỉ lệ sai</th>
+                <th>Độ khó</th>
+              </tr>
+            </thead>
+            <tbody id="qa-body">
+              <tr><td colspan="5" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div><!-- /tab-announce -->
 
     </div><!-- /admin-body -->
   </div><!-- /screen-dash -->
