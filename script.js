@@ -163,6 +163,7 @@ var allModules      = [];
 var activeCat       = 'all';
 var currentModuleId = null;
 var currentQuizData = [];  // store current quiz questions for per-question tracking
+var _answeredKeys   = new Set(); // dedup quiz_answers inserts: "moduleId-qi" per session
 
 // ════════════════════════════════════════
 //  SUPABASE CONFIG
@@ -342,7 +343,36 @@ function showCertificate(score, total) {
   document.getElementById('cert-date').textContent = 'Ngày ' + new Date().toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
   document.getElementById('cert-name-input').value = localStorage.getItem('lms-cert-name') || '';
   document.getElementById('cert-learner-name').textContent = localStorage.getItem('lms-cert-name') || 'Học viên';
-  document.getElementById('modal-certificate').style.display = '';
+  document.getElementById('modal-certificate').classList.add('open'); // use .open for proper fade-in animation
+}
+
+// ════════════════════════════════════════
+//  USAGE GUIDE
+// ════════════════════════════════════════
+function showGuide() {
+  var steps = [
+    '📚 Chọn một module từ danh sách để bắt đầu học',
+    '📖 Đọc nội dung, xem video và tải tài liệu đính kèm',
+    '✅ Làm quiz cuối bài — đạt ≥75% để nhận chứng chỉ',
+    '🏅 Đánh dấu hoàn thành để theo dõi tiến độ của bạn',
+    '📎 Dùng nút Chia sẻ để copy link module gửi đồng nghiệp',
+  ];
+  // Show a guide modal built on existing modal infrastructure
+  var overlay = document.getElementById('modal-guide');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'modal-guide';
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = '<div class="modal-box"><div class="modal-header"><h3 class="modal-title"><i class="fa-solid fa-circle-question" style="color:var(--accent);margin-right:8px"></i>Hướng dẫn sử dụng</h3><button class="btn modal-close" onclick="document.getElementById(\'modal-guide\').classList.remove(\'open\')"><i class="fa-solid fa-xmark"></i></button></div>'
+      + '<ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px">'
+      + steps.map(function (s) { return '<li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5;color:var(--text-secondary)">' + s + '</li>'; }).join('')
+      + '</ul>'
+      + '<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);font-size:12px;color:var(--text-tertiary)">Mọi câu hỏi liên hệ HR-L&OD qua email nội bộ.</div>'
+      + '</div>';
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.classList.remove('open'); });
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add('open');
 }
 function applyCertName() {
   var name = document.getElementById('cert-name-input').value.trim() || 'Học viên';
@@ -396,19 +426,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── Modals ──
   function openModal(id)  { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-  document.getElementById('btn-login').addEventListener('click',    function () { openModal('modal-login'); });
-  document.getElementById('btn-register').addEventListener('click', function () { openModal('modal-register'); });
   document.querySelectorAll('[data-close]').forEach(function (btn) {
     btn.addEventListener('click', function () { closeModal(btn.dataset.close); });
   });
   document.querySelectorAll('.modal-overlay').forEach(function (o) {
     o.addEventListener('click', function (e) { if (e.target === o) o.classList.remove('open'); });
   });
-  document.getElementById('btn-do-login').addEventListener('click', function () {
-    closeModal('modal-login'); showToast('Tính năng đăng nhập đang được phát triển.', 'info');
-  });
-  document.getElementById('btn-do-register').addEventListener('click', function () {
-    closeModal('modal-register'); showToast('Tính năng đăng ký đang được phát triển.', 'info');
+
+  // ── ESC key closes any open modal ──
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-overlay.open').forEach(function (m) {
+      m.classList.remove('open');
+    });
   });
 
   // ── Filter tabs ──
@@ -878,9 +908,13 @@ function handleQuizOption(btn, qi, oi, correct) {
   var isCorrect = (oi === correct);
   if (isCorrect) quizState.score++;
 
-  // Track per-question to Supabase
-  var qText = currentQuizData[qi] ? currentQuizData[qi].question : '';
-  _sbInsert('quiz_answers', { module_id: currentModuleId, question_index: qi, question_text: qText, is_correct: isCorrect, session_id: _getSession() });
+  // Track per-question to Supabase — only on FIRST attempt per session (prevents duplicates on "Làm lại")
+  var answerKey = (currentModuleId || '') + '-' + qi;
+  if (!_answeredKeys.has(answerKey)) {
+    _answeredKeys.add(answerKey);
+    var qText = currentQuizData[qi] ? currentQuizData[qi].question : '';
+    _sbInsert('quiz_answers', { module_id: currentModuleId, question_index: qi, question_text: qText, is_correct: isCorrect, session_id: _getSession() });
+  }
 
   // Check if all answered
   var allDone = quizState.answered.every(function (v) { return v; });
@@ -950,19 +984,14 @@ function resetQuiz() {
 //  SCROLL READING TRACKER
 // ════════════════════════════════════════
 var scrollObserver = null;
-var scrollHandler  = null;
 
 function setupScrollProgress(totalSteps) {
-  // Cleanup previous
+  // Cleanup previous observer
   if (scrollObserver) { scrollObserver.disconnect(); scrollObserver = null; }
-  if (scrollHandler)  { window.removeEventListener('scroll', scrollHandler); scrollHandler = null; }
   if (!totalSteps) return;
 
-  var stepEls     = document.querySelectorAll('#detail-steps .process-step');
-  var detailMain  = document.querySelector('.detail-main');
-  var fillEl      = document.getElementById('detail-progress-fill');
-  var labelEl     = document.getElementById('detail-progress-label');
-  var currentIdx  = -1;
+  var stepEls    = document.querySelectorAll('#detail-steps .process-step');
+  var currentIdx = -1;
 
   function updateActive(idx) {
     if (idx === currentIdx) return;
@@ -979,7 +1008,6 @@ function setupScrollProgress(totalSteps) {
 
   // IntersectionObserver — detect which step is in view
   scrollObserver = new IntersectionObserver(function (entries) {
-    // Find the topmost intersecting step
     var visible = [];
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -990,6 +1018,4 @@ function setupScrollProgress(totalSteps) {
   }, { threshold: 0.3, rootMargin: '-10% 0px -50% 0px' });
 
   stepEls.forEach(function (el) { scrollObserver.observe(el); });
-
-  window.addEventListener('scroll', function(){}, { passive: true }); // keep passive hint
 }

@@ -33,11 +33,9 @@
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
       </ul>
       <div class="nav-actions" id="nav-actions">
-        <button class="btn btn-ghost btn-icon" id="btn-theme" title="Chuyển giao diện">
+        <button class="btn btn-ghost btn-icon" id="btn-theme" title="Chuyển giao diện sáng/tối">
           <i class="fa-solid fa-moon" id="theme-icon"></i>
         </button>
-        <button class="btn btn-outline" id="btn-login">Đăng nhập</button>
-        <button class="btn btn-primary" id="btn-register">Đăng ký</button>
       </div>
       <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle">
         <i class="fa-solid fa-bars"></i>
@@ -62,7 +60,7 @@
             <button class="btn btn-primary btn-lg" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
               <i class="fa-solid fa-book-open"></i> Xem tất cả Modules
             </button>
-            <button class="btn btn-outline btn-lg">
+            <button class="btn btn-outline btn-lg" onclick="showGuide()">
               <i class="fa-solid fa-circle-question"></i> Hướng dẫn sử dụng
             </button>
           </div>
@@ -267,7 +265,7 @@
   </div>
 
   <!-- CERTIFICATE MODAL -->
-  <div class="modal-overlay" id="modal-certificate" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-overlay" id="modal-certificate" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="modal-box cert-modal-box">
       <div class="cert-inner">
         <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="cert-logo">
@@ -286,7 +284,7 @@
           <input type="text" id="cert-name-input" class="cert-name-input" placeholder="Nhập tên của bạn...">
           <button class="btn btn-primary" onclick="applyCertName()"><i class="fa-solid fa-check"></i> Xác nhận tên</button>
           <button class="btn btn-outline" onclick="window.print()"><i class="fa-solid fa-print"></i> In chứng chỉ</button>
-          <button class="btn btn-ghost" onclick="document.getElementById('modal-certificate').style.display='none'">Đóng</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('modal-certificate').classList.remove('open')">Đóng</button>
         </div>
       </div>
     </div>

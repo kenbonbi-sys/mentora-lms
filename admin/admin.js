@@ -114,9 +114,9 @@ function setDayFilter(days) {
   document.querySelectorAll('.day-filter-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.days) === days);
   });
-  const titleMap = { 7: '7 ngày', 30: '30 ngày', 90: '90 ngày', 0: 'tất cả' };
+  const titleMap = { 7: '7 ngày', 30: '30 ngày', 90: '90 ngày', 0: 'tất cả (hiện 90 ngày gần nhất)' };
   const el = document.getElementById('chart-daily-title');
-  if (el) el.textContent = 'Traffic theo ngày' + (days ? ' (' + titleMap[days] + ')' : '');
+  if (el) el.textContent = 'Traffic theo ngày (' + titleMap[days] + ')';
   Promise.all([loadStats(), loadCharts(), loadHeatmap()]);
 }
 
@@ -264,8 +264,8 @@ async function loadCharts() {
     if (!rows) return;
 
     // ── Daily traffic ─────────────────────────────────────
-    const days = currentDays || 30;
-    const displayDays = Math.min(days, 30);
+    // "Tất cả" (currentDays=0) → show last 90 days in chart; otherwise use exact filter value
+    const displayDays = currentDays === 0 ? 90 : currentDays;
     const labels = [];
     const counts = {};
     for (let i = displayDays - 1; i >= 0; i--) {
@@ -859,6 +859,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('modal-module').addEventListener('click', e => {
     if (e.target === document.getElementById('modal-module')) closeModuleModal();
+  });
+  // ESC key closes module modal
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModuleModal();
   });
   initTabs();
   checkAuth();
