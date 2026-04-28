@@ -184,6 +184,8 @@ var activeCat       = 'all';
 var currentModuleId = null;
 var currentQuizData = [];  // store current quiz questions for per-question tracking
 var _answeredKeys   = new Set(); // dedup quiz_answers inserts: "moduleId-qi" per session
+var filterMotionTimer = null;
+var filterMotionCleanupTimer = null;
 
 // Category icon map — for badge accessibility (color + icon, not color alone)
 var CAT_ICONS = { Policy: 'fa-file-shield', Process: 'fa-diagram-project', Safety: 'fa-triangle-exclamation' };
@@ -753,18 +755,30 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ── Filter tabs ──
-  document.getElementById('filter-tabs').addEventListener('click', function (e) {
+  var filterTabs = document.getElementById('filter-tabs');
+  filterTabs.addEventListener('click', function (e) {
     var tab = e.target.closest('.filter-tab');
     if (!tab) return;
-    document.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
-    tab.classList.add('active');
-    activeCat = tab.dataset.cat;
-    filterAndRender();
-    // ARIA: update aria-selected state
-    document.querySelectorAll('#filter-tabs [role="tab"]').forEach(function(t) {
-      t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-    });
+    activateFilterTab(tab);
   });
+  filterTabs.addEventListener('keydown', function (e) {
+    if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) < 0) return;
+    var tabs = Array.prototype.slice.call(filterTabs.querySelectorAll('.filter-tab'));
+    var current = document.activeElement.closest('.filter-tab') || filterTabs.querySelector('.filter-tab.active');
+    var idx = Math.max(0, tabs.indexOf(current));
+    if (e.key === 'ArrowRight') idx = (idx + 1) % tabs.length;
+    if (e.key === 'ArrowLeft') idx = (idx - 1 + tabs.length) % tabs.length;
+    if (e.key === 'Home') idx = 0;
+    if (e.key === 'End') idx = tabs.length - 1;
+    e.preventDefault();
+    tabs[idx].focus();
+    activateFilterTab(tabs[idx]);
+  });
+  activateFilterTab(filterTabs.querySelector('.filter-tab.active'), true);
+  window.addEventListener('resize', function () { syncFilterTabIndicator(); });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { syncFilterTabIndicator(); }).catch(function () {});
+  }
 
   // ── Search ──
   document.getElementById('input-search').addEventListener('keyup', filterAndRender);
@@ -1090,6 +1104,58 @@ function showPage(page) {
     pageDetail.style.display = '';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
+}
+
+function syncFilterTabIndicator(tab) {
+  var tabs = document.getElementById('filter-tabs');
+  if (!tabs) return;
+  var active = tab || tabs.querySelector('.filter-tab.active') || tabs.querySelector('.filter-tab');
+  if (!active) return;
+  tabs.style.setProperty('--tab-indicator-x', active.offsetLeft + 'px');
+  tabs.style.setProperty('--tab-indicator-w', active.offsetWidth + 'px');
+}
+
+function renderFilteredModulesWithMotion() {
+  var grid = document.getElementById('modules-grid');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!grid || reduceMotion) {
+    filterAndRender();
+    return;
+  }
+
+  window.clearTimeout(filterMotionTimer);
+  window.clearTimeout(filterMotionCleanupTimer);
+  grid.classList.remove('is-filtering-in');
+  grid.classList.add('is-filtering-out');
+
+  filterMotionTimer = window.setTimeout(function () {
+    filterAndRender();
+    grid.classList.remove('is-filtering-out');
+    grid.classList.add('is-filtering-in');
+    filterMotionCleanupTimer = window.setTimeout(function () {
+      grid.classList.remove('is-filtering-in');
+    }, 260);
+  }, 90);
+}
+
+function activateFilterTab(tab, skipRender) {
+  if (!tab) return;
+  var tabs = document.getElementById('filter-tabs');
+  if (!tabs) return;
+  var changed = activeCat !== tab.dataset.cat;
+
+  tabs.querySelectorAll('.filter-tab').forEach(function (t) {
+    var active = t === tab;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', active ? 'true' : 'false');
+    t.setAttribute('tabindex', active ? '0' : '-1');
+  });
+
+  activeCat = tab.dataset.cat || 'all';
+  syncFilterTabIndicator(tab);
+  tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
+  if (changed && !skipRender) renderFilteredModulesWithMotion();
 }
 
 // ════════════════════════════════════════
