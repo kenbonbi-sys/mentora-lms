@@ -1,8 +1,6 @@
 # 📘 HANDOVER GUIDE — Mentora LMS
 ### Tài liệu bàn giao dự án — Dành cho người tiếp nhận
 
-> **Đọc cái này trước tiên.** Tài liệu này được viết dành riêng cho bạn — người có background OD/HR mạnh nhưng chưa quen với kỹ thuật. Không cần biết lập trình để đọc hiểu và vận hành hệ thống này.
-
 ---
 
 ## MỤC LỤC
