@@ -1318,17 +1318,33 @@ function openDetail(id) {
     + esc(m.category || '') + '</span> '
     + '<span class="badge ' + (stClass[m.status] || 'badge-open') + '">' + esc(m.status || '') + '</span>';
 
-  // Steps
-  var stepsHtml = (m.steps || []).map(function (s, i) {
-    return '<div class="process-step">'
-      + '<div class="step-number">' + (i + 1) + '</div>'
-      + '<div class="step-body">'
-      + '<div class="step-title">' + esc(s.title || '') + '</div>'
-      + '<div class="step-desc">' + esc(s.desc || '') + '</div>'
-      + (s.note ? '<div class="step-note"><i class="fa-solid fa-circle-info"></i> ' + esc(s.note) + '</div>' : '')
-      + '</div></div>';
-  }).join('');
-  document.getElementById('detail-steps').innerHTML = stepsHtml || '<p style="color:var(--text-tertiary);font-size:13px">Chưa có nội dung.</p>';
+  // Content — prefer content_blocks (new format) over legacy steps
+  var mainContentHtml;
+  var stepsForTracker = [];
+  var quizFromBlocks  = null;
+
+  if (m.content_blocks && m.content_blocks.length > 0) {
+    mainContentHtml = _renderContentBlocks(m.content_blocks, stepsForTracker);
+    var quizBlock = null;
+    for (var bi = 0; bi < m.content_blocks.length; bi++) {
+      if (m.content_blocks[bi].type === 'quiz') { quizBlock = m.content_blocks[bi]; break; }
+    }
+    quizFromBlocks = quizBlock ? (quizBlock.data.questions || []) : [];
+  } else {
+    // Legacy rendering
+    var stepIdx = 0;
+    mainContentHtml = (m.steps || []).map(function (s, i) {
+      stepsForTracker.push(s);
+      return '<div class="process-step" data-step="' + i + '">'
+        + '<div class="step-number">' + (i + 1) + '</div>'
+        + '<div class="step-body">'
+        + '<div class="step-title">' + esc(s.title || '') + '</div>'
+        + '<div class="step-desc">' + esc(s.desc || '') + '</div>'
+        + (s.note ? '<div class="step-note"><i class="fa-solid fa-circle-info"></i> ' + esc(s.note) + '</div>' : '')
+        + '</div></div>';
+    }).join('');
+  }
+  document.getElementById('detail-steps').innerHTML = mainContentHtml || '<p style="color:var(--text-tertiary);font-size:13px">Chưa có nội dung.</p>';
 
   // Related modules gallery
   var sectionImages  = document.getElementById('section-images');
@@ -1395,17 +1411,16 @@ function openDetail(id) {
   // Hotspots
   renderHotspots(m);
 
-  // Quiz
-  renderQuiz(m.quiz || []);
+  // Quiz — from blocks (new format) or legacy
+  renderQuiz(quizFromBlocks !== null ? quizFromBlocks : (m.quiz || []));
 
   // Done button state + notes
   updateDoneBtn(isDone(id));
   loadNotes(id);
 
-  // Reset + build step tracker
-
+  // Build step tracker from stepsForTracker (populated above)
   var trackerEl = document.getElementById('step-tracker');
-  trackerEl.innerHTML = (m.steps || []).map(function (s, i) {
+  trackerEl.innerHTML = stepsForTracker.map(function (s, i) {
     var stepTitle = esc(s.title || '');
     return '<div class="step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '"'
       + ' role="listitem" tabindex="0"'
@@ -1419,8 +1434,110 @@ function openDetail(id) {
 
   showPage('detail');
 
-  // Start scroll observer after render
-  setTimeout(function () { setupScrollProgress(m.steps ? m.steps.length : 0); }, 120);
+  // Start scroll observer
+  setTimeout(function () { setupScrollProgress(stepsForTracker.length); }, 120);
+}
+
+// ════════════════════════════════════════
+//  CONTENT BLOCKS — Learner Renderer
+// ════════════════════════════════════════
+function _renderContentBlocks(blocks, stepsCollector) {
+  var html = '';
+  var stepGroupIdx = 0; // global step index across all steps blocks (for tracker)
+  blocks.forEach(function (block) {
+    var d = block.data || {};
+    switch (block.type) {
+
+      case 'text':
+        if (d.content) {
+          // Preserve newlines as paragraphs
+          var paras = String(d.content).split('\n').filter(function(l){ return l.trim(); });
+          html += '<div class="cb-text">' + paras.map(function(p){ return '<p>' + esc(p) + '</p>'; }).join('') + '</div>';
+        }
+        break;
+
+      case 'steps':
+        (d.items || []).forEach(function (s, i) {
+          var gi = stepGroupIdx++;
+          if (stepsCollector) stepsCollector.push(s);
+          html += '<div class="process-step" data-step="' + gi + '">'
+            + '<div class="step-number">' + (gi + 1) + '</div>'
+            + '<div class="step-body">'
+            + '<div class="step-title">' + esc(s.title || '') + '</div>'
+            + '<div class="step-desc">' + esc(s.desc || '') + '</div>'
+            + (s.note ? '<div class="step-note"><i class="fa-solid fa-circle-info"></i> ' + esc(s.note) + '</div>' : '')
+            + '</div></div>';
+        });
+        break;
+
+      case 'checklist':
+        if (d.items && d.items.length) {
+          html += '<div class="cb-checklist">';
+          d.items.forEach(function (item) {
+            html += '<div class="cb-checklist-item">'
+              + '<i class="fa-regular fa-square-check"></i>'
+              + '<span>' + esc(item.text || '') + '</span>'
+              + '</div>';
+          });
+          html += '</div>';
+        }
+        break;
+
+      case 'quiz':
+        // Quiz is rendered separately via renderQuiz(); skip here
+        break;
+
+      case 'video':
+        if (d.url) {
+          var safeV = safeVideoUrl(d.url);
+          html += '<div class="cb-video">';
+          if (d.title) html += '<div class="cb-video-title">' + esc(d.title) + '</div>';
+          if (safeV) {
+            html += '<div class="cb-video-wrap"><iframe src="' + escAttr(safeV) + '" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
+          }
+          html += '</div>';
+        }
+        break;
+
+      case 'image':
+        if (d.url) {
+          html += '<div class="cb-image">'
+            + '<img src="' + escAttr(d.url) + '" alt="' + escAttr(d.caption || '') + '" loading="lazy">'
+            + (d.caption ? '<div class="cb-image-caption">' + esc(d.caption) + '</div>' : '')
+            + '</div>';
+        }
+        break;
+
+      case 'file': {
+        var iconMap2 = { pdf:'fa-file-pdf', pptx:'fa-file-powerpoint', doc:'fa-file-word', video:'fa-video' };
+        var ftype = String(d.type || 'pdf');
+        var fhref = d.url ? escAttr(d.url) : '#';
+        html += '<div class="resource-item">'
+          + '<div class="resource-icon ' + ftype + '"><i class="fa-solid ' + (iconMap2[ftype] || 'fa-file') + '"></i></div>'
+          + '<div class="resource-meta">'
+          + '<div class="resource-name">' + esc(d.name || '') + '</div>'
+          + (d.size ? '<div class="resource-size">' + esc(d.size) + '</div>' : '')
+          + '</div>'
+          + (d.url ? '<a href="' + fhref + '" class="resource-dl" title="Tải xuống" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download"></i></a>'
+                   : '<span class="resource-dl disabled"><i class="fa-solid fa-lock"></i></span>')
+          + '</div>';
+        break;
+      }
+
+      case 'callout': {
+        var cv = String(d.variant || 'info');
+        var calloutIcons = { info:'fa-circle-info', warning:'fa-triangle-exclamation', tip:'fa-lightbulb', danger:'fa-circle-xmark' };
+        html += '<div class="cb-callout cb-callout--' + cv + '">'
+          + '<i class="fa-solid ' + (calloutIcons[cv] || 'fa-circle-info') + '"></i>'
+          + '<div class="cb-callout-body">'
+          + (d.title ? '<div class="cb-callout-title">' + esc(d.title) + '</div>' : '')
+          + (d.text ? '<div class="cb-callout-text">' + esc(d.text) + '</div>' : '')
+          + '</div></div>';
+        break;
+      }
+    }
+  });
+  return html;
 }
 
 // ════════════════════════════════════════
@@ -1621,7 +1738,16 @@ function showQuizResult() {
 
 function resetQuiz() {
   var mod = allModules.find(function (x) { return x.id === currentModuleId; });
-  if (mod) renderQuiz(mod.quiz || []);
+  if (!mod) return;
+  if (mod.content_blocks && mod.content_blocks.length > 0) {
+    var qb = null;
+    for (var i = 0; i < mod.content_blocks.length; i++) {
+      if (mod.content_blocks[i].type === 'quiz') { qb = mod.content_blocks[i]; break; }
+    }
+    renderQuiz(qb ? (qb.data.questions || []) : []);
+  } else {
+    renderQuiz(mod.quiz || []);
+  }
 }
 
 // ════════════════════════════════════════

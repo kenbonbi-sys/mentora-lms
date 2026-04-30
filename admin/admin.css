@@ -325,15 +325,12 @@ body {
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-full  { grid-column: 1 / -1; }
 
-/* Builder sections (steps & quiz) */
-.builder-section { display: flex; flex-direction: column; gap: 12px; }
-.builder-header   { display: flex; align-items: center; justify-content: space-between; }
-.builder-title    { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .5px; }
+/* ── Builder sections ───────────────────────────────────── */
+.builder-section { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.builder-header  { display: flex; align-items: center; justify-content: space-between; }
+.builder-title   { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .5px; }
 
-.step-builder-item, .quiz-builder-item {
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius);
-  padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative;
-}
+/* Legacy (kept for compat) */
 .step-builder-num {
   font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .5px;
 }
@@ -342,7 +339,7 @@ body {
   background: none; border: none; color: var(--text-tertiary); cursor: pointer; font-size: 15px;
   padding: 4px; border-radius: 6px; transition: color .15s, background .15s;
 }
-.item-remove:hover { color: var(--red); background: #fff0f0; }
+.item-remove:hover { color: var(--red); background: rgba(229,48,63,.08); }
 
 .quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .quiz-option-row { display: flex; align-items: center; gap: 8px; }
@@ -353,6 +350,127 @@ body {
 }
 .correct-select { display: flex; flex-direction: column; gap: 4px; }
 .correct-select label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+
+/* ── Word Upload ────────────────────────────────────────── */
+.word-upload-area {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 20px; display: flex; flex-direction: column; align-items: center;
+  gap: 10px; background: var(--bg); cursor: pointer; transition: border-color .15s, background .15s;
+}
+.word-upload-area:hover { border-color: #2b579a; background: #eef3fa; }
+.word-upload-label {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  cursor: pointer; text-align: center;
+}
+.word-upload-label i { font-size: 28px; color: #2b579a; }
+.word-upload-label span { font-size: 13px; color: var(--text-secondary); }
+.word-upload-label small { font-size: 11px; color: var(--text-tertiary); }
+.word-upload-status {
+  padding: 10px 14px; border-radius: var(--radius); font-size: 13px;
+  display: flex; align-items: center; gap: 8px;
+}
+.word-upload-status.loading { background: #eff6ff; color: #1d4ed8; }
+.word-upload-status.success { background: #f0fdf4; color: #15803d; }
+.word-upload-status.error   { background: #fef2f2; color: #dc2626; }
+
+/* ── Block Add Wrap & Picker ────────────────────────────── */
+.block-add-wrap { position: relative; }
+.block-type-picker {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 200;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  display: flex; flex-direction: column; min-width: 220px; overflow: hidden;
+  animation: picker-in .15s ease;
+}
+@keyframes picker-in {
+  from { opacity: 0; transform: translateY(-6px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.btp-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: none; border: none; cursor: pointer;
+  font-size: 13px; color: var(--text-primary); text-align: left; transition: background .1s;
+}
+.btp-item:hover { background: var(--bg-hover); }
+.btp-item i { width: 16px; color: var(--accent); font-size: 13px; flex-shrink: 0; }
+
+/* ── Content Blocks Builder ─────────────────────────────── */
+.content-blocks-builder {
+  display: flex; flex-direction: column; gap: 8px; min-height: 80px;
+}
+.blocks-empty-hint {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 32px 20px; display: flex; flex-direction: column; align-items: center;
+  gap: 10px; color: var(--text-tertiary); text-align: center;
+}
+.blocks-empty-hint i { font-size: 28px; opacity: .4; }
+.blocks-empty-hint p { font-size: 13px; margin: 0; line-height: 1.6; }
+
+/* ── Block Item ─────────────────────────────────────────── */
+.block-item {
+  display: flex; gap: 0; background: var(--bg-card);
+  border: 1.5px solid var(--border); border-radius: var(--radius-lg);
+  position: relative; transition: box-shadow .15s, border-color .15s;
+}
+.block-item:hover { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(165,0,100,.07); }
+.block-item.block-dragging { opacity: .45; box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+.block-item.drag-above { border-top: 3px solid var(--accent); }
+.block-item.drag-below { border-bottom: 3px solid var(--accent); }
+
+.block-handle {
+  width: 32px; flex-shrink: 0; display: flex; align-items: flex-start;
+  justify-content: center; padding-top: 14px; cursor: grab;
+  color: var(--text-tertiary); border-right: 1px solid var(--border-light);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  transition: background .1s, color .1s;
+}
+.block-handle:hover { background: var(--bg-hover); color: var(--accent); }
+.block-handle:active { cursor: grabbing; }
+
+.block-inner { flex: 1; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.block-type-label {
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.block-editor-content { display: flex; flex-direction: column; gap: 10px; }
+
+.block-remove {
+  position: absolute; top: 10px; right: 10px;
+  background: none; border: none; color: var(--text-tertiary); cursor: pointer;
+  font-size: 15px; padding: 4px; border-radius: 6px; transition: color .15s, background .15s;
+}
+.block-remove:hover { color: var(--red); background: rgba(229,48,63,.08); }
+
+/* ── Sub-item add button ────────────────────────────────── */
+.btn-block-sub {
+  align-self: flex-start; margin-top: 4px;
+  background: var(--bg); border: 1.5px dashed var(--border);
+  color: var(--text-secondary); font-size: 12px;
+}
+.btn-block-sub:hover { border-color: var(--accent); color: var(--accent); background: rgba(165,0,100,.04); }
+
+/* ── Step block sub-items ───────────────────────────────── */
+.steps-block-items, .quiz-block-questions, .checklist-block-items {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.step-block-item, .quiz-block-item {
+  background: var(--bg); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  position: relative;
+}
+.sbi-header {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.checklist-block-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 8px 10px;
+}
+
+/* ── Callout editor meta row ────────────────────────────── */
+.callout-editor-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.block-file-meta     { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 /* ── Overview header / Day filter ──────────────── */
 .overview-header {

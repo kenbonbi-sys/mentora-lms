@@ -357,22 +357,67 @@
           </div>
         </div>
 
-        <!-- Steps builder -->
+        <!-- Word Upload -->
         <div class="builder-section">
           <div class="builder-header">
-            <div class="builder-title"><i class="fa-solid fa-list-check" style="color:#a50064;margin-right:6px"></i>Nội dung & Quy trình</div>
-            <button class="btn-sm" onclick="addStep()"><i class="fa-solid fa-plus"></i> Thêm bước</button>
+            <div class="builder-title"><i class="fa-solid fa-file-word" style="color:#2b579a;margin-right:6px"></i>Nhập từ file Word</div>
           </div>
-          <div id="steps-builder"></div>
+          <div class="word-upload-area" id="word-upload-area">
+            <label for="word-upload" class="word-upload-label">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Kéo thả file <strong>.docx</strong> hoặc <u>chọn file</u></span>
+              <small>Hệ thống tự phân tích cấu trúc theo template → điền vào blocks bên dưới</small>
+            </label>
+            <input type="file" id="word-upload" accept=".docx" style="display:none" onchange="handleWordUpload(event)">
+            <button class="btn-ghost btn-sm" onclick="downloadWordTemplate()">
+              <i class="fa-solid fa-download"></i> Tải template mẫu
+            </button>
+          </div>
+          <div id="word-upload-status" style="display:none"></div>
         </div>
 
-        <!-- Quiz builder -->
+        <!-- Content Blocks Builder -->
         <div class="builder-section">
           <div class="builder-header">
-            <div class="builder-title"><i class="fa-solid fa-circle-question" style="color:#a50064;margin-right:6px"></i>Câu hỏi kiểm tra (Quiz)</div>
-            <button class="btn-sm" onclick="addQuizQ()"><i class="fa-solid fa-plus"></i> Thêm câu hỏi</button>
+            <div class="builder-title"><i class="fa-solid fa-cubes" style="color:#a50064;margin-right:6px"></i>Nội dung bài học</div>
+            <div class="block-add-wrap">
+              <button class="btn-sm" id="btn-add-block" onclick="toggleBlockPicker(event)">
+                <i class="fa-solid fa-plus"></i> Thêm block
+              </button>
+              <div class="block-type-picker" id="block-type-picker" style="display:none">
+                <button class="btp-item" onclick="addBlock('text');toggleBlockPicker()">
+                  <i class="fa-solid fa-paragraph"></i><span>Đoạn văn bản</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('steps');toggleBlockPicker()">
+                  <i class="fa-solid fa-list-check"></i><span>Các bước quy trình</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('checklist');toggleBlockPicker()">
+                  <i class="fa-solid fa-square-check"></i><span>Checklist</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('quiz');toggleBlockPicker()">
+                  <i class="fa-solid fa-circle-question"></i><span>Quiz kiểm tra</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('video');toggleBlockPicker()">
+                  <i class="fa-solid fa-video"></i><span>Video YouTube</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('image');toggleBlockPicker()">
+                  <i class="fa-solid fa-image"></i><span>Hình ảnh</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('file');toggleBlockPicker()">
+                  <i class="fa-solid fa-paperclip"></i><span>Tài liệu đính kèm</span>
+                </button>
+                <button class="btp-item" onclick="addBlock('callout');toggleBlockPicker()">
+                  <i class="fa-solid fa-lightbulb"></i><span>Callout / Lưu ý</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div id="quiz-builder"></div>
+          <div id="content-blocks-builder" class="content-blocks-builder">
+            <div class="blocks-empty-hint" id="blocks-empty-hint">
+              <i class="fa-solid fa-cubes"></i>
+              <p>Chưa có block nào.<br>Nhấn <strong>+ Thêm block</strong> hoặc upload file Word để bắt đầu soạn thảo.</p>
+            </div>
+          </div>
         </div>
 
       </div><!-- /modal-body -->

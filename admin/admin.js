@@ -12,12 +12,34 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ── State ─────────────────────────────────────────────────
 let editingModuleId = null;
-let stepCount       = 0;
-let quizCount       = 0;
+let stepCount       = 0;  // legacy (kept for safety)
+let quizCount       = 0;  // legacy (kept for safety)
 let localModules    = [];
 let currentDays     = 30;
 let _lastModStats   = [];
 let _chartHour      = null;
+let _blockIdSeed    = 0;
+
+// ── Block system helpers ───────────────────────────────────
+function genBlockId() { return 'blk-' + Date.now() + '-' + (++_blockIdSeed); }
+
+const BLOCK_META = {
+  text:      { icon: 'fa-paragraph',       label: 'Đoạn văn bản' },
+  steps:     { icon: 'fa-list-check',      label: 'Quy trình / Các bước' },
+  checklist: { icon: 'fa-square-check',    label: 'Checklist' },
+  quiz:      { icon: 'fa-circle-question', label: 'Quiz kiểm tra' },
+  video:     { icon: 'fa-video',           label: 'Video YouTube' },
+  image:     { icon: 'fa-image',           label: 'Hình ảnh' },
+  file:      { icon: 'fa-paperclip',       label: 'Tài liệu đính kèm' },
+  callout:   { icon: 'fa-lightbulb',       label: 'Callout / Lưu ý' },
+};
+
+// close block picker when clicking outside
+document.addEventListener('click', e => {
+  const picker = document.getElementById('block-type-picker');
+  if (!picker) return;
+  if (!e.target.closest('.block-add-wrap')) picker.style.display = 'none';
+});
 
 // ── KPI benchmark targets ──────────────────────────────────
 const KPI_TARGETS = { views: 500, quiz: 200, avgScore: 80, passRate: 85 };
@@ -757,6 +779,451 @@ async function loadQuestionAnalysis() {
 // ══════════════════════════════════════════════════════════
 //  MODULE MODAL — Add / Edit
 // ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  BLOCK EDITOR
+// ══════════════════════════════════════════════════════════
+
+function toggleBlockPicker(e) {
+  if (e) e.stopPropagation();
+  const picker = document.getElementById('block-type-picker');
+  picker.style.display = picker.style.display === 'none' ? '' : 'none';
+}
+
+function _updateEmptyHint() {
+  const container = document.getElementById('content-blocks-builder');
+  const hint = document.getElementById('blocks-empty-hint');
+  if (!hint) return;
+  hint.style.display = container.querySelectorAll('.block-item').length === 0 ? '' : 'none';
+}
+
+function addBlock(type, data) {
+  const blockId = genBlockId();
+  const meta = BLOCK_META[type] || { icon: 'fa-cube', label: type };
+  const div = document.createElement('div');
+  div.className = 'block-item';
+  div.draggable = true;
+  div.dataset.blockId = blockId;
+  div.dataset.blockType = type;
+  div.innerHTML =
+    '<div class="block-handle" title="Kéo để sắp xếp"><i class="fa-solid fa-grip-vertical"></i></div>'
+    + '<div class="block-inner">'
+    +   '<div class="block-type-label"><i class="fa-solid ' + meta.icon + '"></i> ' + meta.label + '</div>'
+    +   '<div class="block-editor-content">' + _buildBlockEditor(type, blockId, data) + '</div>'
+    + '</div>'
+    + '<button class="block-remove" onclick="_removeBlock(this)" title="Xóa block"><i class="fa-solid fa-xmark"></i></button>';
+  _setupBlockDrag(div);
+  document.getElementById('content-blocks-builder').appendChild(div);
+  _updateEmptyHint();
+  return div;
+}
+
+function _removeBlock(btn) {
+  btn.closest('.block-item').remove();
+  _updateEmptyHint();
+}
+
+function _buildBlockEditor(type, blockId, data) {
+  const d = data || {};
+  switch (type) {
+
+    case 'text':
+      return '<div class="form-group"><label>Nội dung</label>'
+        + '<textarea class="block-data-content" rows="5" placeholder="Nhập nội dung...">'
+        + esc(d.content || '') + '</textarea></div>';
+
+    case 'steps':
+      return '<div class="steps-block-items" id="sbi-' + blockId + '">'
+        + (d.items || []).map((item, i) => _stepItemHtml(i + 1, item)).join('')
+        + '</div>'
+        + '<button class="btn-sm btn-block-sub" onclick="addStepItem(\'' + blockId + '\')">'
+        + '<i class="fa-solid fa-plus"></i> Thêm bước</button>';
+
+    case 'checklist':
+      return '<div class="checklist-block-items" id="cli-' + blockId + '">'
+        + (d.items || []).map(item => _checklistItemHtml(item)).join('')
+        + '</div>'
+        + '<button class="btn-sm btn-block-sub" onclick="addChecklistItem(\'' + blockId + '\')">'
+        + '<i class="fa-solid fa-plus"></i> Thêm mục</button>';
+
+    case 'quiz':
+      return '<div class="quiz-block-questions" id="qbi-' + blockId + '">'
+        + (d.questions || []).map((q, i) => _quizItemHtml(i + 1, q)).join('')
+        + '</div>'
+        + '<button class="btn-sm btn-block-sub" onclick="addQuizItem(\'' + blockId + '\')">'
+        + '<i class="fa-solid fa-plus"></i> Thêm câu hỏi</button>';
+
+    case 'video':
+      return '<div class="form-group"><label>Tiêu đề video (tùy chọn)</label>'
+        + '<input type="text" class="block-data-title" placeholder="Giới thiệu nội dung..." value="' + esc(d.title || '') + '"></div>'
+        + '<div class="form-group"><label>URL YouTube Embed *</label>'
+        + '<input type="text" class="block-data-url" placeholder="https://www.youtube.com/embed/..." value="' + esc(d.url || '') + '"></div>';
+
+    case 'image':
+      return '<div class="form-group"><label>URL hình ảnh *</label>'
+        + '<input type="text" class="block-data-url" placeholder="https://..." value="' + esc(d.url || '') + '"></div>'
+        + '<div class="form-group"><label>Caption (tùy chọn)</label>'
+        + '<input type="text" class="block-data-caption" placeholder="Mô tả hình..." value="' + esc(d.caption || '') + '"></div>';
+
+    case 'file': {
+      const ft = d.type || 'pdf';
+      return '<div class="form-group"><label>Tên tài liệu *</label>'
+        + '<input type="text" class="block-data-name" placeholder="Chính sách ABC.pdf" value="' + esc(d.name || '') + '"></div>'
+        + '<div class="form-group"><label>URL tải xuống</label>'
+        + '<input type="text" class="block-data-url" placeholder="https://..." value="' + esc(d.url || '') + '"></div>'
+        + '<div class="block-file-meta">'
+        + '<div class="form-group"><label>Loại file</label><select class="block-data-type">'
+        + ['pdf','pptx','doc','video'].map(v => '<option value="' + v + '"' + (ft === v ? ' selected' : '') + '>' + v.toUpperCase() + '</option>').join('')
+        + '</select></div>'
+        + '<div class="form-group"><label>Dung lượng</label>'
+        + '<input type="text" class="block-data-size" placeholder="2.4 MB" value="' + esc(d.size || '') + '"></div>'
+        + '</div>';
+    }
+
+    case 'callout': {
+      const cv = d.variant || 'info';
+      return '<div class="callout-editor-meta">'
+        + '<div class="form-group"><label>Loại</label><select class="block-data-variant">'
+        + [['info','ℹ️ Info'],['warning','⚠️ Warning'],['tip','💡 Tip'],['danger','🔴 Danger']]
+            .map(([v,l]) => '<option value="' + v + '"' + (cv === v ? ' selected' : '') + '>' + l + '</option>').join('')
+        + '</select></div>'
+        + '<div class="form-group"><label>Tiêu đề (tùy chọn)</label>'
+        + '<input type="text" class="block-data-title" placeholder="Lưu ý quan trọng" value="' + esc(d.title || '') + '"></div>'
+        + '</div>'
+        + '<div class="form-group"><label>Nội dung</label>'
+        + '<textarea class="block-data-text" rows="2" placeholder="Nội dung callout...">' + esc(d.text || '') + '</textarea></div>';
+    }
+
+    default: return '<p style="color:var(--text-tertiary)">Block type không xác định.</p>';
+  }
+}
+
+// ── Sub-item builders ─────────────────────────────────────
+
+function _stepItemHtml(n, data) {
+  const d = data || {};
+  return '<div class="step-block-item">'
+    + '<div class="sbi-header"><span class="step-builder-num">Bước ' + n + '</span>'
+    + '<button class="item-remove" onclick="this.closest(\'.step-block-item\').remove()"><i class="fa-solid fa-xmark"></i></button></div>'
+    + '<div class="form-group"><label>Tiêu đề *</label>'
+    + '<input type="text" class="step-item-title" placeholder="Tiêu đề bước..." value="' + esc(d.title || '') + '"></div>'
+    + '<div class="form-group"><label>Nội dung</label>'
+    + '<textarea class="step-item-desc" rows="3" placeholder="Mô tả chi tiết...">' + esc(d.desc || '') + '</textarea></div>'
+    + '<div class="form-group"><label>Lưu ý (tùy chọn)</label>'
+    + '<input type="text" class="step-item-note" placeholder="Ghi chú cảnh báo..." value="' + esc(d.note || '') + '"></div>'
+    + '</div>';
+}
+
+function _checklistItemHtml(data) {
+  return '<div class="checklist-block-item">'
+    + '<i class="fa-regular fa-square" style="color:var(--text-tertiary);flex-shrink:0;margin-top:2px"></i>'
+    + '<div class="form-group" style="flex:1;margin:0">'
+    + '<input type="text" class="cl-item-text" placeholder="Nội dung mục..." value="' + esc((data || {}).text || '') + '"></div>'
+    + '<button class="item-remove" style="position:static;margin-left:4px" onclick="this.closest(\'.checklist-block-item\').remove()"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>';
+}
+
+function _quizItemHtml(n, data) {
+  const d = data || {};
+  const opts = d.options || ['','','',''];
+  const correct = d.correct || 0;
+  const labels = ['A','B','C','D'];
+  return '<div class="quiz-block-item">'
+    + '<div class="sbi-header"><span class="step-builder-num">Câu ' + n + '</span>'
+    + '<button class="item-remove" onclick="this.closest(\'.quiz-block-item\').remove()"><i class="fa-solid fa-xmark"></i></button></div>'
+    + '<div class="form-group"><label>Câu hỏi *</label>'
+    + '<input type="text" class="qi-question" value="' + esc(d.question || '') + '"></div>'
+    + '<div class="quiz-options-grid">'
+    + labels.map((l, i) =>
+        '<div class="quiz-option-row"><div class="quiz-option-key">' + l + '</div>'
+        + '<div class="form-group" style="flex:1;margin:0"><input type="text" class="qi-option" value="' + esc(opts[i] || '') + '"></div></div>'
+      ).join('')
+    + '</div>'
+    + '<div class="form-group correct-select"><label>Đáp án đúng</label><select class="qi-correct">'
+    + labels.map((l, i) => '<option value="' + i + '"' + (correct === i ? ' selected' : '') + '>Đáp án ' + l + '</option>').join('')
+    + '</select></div>'
+    + '<div class="form-group"><label>Giải thích</label>'
+    + '<textarea class="qi-explanation" rows="2">' + esc(d.explanation || '') + '</textarea></div>'
+    + '</div>';
+}
+
+function addStepItem(blockId) {
+  const container = document.getElementById('sbi-' + blockId);
+  if (!container) return;
+  const n = container.querySelectorAll('.step-block-item').length + 1;
+  container.insertAdjacentHTML('beforeend', _stepItemHtml(n, null));
+}
+
+function addChecklistItem(blockId) {
+  const container = document.getElementById('cli-' + blockId);
+  if (!container) return;
+  container.insertAdjacentHTML('beforeend', _checklistItemHtml(null));
+}
+
+function addQuizItem(blockId) {
+  const container = document.getElementById('qbi-' + blockId);
+  if (!container) return;
+  const n = container.querySelectorAll('.quiz-block-item').length + 1;
+  container.insertAdjacentHTML('beforeend', _quizItemHtml(n, null));
+}
+
+// ── Drag & Drop ───────────────────────────────────────────
+let _dragSrc = null;
+
+function _setupBlockDrag(el) {
+  el.addEventListener('dragstart', e => {
+    _dragSrc = el;
+    el.classList.add('block-dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', el.dataset.blockId);
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('block-dragging');
+    document.querySelectorAll('.block-item').forEach(b => b.classList.remove('drag-above','drag-below'));
+    _dragSrc = null;
+  });
+  el.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (!_dragSrc || _dragSrc === el) return;
+    e.dataTransfer.dropEffect = 'move';
+    document.querySelectorAll('.block-item').forEach(b => b.classList.remove('drag-above','drag-below'));
+    const rect = el.getBoundingClientRect();
+    el.classList.add(e.clientY < rect.top + rect.height / 2 ? 'drag-above' : 'drag-below');
+  });
+  el.addEventListener('dragleave', () => el.classList.remove('drag-above','drag-below'));
+  el.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!_dragSrc || _dragSrc === el) return;
+    const container = el.parentNode;
+    const rect = el.getBoundingClientRect();
+    container.insertBefore(_dragSrc, e.clientY < rect.top + rect.height / 2 ? el : el.nextSibling);
+    el.classList.remove('drag-above','drag-below');
+  });
+}
+
+// ── Collect all blocks ────────────────────────────────────
+function _collectBlocks() {
+  const blocks = [];
+  document.querySelectorAll('#content-blocks-builder .block-item').forEach(blockEl => {
+    const type = blockEl.dataset.blockType;
+    const id   = blockEl.dataset.blockId;
+    let data   = {};
+
+    switch (type) {
+      case 'text':
+        data.content = (blockEl.querySelector('.block-data-content') || {}).value?.trim() || '';
+        break;
+      case 'steps':
+        data.items = [];
+        blockEl.querySelectorAll('.step-block-item').forEach(item => {
+          const title = (item.querySelector('.step-item-title') || {}).value?.trim() || '';
+          const desc  = (item.querySelector('.step-item-desc')  || {}).value?.trim() || '';
+          const note  = (item.querySelector('.step-item-note')  || {}).value?.trim() || '';
+          if (title || desc) data.items.push({ title, desc, ...(note ? { note } : {}) });
+        });
+        break;
+      case 'checklist':
+        data.items = [];
+        blockEl.querySelectorAll('.cl-item-text').forEach(inp => {
+          const text = inp.value?.trim() || '';
+          if (text) data.items.push({ text });
+        });
+        break;
+      case 'quiz':
+        data.questions = [];
+        blockEl.querySelectorAll('.quiz-block-item').forEach(qEl => {
+          const question    = (qEl.querySelector('.qi-question')    || {}).value?.trim() || '';
+          if (!question) return;
+          const options     = Array.from(qEl.querySelectorAll('.qi-option')).map(i => i.value?.trim() || '');
+          const correct     = parseInt((qEl.querySelector('.qi-correct') || {}).value || '0', 10);
+          const explanation = (qEl.querySelector('.qi-explanation') || {}).value?.trim() || '';
+          data.questions.push({ question, options, correct, explanation });
+        });
+        break;
+      case 'video':
+        data.url   = (blockEl.querySelector('.block-data-url')   || {}).value?.trim() || '';
+        data.title = (blockEl.querySelector('.block-data-title') || {}).value?.trim() || '';
+        break;
+      case 'image':
+        data.url     = (blockEl.querySelector('.block-data-url')     || {}).value?.trim() || '';
+        data.caption = (blockEl.querySelector('.block-data-caption') || {}).value?.trim() || '';
+        break;
+      case 'file':
+        data.name = (blockEl.querySelector('.block-data-name') || {}).value?.trim() || '';
+        data.url  = (blockEl.querySelector('.block-data-url')  || {}).value?.trim() || '';
+        data.type = (blockEl.querySelector('.block-data-type') || {}).value || 'pdf';
+        data.size = (blockEl.querySelector('.block-data-size') || {}).value?.trim() || '';
+        break;
+      case 'callout':
+        data.variant = (blockEl.querySelector('.block-data-variant') || {}).value || 'info';
+        data.title   = (blockEl.querySelector('.block-data-title')   || {}).value?.trim() || '';
+        data.text    = (blockEl.querySelector('.block-data-text')    || {}).value?.trim() || '';
+        break;
+    }
+    blocks.push({ id, type, data });
+  });
+  return blocks;
+}
+
+// ── Convert old-format module → blocks ────────────────────
+function _moduleToBlocks(mod) {
+  const blocks = [];
+  if (mod.steps && mod.steps.length > 0) {
+    blocks.push({ id: genBlockId(), type: 'steps', data: { items: mod.steps.map(s => ({ title: s.title || '', desc: s.desc || '', note: s.note || '' })) } });
+  }
+  (mod.resources || []).forEach(r => {
+    blocks.push({ id: genBlockId(), type: 'file', data: { name: r.name || '', url: r.url || '', type: r.type || 'pdf', size: r.size || '' } });
+  });
+  if (mod.videoUrl) {
+    blocks.push({ id: genBlockId(), type: 'video', data: { url: mod.videoUrl, title: '' } });
+  }
+  if (mod.quiz && mod.quiz.length > 0) {
+    blocks.push({ id: genBlockId(), type: 'quiz', data: { questions: mod.quiz } });
+  }
+  return blocks;
+}
+
+function _loadBlocksIntoEditor(blocks) {
+  const container = document.getElementById('content-blocks-builder');
+  container.querySelectorAll('.block-item').forEach(b => b.remove());
+  (blocks || []).forEach(block => addBlock(block.type, block.data));
+  _updateEmptyHint();
+}
+
+// ══════════════════════════════════════════════════════════
+//  WORD UPLOAD
+// ══════════════════════════════════════════════════════════
+async function _loadMammoth() {
+  if (window.mammoth) return;
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+    s.onload = resolve;
+    s.onerror = () => reject(new Error('Không tải được thư viện đọc file Word.'));
+    document.head.appendChild(s);
+  });
+}
+
+async function handleWordUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const statusEl = document.getElementById('word-upload-status');
+  statusEl.style.display = '';
+  statusEl.className = 'word-upload-status loading';
+  statusEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang phân tích file Word...';
+  try {
+    await _loadMammoth();
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.convertToHtml({ arrayBuffer });
+    const { blocks, title } = _parseWordHtml(result.value);
+    if (title && !document.getElementById('mod-name').value.trim()) {
+      document.getElementById('mod-name').value = title;
+    }
+    const container = document.getElementById('content-blocks-builder');
+    const existing = container.querySelectorAll('.block-item').length;
+    if (existing > 0) {
+      if (!confirm('Nội dung hiện tại sẽ bị xóa và thay bằng nội dung từ file Word. Tiếp tục?')) {
+        statusEl.style.display = 'none';
+        event.target.value = '';
+        return;
+      }
+    }
+    _loadBlocksIntoEditor(blocks);
+    statusEl.className = 'word-upload-status success';
+    statusEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Phân tích thành công — <strong>' + blocks.length + ' block</strong> đã được tạo từ file Word.';
+    setTimeout(() => { statusEl.style.display = 'none'; }, 4000);
+  } catch (err) {
+    statusEl.className = 'word-upload-status error';
+    statusEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Lỗi: ' + err.message;
+  }
+  event.target.value = '';
+}
+
+function _parseWordHtml(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const blocks = [];
+  let title = '';
+  let currentStepItems = [];
+
+  function flushSteps() {
+    if (currentStepItems.length > 0) {
+      blocks.push({ id: genBlockId(), type: 'steps', data: { items: [...currentStepItems] } });
+      currentStepItems = [];
+    }
+  }
+
+  Array.from(doc.body.childNodes).forEach(node => {
+    const tag  = node.nodeName;
+    const text = (node.textContent || '').trim();
+    if (!text) return;
+
+    if (tag === 'H1') {
+      title = text;
+    } else if (tag === 'H2') {
+      currentStepItems.push({ title: text, desc: '', note: '' });
+    } else if (tag === 'H3') {
+      flushSteps();
+      blocks.push({ id: genBlockId(), type: 'callout', data: { variant: 'info', title: text, text: '' } });
+    } else if (tag === 'P') {
+      const lower = text.toLowerCase();
+      if (lower.startsWith('lưu ý:') || lower.startsWith('note:') || lower.startsWith('⚠️') || lower.startsWith('📌')) {
+        const content = text.replace(/^(lưu ý:|note:|⚠️|📌)\s*/i, '');
+        if (currentStepItems.length > 0) {
+          currentStepItems[currentStepItems.length - 1].note = content;
+        } else {
+          flushSteps();
+          blocks.push({ id: genBlockId(), type: 'callout', data: { variant: 'warning', title: 'Lưu ý', text: content } });
+        }
+      } else if (currentStepItems.length > 0) {
+        const last = currentStepItems[currentStepItems.length - 1];
+        last.desc = last.desc ? last.desc + '\n' + text : text;
+      } else {
+        flushSteps();
+        blocks.push({ id: genBlockId(), type: 'text', data: { content: text } });
+      }
+    } else if (tag === 'UL' || tag === 'OL') {
+      flushSteps();
+      const items = Array.from(node.querySelectorAll('li')).map(li => ({ text: li.textContent.trim() })).filter(i => i.text);
+      if (items.length) blocks.push({ id: genBlockId(), type: 'checklist', data: { items } });
+    }
+  });
+  flushSteps();
+  return { blocks, title };
+}
+
+function downloadWordTemplate() {
+  // Generate a simple text template guide since we can't create actual .docx without a library
+  const content = [
+    'HƯỚNG DẪN SOẠN THẢO MODULE THEO TEMPLATE\n',
+    '===========================================\n',
+    'Cấu trúc file Word để import vào Mentora LMS:\n\n',
+    'HEADING 1 (H1): Tên module\n',
+    'HEADING 2 (H2): Tiêu đề bước 1\n',
+    '  [Đoạn văn]: Nội dung bước 1...\n',
+    '  Lưu ý: Ghi chú cảnh báo (bắt đầu bằng "Lưu ý:")\n',
+    'HEADING 2 (H2): Tiêu đề bước 2\n',
+    '  [Đoạn văn]: Nội dung bước 2...\n',
+    'HEADING 3 (H3): Tiêu đề callout/hộp thông tin\n',
+    '[Danh sách gạch đầu dòng]: Tạo checklist\n',
+    '  - Mục 1\n',
+    '  - Mục 2\n\n',
+    'LƯU Ý:\n',
+    '- Mỗi H2 sẽ tạo ra 1 bước trong block Quy trình\n',
+    '- H3 tạo ra Callout block\n',
+    '- Danh sách (bullet/numbered) tạo ra Checklist block\n',
+    '- Đoạn văn độc lập (không thuộc H2) tạo ra Text block\n',
+    '- "Lưu ý: ..." dưới H2 sẽ thành phần ghi chú của bước đó\n',
+  ].join('');
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'mentora-template-huong-dan.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════════
+//  MODULE MODAL — Add / Edit
+// ══════════════════════════════════════════════════════════
 function openAddModule() {
   editingModuleId = null;
   document.getElementById('modal-module-title').textContent = 'Thêm Module mới';
@@ -765,12 +1232,9 @@ function openAddModule() {
   document.getElementById('mod-category').value = 'Process';
   document.getElementById('mod-level').value    = 'Bắt buộc';
   document.getElementById('mod-updated').value  = new Date().toLocaleDateString('vi-VN');
-  document.getElementById('mod-status').value   = 'draft'; // new modules default to Draft
-  stepCount = quizCount = 0;
-  document.getElementById('steps-builder').innerHTML = '';
-  document.getElementById('quiz-builder').innerHTML  = '';
-  addStep(); addStep(); addStep();
-  addQuizQ(); addQuizQ();
+  document.getElementById('mod-status').value   = 'draft';
+  _loadBlocksIntoEditor([]);
+  document.getElementById('word-upload-status').style.display = 'none';
   document.getElementById('modal-module').style.display = '';
 }
 
@@ -787,6 +1251,7 @@ async function openEditModule(id) {
   } catch {}
   if (!mod) mod = localModules.find(m => m.id === id);
   if (!mod) { showToast('Không tìm thấy module', 'error'); return; }
+
   document.getElementById('mod-id').value        = mod.id || '';
   document.getElementById('mod-id').disabled     = true;
   document.getElementById('mod-name').value      = mod.name || '';
@@ -799,11 +1264,13 @@ async function openEditModule(id) {
   document.getElementById('mod-category').value  = mod.category || 'Process';
   document.getElementById('mod-level').value     = mod.level || 'Bắt buộc';
   document.getElementById('mod-status').value    = cmsStatus;
-  stepCount = quizCount = 0;
-  document.getElementById('steps-builder').innerHTML = '';
-  document.getElementById('quiz-builder').innerHTML  = '';
-  (mod.steps || []).forEach(s => addStep(s));
-  (mod.quiz  || []).forEach(q => addQuizQ(q));
+
+  // Load blocks: prefer content_blocks, fallback to converting old steps/quiz
+  const blocks = (mod.content_blocks && mod.content_blocks.length > 0)
+    ? mod.content_blocks
+    : _moduleToBlocks(mod);
+  _loadBlocksIntoEditor(blocks);
+  document.getElementById('word-upload-status').style.display = 'none';
   document.getElementById('modal-module').style.display = '';
 }
 
@@ -811,34 +1278,6 @@ function closeModuleModal() {
   document.getElementById('modal-module').style.display = 'none';
   document.getElementById('mod-id').disabled = false;
   editingModuleId = null;
-}
-
-function addStep(data) {
-  stepCount++;
-  const n = stepCount, div = document.createElement('div');
-  div.className = 'step-builder-item';
-  div.innerHTML = '<button class="item-remove" onclick="this.closest(\'.step-builder-item\').remove()"><i class="fa-solid fa-xmark"></i></button>'
-    + '<div class="step-builder-num">Bước ' + n + '</div>'
-    + '<div class="form-group"><label>Tiêu đề *</label><input type="text" class="step-title" placeholder="Chuẩn bị..." value="' + (data ? esc(data.title) : '') + '"></div>'
-    + '<div class="form-group"><label>Nội dung *</label><textarea class="step-desc" rows="4">' + (data ? esc(data.desc) : '') + '</textarea></div>'
-    + '<div class="form-group"><label>Lưu ý</label><input type="text" class="step-note" value="' + (data ? esc(data.note || '') : '') + '"></div>';
-  document.getElementById('steps-builder').appendChild(div);
-}
-
-function addQuizQ(data) {
-  quizCount++;
-  const n = quizCount, labels = ['A','B','C','D'];
-  const opts = data ? data.options : ['','','',''];
-  const correct = data ? data.correct : 0;
-  const div = document.createElement('div');
-  div.className = 'quiz-builder-item';
-  div.innerHTML = '<button class="item-remove" onclick="this.closest(\'.quiz-builder-item\').remove()"><i class="fa-solid fa-xmark"></i></button>'
-    + '<div class="step-builder-num">Câu ' + n + '</div>'
-    + '<div class="form-group"><label>Câu hỏi *</label><input type="text" class="q-question" value="' + (data ? esc(data.question) : '') + '"></div>'
-    + '<div class="quiz-options-grid">' + labels.map((l,i) => '<div class="quiz-option-row"><div class="quiz-option-key">' + l + '</div><div class="form-group" style="flex:1;margin:0"><input type="text" class="q-option" value="' + (opts[i] ? esc(opts[i]) : '') + '"></div></div>').join('') + '</div>'
-    + '<div class="form-group correct-select"><label>Đáp án đúng</label><select class="q-correct">' + labels.map((l,i) => '<option value="' + i + '"' + (correct===i?' selected':'') + '>Đáp án ' + l + '</option>').join('') + '</select></div>'
-    + '<div class="form-group"><label>Giải thích *</label><textarea class="q-explanation" rows="2">' + (data ? esc(data.explanation) : '') + '</textarea></div>';
-  document.getElementById('quiz-builder').appendChild(div);
 }
 
 async function saveModule() {
@@ -849,23 +1288,19 @@ async function saveModule() {
     const id   = (editingModuleId || document.getElementById('mod-id').value.trim()).toUpperCase();
     const name = document.getElementById('mod-name').value.trim();
     if (!id || !name) throw new Error('ID và Tên module là bắt buộc');
-    const steps = [];
-    document.querySelectorAll('.step-builder-item').forEach(el => {
-      const title = el.querySelector('.step-title').value.trim();
-      const desc  = el.querySelector('.step-desc').value.trim();
-      if (!title && !desc) return;
-      const note = el.querySelector('.step-note').value.trim();
-      steps.push({ title, desc, ...(note ? { note } : {}) });
+
+    const content_blocks = _collectBlocks();
+
+    // Derive legacy fields from blocks for backward compat
+    const steps = [], quiz = [], resources = [];
+    let videoUrl = document.getElementById('mod-video').value.trim() || '';
+    content_blocks.forEach(block => {
+      if (block.type === 'steps')     steps.push(...(block.data.items || []));
+      if (block.type === 'quiz')      quiz.push(...(block.data.questions || []));
+      if (block.type === 'video' && !videoUrl) videoUrl = block.data.url || '';
+      if (block.type === 'file')      resources.push({ name: block.data.name, url: block.data.url, type: block.data.type, size: block.data.size });
     });
-    const quiz = [];
-    document.querySelectorAll('.quiz-builder-item').forEach(el => {
-      const question    = el.querySelector('.q-question').value.trim();
-      const options     = Array.from(el.querySelectorAll('.q-option')).map(i => i.value.trim());
-      const correct     = parseInt(el.querySelector('.q-correct').value, 10);
-      const explanation = el.querySelector('.q-explanation').value.trim();
-      if (!question) return;
-      quiz.push({ question, options, correct, explanation });
-    });
+
     const moduleData = {
       id, name, owner: 'HR-L&OD',
       category:  document.getElementById('mod-category').value,
@@ -874,10 +1309,11 @@ async function saveModule() {
       subtitle:  document.getElementById('mod-subtitle').value.trim(),
       thumbnail: document.getElementById('mod-thumbnail').value.trim() || '/assets/images/hero/hero-01.jpg',
       icon:      document.getElementById('mod-icon').value.trim() || '/assets/icons/education.png',
-      status: 'Đang hoạt động',
-      updated: document.getElementById('mod-updated').value.trim() || new Date().toLocaleDateString('vi-VN'),
-      videoUrl: document.getElementById('mod-video').value.trim() || '',
-      steps, quiz, images: [], resources: [],
+      status:    'Đang hoạt động',
+      updated:   document.getElementById('mod-updated').value.trim() || new Date().toLocaleDateString('vi-VN'),
+      videoUrl,
+      content_blocks,   // new flexible format
+      steps, quiz, resources, images: [],  // legacy compat
     };
     const modStatus = document.getElementById('mod-status').value || 'draft';
     const { error } = await sb.from('modules_cms').upsert(
