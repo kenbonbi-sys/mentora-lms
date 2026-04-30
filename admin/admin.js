@@ -182,20 +182,7 @@ function _dateRange() {
   };
 }
 
-function _renderTarget(elId, value, target, isPercent) {
-  const el = document.getElementById(elId);
-  if (!el || !target || isNaN(value)) return;
-  const pct = Math.min(100, Math.round((value / target) * 100));
-  const fmt = v => isPercent ? v + '%' : v.toLocaleString('vi');
-  el.innerHTML = `<div class="target-bar-wrap">
-    <div class="target-bar-track" role="progressbar"
-         aria-label="Mục tiêu: ${fmt(target)}"
-         aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
-      <div class="target-bar-fill${pct >= 100 ? ' target-met' : ''}" style="width:${pct}%"></div>
-    </div>
-    <span class="target-label">Mục tiêu ${fmt(target)} · ${pct}%</span>
-  </div>`;
-}
+function _renderTarget() {}
 
 function _renderDelta(elId, curr, prev) {
   const el = document.getElementById(elId);
