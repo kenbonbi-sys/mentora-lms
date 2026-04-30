@@ -942,9 +942,9 @@ function renderAiRecommend() {
 
   banner.style.display = '';
   banner.innerHTML =
-    '<div class="ai-recommend-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>'
+    '<div class="ai-recommend-icon"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i></div>'
     + '<div class="ai-recommend-body">'
-    + '<div class="ai-recommend-label">✦ AI Gợi ý tiếp theo</div>'
+    + '<div class="ai-recommend-label">✦ Gợi ý tiếp theo</div>'
     + '<div class="ai-recommend-name">' + esc(rec.name || '') + '</div>'
     + '<div class="ai-recommend-reason">' + esc(reason) + ' · ' + esc(rec.duration || '') + '</div>'
     + '</div>'
