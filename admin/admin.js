@@ -454,7 +454,8 @@ function renderFunnel(views, quizAttempts, passes) {
     options: {
       indexAxis: 'y',
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+      aspectRatio: 4,
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: {
