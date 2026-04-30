@@ -697,32 +697,58 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── Streak — counted on every daily visit ──
   updateStreak();
 
+  // ── Mobile drawer ──
+  function openDrawer() {
+    document.getElementById('mobile-drawer').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('active');
+    document.body.classList.add('drawer-open');
+    document.getElementById('nav-toggle').setAttribute('aria-label', 'Đóng menu');
+  }
+  function closeDrawer() {
+    document.getElementById('mobile-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('active');
+    document.body.classList.remove('drawer-open');
+    document.getElementById('nav-toggle').setAttribute('aria-label', 'Mở menu');
+  }
+  window.openDrawer = openDrawer;
+  window.closeDrawer = closeDrawer;
+
+  document.getElementById('nav-toggle').addEventListener('click', function () {
+    var isOpen = document.getElementById('mobile-drawer').classList.contains('open');
+    isOpen ? closeDrawer() : openDrawer();
+  });
+
   // ── Theme ──
   var themeBtn  = document.getElementById('btn-theme');
   var themeIcon = document.getElementById('theme-icon');
+  function _syncDrawerTheme(isDark) {
+    var icon = document.getElementById('drawer-theme-icon');
+    var label = document.getElementById('drawer-theme-label');
+    if (!icon || !label) return;
+    if (isDark) { icon.className = 'fa-solid fa-sun'; label.textContent = 'Giao diện sáng'; }
+    else        { icon.className = 'fa-solid fa-moon'; label.textContent = 'Giao diện tối'; }
+  }
   function applyTheme(dark) {
     document.body.classList.toggle('dark', dark);
     themeIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
     themeIcon.setAttribute('aria-hidden', 'true');
     themeBtn.setAttribute('aria-label', dark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
+    _syncDrawerTheme(dark);
   }
-  applyTheme(localStorage.getItem('lms-theme') === 'dark');
-  themeBtn.addEventListener('click', function () {
+  function toggleTheme() {
     var isDark = !document.body.classList.contains('dark');
     localStorage.setItem('lms-theme', isDark ? 'dark' : 'light');
     applyTheme(isDark);
-  });
+  }
+  window.toggleTheme = toggleTheme;
+  applyTheme(localStorage.getItem('lms-theme') === 'dark');
+  themeBtn.addEventListener('click', toggleTheme);
 
-  // ── Mobile nav ──
-  document.getElementById('nav-toggle').addEventListener('click', function () {
-    document.getElementById('nav-links').classList.toggle('open');
-    document.getElementById('nav-actions').classList.toggle('open');
-  });
-
-  // ── Nav scroll links ──
+  // ── Nav scroll links (navbar + drawer) ──
   document.querySelectorAll('[data-scroll]').forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
+      closeDrawer();
       showPage('list');
       setTimeout(function () {
         var target = document.getElementById(link.dataset.scroll);
@@ -731,8 +757,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 50);
       document.querySelectorAll('.nav-link').forEach(function (l) { l.classList.remove('active'); });
       link.classList.add('active');
-      document.getElementById('nav-links').classList.remove('open');
-      document.getElementById('nav-actions').classList.remove('open');
     });
   });
 

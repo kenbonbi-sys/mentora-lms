@@ -38,11 +38,42 @@
           <i class="fa-solid fa-moon" id="theme-icon" aria-hidden="true"></i>
         </button>
       </div>
-      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle">
+      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
   </nav>
+
+  <!-- Mobile drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+  <aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu điều hướng">
+    <div class="drawer-header">
+      <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo drawer-logo">
+      <button class="btn btn-ghost btn-icon drawer-close" onclick="closeDrawer()" aria-label="Đóng menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a class="drawer-link" href="javascript:void(0)" data-scroll="hero" onclick="closeDrawer()">
+        <i class="fa-solid fa-house"></i> Trang chủ
+      </a>
+      <a class="drawer-link" href="javascript:void(0)" data-scroll="courses" onclick="closeDrawer()">
+        <i class="fa-solid fa-book-open"></i> Modules
+      </a>
+      <a class="drawer-link" href="javascript:void(0)" onclick="showPage('map');closeDrawer()">
+        <i class="fa-solid fa-diagram-project"></i> Lộ trình
+      </a>
+      <a class="drawer-link" href="javascript:void(0)" data-scroll="instructors" onclick="closeDrawer()">
+        <i class="fa-solid fa-circle-info"></i> Về chúng tôi
+      </a>
+    </nav>
+    <div class="drawer-footer">
+      <button class="btn btn-ghost drawer-theme-btn" id="drawer-theme-btn" onclick="toggleTheme()">
+        <i class="fa-solid fa-moon" id="drawer-theme-icon"></i>
+        <span id="drawer-theme-label">Giao diện tối</span>
+      </button>
+    </div>
+  </aside>
 
   <!-- PAGE: LIST -->
   <div id="page-list">
