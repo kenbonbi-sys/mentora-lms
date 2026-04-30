@@ -19,6 +19,9 @@ let currentDays     = 30;
 let _lastModStats   = [];
 let _chartHour      = null;
 let _blockIdSeed    = 0;
+let _journeyItems   = [];
+let _journeyDragId  = null;
+let _editingPrerequisites = [];
 
 // ── Block system helpers ───────────────────────────────────
 function genBlockId() { return 'blk-' + Date.now() + '-' + (++_blockIdSeed); }
@@ -134,6 +137,7 @@ function initTabs() {
     if (panel) panel.style.display = '';
     if (tab.dataset.tab === 'activity') loadActivity();
     if (tab.dataset.tab === 'modules')  loadCmsModules();
+    if (tab.dataset.tab === 'journey')  loadJourneyBuilder();
     if (tab.dataset.tab === 'announce') { loadAnnouncements(); loadQuestionAnalysis(); }
   }
 
@@ -612,6 +616,197 @@ async function loadCmsModules() {
     </tr>`).join('');
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="7" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
+  }
+}
+
+async function _fetchCmsModuleRows() {
+  const { data, error } = await sb.from('modules_cms')
+    .select('id,data,updated_at,status,sort_order')
+    .order('sort_order', { ascending: true })
+    .order('updated_at',  { ascending: false });
+  if (error) {
+    if (error.message && (error.message.includes('sort_order') || error.message.includes('status'))) {
+      const fallback = await sb.from('modules_cms').select('id,data,updated_at').order('updated_at', { ascending: false });
+      if (fallback.error) throw fallback.error;
+      return (fallback.data || []).map(row => ({ ...row, status: 'published', sort_order: null }));
+    }
+    throw error;
+  }
+  return data || [];
+}
+
+function _parseModuleData(row) {
+  if (!row || !row.data) return {};
+  return typeof row.data === 'string' ? JSON.parse(row.data) : row.data;
+}
+
+async function _getJourneyItems() {
+  const cmsRows = await _fetchCmsModuleRows();
+  const cmsById = new Map((cmsRows || []).map(row => [row.id, row]));
+  const seen = new Set();
+  const items = [];
+
+  localModules.forEach((mod, idx) => {
+    const cms = cmsById.get(mod.id);
+    const data = cms ? _parseModuleData(cms) : mod;
+    seen.add(mod.id);
+    items.push({
+      id: mod.id,
+      data: Object.assign({}, mod, data),
+      status: cms ? (cms.status || 'published') : 'published',
+      sort_order: cms && cms.sort_order != null ? cms.sort_order : idx * 10,
+      source: cms ? 'CMS + JSON' : 'JSON',
+    });
+  });
+
+  cmsRows.filter(row => !seen.has(row.id)).forEach((row, idx) => {
+    const data = _parseModuleData(row);
+    items.push({
+      id: row.id,
+      data: Object.assign({ id: row.id }, data),
+      status: row.status || 'published',
+      sort_order: row.sort_order != null ? row.sort_order : (localModules.length + idx) * 10,
+      source: 'CMS',
+    });
+  });
+
+  return items.sort((a, b) => {
+    const ao = a.sort_order == null ? 9999 : a.sort_order;
+    const bo = b.sort_order == null ? 9999 : b.sort_order;
+    if (ao !== bo) return ao - bo;
+    return String(a.id).localeCompare(String(b.id));
+  });
+}
+
+async function loadJourneyBuilder() {
+  const builder = document.getElementById('journey-builder');
+  const preview = document.getElementById('journey-preview');
+  if (!builder || !preview) return;
+  builder.innerHTML = '<div class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
+  preview.innerHTML = '';
+  try {
+    _journeyItems = await _getJourneyItems();
+    document.getElementById('journey-module-count').textContent = '(' + _journeyItems.length + ' modules)';
+    renderJourneyBuilder();
+  } catch (err) {
+    builder.innerHTML = '<div class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</div>';
+  }
+}
+
+function renderJourneyBuilder() {
+  const builder = document.getElementById('journey-builder');
+  const preview = document.getElementById('journey-preview');
+  if (!builder || !preview) return;
+  if (!_journeyItems.length) {
+    builder.innerHTML = '<div class="empty-cell">Chưa có module để tạo lộ trình.</div>';
+    preview.innerHTML = '';
+    return;
+  }
+
+  const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
+  builder.innerHTML = _journeyItems.map((item, idx) => {
+    const mod = item.data || {};
+    const prereqs = Array.isArray(mod.prerequisites) ? mod.prerequisites : [];
+    return `<div class="journey-item" draggable="true" data-id="${esc(item.id)}">
+      <div class="journey-drag"><i class="fa-solid fa-grip-vertical"></i></div>
+      <div class="journey-index">${idx + 1}</div>
+      <div class="journey-icon"><img src="${esc(mod.icon || '/assets/icons/education.png')}" alt=""></div>
+      <div class="journey-info">
+        <div class="journey-name">${esc(mod.name || item.id)}</div>
+        <div class="journey-meta">
+          <span class="badge ${catMap[mod.category] || ''}">${esc(mod.category || 'Module')}</span>
+          <span class="journey-source">${esc(item.source)}</span>
+          ${prereqs.length ? '<span class="journey-prereq"><i class="fa-solid fa-lock"></i> Sau ' + esc(prereqs.join(', ')) + '</span>' : '<span class="journey-prereq open"><i class="fa-solid fa-unlock"></i> Điểm bắt đầu</span>'}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  preview.innerHTML = _journeyItems.map((item, idx) => {
+    const mod = item.data || {};
+    return `<div class="journey-preview-node">
+      <span class="journey-preview-step">${idx + 1}</span>
+      <span class="journey-preview-title">${esc(mod.name || item.id)}</span>
+      ${idx < _journeyItems.length - 1 ? '<i class="fa-solid fa-arrow-down journey-preview-arrow"></i>' : ''}
+    </div>`;
+  }).join('');
+
+  builder.querySelectorAll('.journey-item').forEach(item => {
+    item.addEventListener('dragstart', onJourneyDragStart);
+    item.addEventListener('dragover', onJourneyDragOver);
+    item.addEventListener('drop', onJourneyDrop);
+    item.addEventListener('dragend', onJourneyDragEnd);
+  });
+}
+
+function onJourneyDragStart(e) {
+  _journeyDragId = e.currentTarget.dataset.id;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', _journeyDragId);
+}
+
+function onJourneyDragOver(e) {
+  e.preventDefault();
+  const target = e.currentTarget;
+  if (!target || target.dataset.id === _journeyDragId) return;
+  document.querySelectorAll('.journey-item.drop-before, .journey-item.drop-after').forEach(el => {
+    el.classList.remove('drop-before', 'drop-after');
+  });
+  const rect = target.getBoundingClientRect();
+  target.classList.add(e.clientY < rect.top + rect.height / 2 ? 'drop-before' : 'drop-after');
+}
+
+function onJourneyDrop(e) {
+  e.preventDefault();
+  const targetId = e.currentTarget.dataset.id;
+  const fromIdx = _journeyItems.findIndex(item => item.id === _journeyDragId);
+  const targetIdx = _journeyItems.findIndex(item => item.id === targetId);
+  if (fromIdx < 0 || targetIdx < 0 || fromIdx === targetIdx) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const after = e.clientY >= rect.top + rect.height / 2;
+  const moved = _journeyItems.splice(fromIdx, 1)[0];
+  let insertIdx = _journeyItems.findIndex(item => item.id === targetId);
+  if (after) insertIdx += 1;
+  _journeyItems.splice(insertIdx, 0, moved);
+  renderJourneyBuilder();
+}
+
+function onJourneyDragEnd() {
+  _journeyDragId = null;
+  document.querySelectorAll('.journey-item').forEach(el => {
+    el.classList.remove('dragging', 'drop-before', 'drop-after');
+  });
+}
+
+async function saveJourneyOrder() {
+  if (!_journeyItems.length) return;
+  const btn = document.getElementById('btn-save-journey');
+  const oldHtml = btn.innerHTML;
+  const linearLock = document.getElementById('journey-linear-lock').checked;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Đang lưu...';
+  try {
+    const updates = _journeyItems.map((item, idx) => {
+      const data = Object.assign({}, item.data || {}, { id: item.id });
+      data.prerequisites = linearLock && idx > 0 ? [_journeyItems[idx - 1].id] : (Array.isArray(data.prerequisites) ? data.prerequisites : []);
+      return {
+        id: item.id,
+        data: JSON.stringify(data),
+        status: item.status || 'published',
+        sort_order: (idx + 1) * 10,
+      };
+    });
+    const { error } = await sb.from('modules_cms').upsert(updates, { onConflict: 'id' });
+    if (error) throw error;
+    showToast('Đã lưu lộ trình học tập', 'success');
+    await loadJourneyBuilder();
+    loadCmsModules();
+  } catch (err) {
+    showToast('Lỗi lưu lộ trình: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = oldHtml;
   }
 }
 
@@ -1425,6 +1620,7 @@ function downloadWordTemplate() {
 // ══════════════════════════════════════════════════════════
 function openAddModule() {
   editingModuleId = null;
+  _editingPrerequisites = [];
   document.getElementById('modal-module-title').textContent = 'Thêm Module mới';
   document.getElementById('mod-id').disabled = false;
   ['mod-id','mod-name','mod-subtitle','mod-duration','mod-thumbnail','mod-icon','mod-video'].forEach(id => document.getElementById(id).value = '');
@@ -1439,6 +1635,7 @@ function openAddModule() {
 
 async function openEditModule(id) {
   editingModuleId = id;
+  _editingPrerequisites = [];
   document.getElementById('modal-module-title').textContent = 'Chỉnh sửa Module';
   let mod = null; let cmsStatus = 'published';
   try {
@@ -1463,6 +1660,7 @@ async function openEditModule(id) {
   document.getElementById('mod-category').value  = mod.category || 'Process';
   document.getElementById('mod-level').value     = mod.level || 'Bắt buộc';
   document.getElementById('mod-status').value    = cmsStatus;
+  _editingPrerequisites = Array.isArray(mod.prerequisites) ? mod.prerequisites.slice() : [];
 
   // Load blocks: prefer content_blocks, fallback to converting old steps/quiz
   const blocks = (mod.content_blocks && mod.content_blocks.length > 0)
@@ -1511,6 +1709,7 @@ async function saveModule() {
       status:    'Đang hoạt động',
       updated:   document.getElementById('mod-updated').value.trim() || new Date().toLocaleDateString('vi-VN'),
       videoUrl,
+      prerequisites: _editingPrerequisites.slice(),
       content_blocks,   // new flexible format
       steps, quiz, resources, images: [],  // legacy compat
     };

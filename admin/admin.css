@@ -172,6 +172,52 @@ body {
   padding: 16px 20px; border-bottom: 1px solid var(--border);
 }
 .admin-card-title { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .6px; }
+.tab-subtitle { margin-top: 5px; color: var(--text-tertiary); font-size: 13px; line-height: 1.45; }
+
+/* ── Journey Builder ───────────────────────────────────── */
+.journey-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 18px; align-items: start; }
+.journey-card { overflow: visible; }
+.journey-toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-secondary); cursor: pointer; user-select: none; }
+.journey-toggle input { accent-color: var(--accent); }
+.journey-hint { font-size: 12px; color: var(--text-tertiary); display: inline-flex; align-items: center; gap: 6px; }
+.journey-builder { padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 220px; }
+.journey-item {
+  display: grid; grid-template-columns: 28px 34px 42px minmax(0, 1fr); gap: 12px; align-items: center;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 12px; cursor: grab; box-shadow: var(--shadow-sm);
+  transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease, opacity .16s ease;
+}
+.journey-item:hover { border-color: rgba(165,0,100,.28); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.journey-item.dragging { opacity: .45; cursor: grabbing; }
+.journey-item.drop-before { border-top-color: var(--accent); box-shadow: 0 -3px 0 var(--accent), var(--shadow-md); }
+.journey-item.drop-after  { border-bottom-color: var(--accent); box-shadow: 0 3px 0 var(--accent), var(--shadow-md); }
+.journey-drag { color: var(--text-tertiary); text-align: center; }
+.journey-index {
+  width: 30px; height: 30px; display: grid; place-items: center; border-radius: 999px;
+  background: var(--accent-subtle); color: var(--accent); font-weight: 800; font-size: 12px;
+}
+.journey-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg); display: grid; place-items: center; overflow: hidden; }
+.journey-icon img { width: 28px; height: 28px; object-fit: contain; }
+.journey-info { min-width: 0; }
+.journey-name { font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.journey-meta { margin-top: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.journey-source, .journey-prereq {
+  font-size: 11px; font-weight: 600; color: var(--text-tertiary); background: var(--bg);
+  border-radius: 999px; padding: 3px 8px; display: inline-flex; align-items: center; gap: 4px;
+}
+.journey-prereq { color: #7c3aed; background: #f5f3ff; }
+.journey-prereq.open { color: var(--green); background: #f0fbe8; }
+.journey-preview { padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 220px; }
+.journey-preview-node {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg-card); padding: 11px 12px; display: flex; align-items: center; gap: 10px;
+}
+.journey-preview-step {
+  width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 11px; font-weight: 800;
+}
+.journey-preview-title { min-width: 0; font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.35; }
+.journey-preview-arrow { color: var(--text-tertiary); margin-left: auto; }
 
 /* ── Data Table ────────────────────────────────── */
 .data-table { width: 100%; border-collapse: collapse; }
@@ -1036,6 +1082,8 @@ body {
   .admin-body  { padding: 16px 12px 40px; }
   .stats-grid  { grid-template-columns: 1fr 1fr; }
   .charts-row  { grid-template-columns: 1fr; }
+  .journey-layout { grid-template-columns: 1fr; }
+  .journey-item { grid-template-columns: 24px 30px 38px minmax(0, 1fr); }
   .form-grid   { grid-template-columns: 1fr; }
   .quiz-options-grid { grid-template-columns: 1fr; }
   .modal-box   { border-radius: var(--radius); }

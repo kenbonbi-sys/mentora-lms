@@ -770,8 +770,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         else showToast('Trang này đang được phát triển.', 'info');
       }, 50);
-      document.querySelectorAll('.nav-link').forEach(function (l) { l.classList.remove('active'); });
-      link.classList.add('active');
+      document.querySelectorAll('.nav-link, .drawer-link').forEach(function (l) { l.classList.remove('active'); });
+      document.querySelectorAll('[data-scroll="' + link.dataset.scroll + '"]').forEach(function (l) { l.classList.add('active'); });
     });
   });
 
@@ -897,7 +897,11 @@ function loadModules() {
             if (r.status) return r.status === 'published';
             return r.active !== false;
           })
-          .map(function (r) { return JSON.parse(r.data || '{}'); });
+          .map(function (r) {
+            var data = JSON.parse(r.data || '{}');
+            if (typeof r.sort_order === 'number') data._sort_order = r.sort_order;
+            return data;
+          });
       })
       .catch(function () { return []; })
     : Promise.resolve([]);
@@ -918,6 +922,12 @@ function loadModules() {
         else merged.push(cmsMod);             // append new CMS module
       });
 
+      merged = merged.map(function (m, idx) {
+        if (typeof m._sort_order !== 'number') m._sort_order = 10000 + idx;
+        return m;
+      }).sort(function (a, b) {
+        return a._sort_order - b._sort_order;
+      });
       allModules = merged.length ? merged : SAMPLE_MODULES;
       showSkeleton(false);
       renderModules(allModules);
@@ -1125,6 +1135,7 @@ function showPage(page) {
   var pageList   = document.getElementById('page-list');
   var pageDetail = document.getElementById('page-detail');
   var pageMap    = document.getElementById('page-map');
+  updateNavActive(page);
   // Hide all pages
   pageList.style.display   = 'none';
   pageDetail.style.display = 'none';
@@ -1144,6 +1155,15 @@ function showPage(page) {
     pageDetail.style.display = '';
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
+}
+
+function updateNavActive(page) {
+  var route = page === 'map' ? 'map' : 'list';
+  document.querySelectorAll('.nav-link, .drawer-link').forEach(function (link) {
+    var isMap = link.dataset.route === 'map';
+    var isHome = link.dataset.scroll === 'hero';
+    link.classList.toggle('active', (route === 'map' && isMap) || (route === 'list' && isHome));
+  });
 }
 
 function syncFilterTabIndicator(tab) {

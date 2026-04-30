@@ -64,6 +64,9 @@
         <button class="admin-tab" data-tab="modules" role="tab" aria-selected="false" id="atab-modules" aria-controls="tab-modules">
           <i class="fa-solid fa-book-open"></i> Modules
         </button>
+        <button class="admin-tab" data-tab="journey" role="tab" aria-selected="false" id="atab-journey" aria-controls="tab-journey">
+          <i class="fa-solid fa-route"></i> Lộ trình
+        </button>
         <button class="admin-tab" data-tab="activity" role="tab" aria-selected="false" id="atab-activity" aria-controls="tab-activity">
           <i class="fa-solid fa-clock-rotate-left"></i> Hoạt động
         </button>
@@ -208,6 +211,40 @@
           </table>
         </div>
       </div><!-- /tab-modules -->
+
+      <!-- ── TAB: JOURNEY ── -->
+      <div id="tab-journey" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-journey">
+        <div class="tab-header">
+          <div>
+            <h3>Journey Map <span id="journey-module-count" style="font-weight:400;color:#9ca3af;font-size:13px"></span></h3>
+            <p class="tab-subtitle">Kéo thả để sắp xếp lộ trình học. Khi bật khóa tuần tự, module sau sẽ mở sau khi hoàn thành module trước.</p>
+          </div>
+          <button class="btn-primary" id="btn-save-journey" onclick="saveJourneyOrder()">
+            <i class="fa-solid fa-floppy-disk"></i> Lưu lộ trình
+          </button>
+        </div>
+        <div class="journey-layout">
+          <div class="admin-card journey-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Sắp xếp module</div>
+              <label class="journey-toggle">
+                <input type="checkbox" id="journey-linear-lock" checked>
+                <span>Khóa tuần tự theo thứ tự</span>
+              </label>
+            </div>
+            <div class="journey-builder" id="journey-builder">
+              <div class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>
+            </div>
+          </div>
+          <div class="admin-card journey-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Preview map</div>
+              <span class="journey-hint"><i class="fa-solid fa-circle-info"></i> Learner sẽ thấy theo thứ tự này</span>
+            </div>
+            <div class="journey-preview" id="journey-preview"></div>
+          </div>
+        </div>
+      </div><!-- /tab-journey -->
 
       <!-- ── TAB: ACTIVITY ── -->
       <div id="tab-activity" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-activity">

@@ -30,7 +30,7 @@
       <ul class="nav-links" id="nav-links">
         <li><a class="nav-link active" href="javascript:void(0)" data-scroll="hero">Trang chủ</a></li>
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="courses">Modules</a></li>
-        <li><a class="nav-link" href="javascript:void(0)" onclick="showPage('map')"><i class="fa-solid fa-diagram-project" style="margin-right:5px"></i>Lộ trình</a></li>
+        <li><a class="nav-link" href="javascript:void(0)" data-route="map" onclick="showPage('map')"><i class="fa-solid fa-diagram-project" style="margin-right:5px"></i>Lộ trình</a></li>
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
       </ul>
       <div class="nav-actions" id="nav-actions">
@@ -60,7 +60,7 @@
       <a class="drawer-link" href="javascript:void(0)" data-scroll="courses" onclick="closeDrawer()">
         <i class="fa-solid fa-book-open"></i> Modules
       </a>
-      <a class="drawer-link" href="javascript:void(0)" onclick="showPage('map');closeDrawer()">
+      <a class="drawer-link" href="javascript:void(0)" data-route="map" onclick="showPage('map');closeDrawer()">
         <i class="fa-solid fa-diagram-project"></i> Lộ trình
       </a>
       <a class="drawer-link" href="javascript:void(0)" data-scroll="instructors" onclick="closeDrawer()">
