@@ -637,8 +637,202 @@ async function deleteModule(id, name) {
   loadCmsModules();
 }
 
-function previewModule(id) {
-  window.open('/?module=' + id, '_blank');
+// ══════════════════════════════════════════════════════════
+//  MODULE PREVIEW MODAL
+// ══════════════════════════════════════════════════════════
+async function previewModule(id) {
+  // Load module data
+  let mod = null;
+  try {
+    const { data } = await sb.from('modules_cms').select('data,status').eq('id', id).single();
+    if (data) mod = typeof data.data === 'string' ? JSON.parse(data.data) : data.data;
+  } catch {}
+  if (!mod) mod = localModules.find(m => m.id === id);
+  if (!mod) { showToast('Không tìm thấy module', 'error'); return; }
+
+  document.getElementById('preview-module-name').textContent = mod.name || id;
+  document.getElementById('preview-doc').innerHTML = _buildPreviewHtml(mod);
+  document.getElementById('modal-preview').style.display = '';
+  setPreviewDevice('desktop');
+}
+
+function closePreview() {
+  document.getElementById('modal-preview').style.display = 'none';
+}
+
+function setPreviewDevice(mode) {
+  const vp = document.getElementById('preview-viewport');
+  vp.dataset.device = mode;
+  document.getElementById('pvw-btn-desktop').classList.toggle('active', mode === 'desktop');
+  document.getElementById('pvw-btn-mobile').classList.toggle('active', mode === 'mobile');
+}
+
+function _buildPreviewHtml(mod) {
+  const catColors = { Policy: '#a50064', Process: '#1c66bb', Safety: '#f6c315' };
+  const catBg     = { Policy: 'rgba(165,0,100,.1)', Process: 'rgba(28,102,187,.1)', Safety: 'rgba(246,195,21,.15)' };
+  const lvlColors = { 'Bắt buộc': '#e5303f', 'Theo phòng ban': '#1c66bb', 'Tự nguyện': '#5ea12a' };
+  const cat = mod.category || '';
+  const lvl = mod.level || '';
+
+  let html = '';
+
+  // ── Hero header ──
+  html += `<div class="pvw-hero">
+    <div class="pvw-hero-meta">
+      <span class="pvw-badge" style="background:${catBg[cat]||'#f3f4f6'};color:${catColors[cat]||'#374151'}">${esc(cat)}</span>
+      <span class="pvw-badge" style="background:rgba(229,48,63,.08);color:${lvlColors[lvl]||'#374151'}">${esc(lvl)}</span>
+      ${mod.duration ? `<span class="pvw-badge-ghost"><i class="fa-regular fa-clock"></i> ${esc(mod.duration)}</span>` : ''}
+    </div>
+    <h1 class="pvw-title">${esc(mod.name || '')}</h1>
+    ${mod.subtitle ? `<p class="pvw-subtitle">${esc(mod.subtitle)}</p>` : ''}
+    ${mod.owner ? `<div class="pvw-owner"><i class="fa-solid fa-user-tie"></i> ${esc(mod.owner)}</div>` : ''}
+  </div>`;
+
+  // ── Content blocks (new format) ──
+  if (mod.content_blocks && mod.content_blocks.length > 0) {
+    html += _previewRenderBlocks(mod.content_blocks);
+  } else {
+    // Legacy steps
+    if (mod.steps && mod.steps.length) {
+      html += '<div class="pvw-section-title"><i class="fa-solid fa-list-check"></i> Nội dung & Quy trình</div>';
+      html += mod.steps.map((s, i) =>
+        `<div class="pvw-step">
+          <div class="pvw-step-num">${i + 1}</div>
+          <div class="pvw-step-body">
+            <div class="pvw-step-title">${esc(s.title || '')}</div>
+            <div class="pvw-step-desc">${esc(s.desc || '')}</div>
+            ${s.note ? `<div class="pvw-note"><i class="fa-solid fa-circle-info"></i> ${esc(s.note)}</div>` : ''}
+          </div>
+        </div>`
+      ).join('');
+    }
+    // Legacy video
+    if (mod.videoUrl) {
+      const safe = mod.videoUrl.includes('youtube.com/embed') ? mod.videoUrl : '';
+      if (safe) html += `<div class="pvw-video-wrap"><iframe src="${esc(safe)}" allowfullscreen></iframe></div>`;
+    }
+    // Legacy quiz
+    if (mod.quiz && mod.quiz.length) {
+      html += '<div class="pvw-section-title"><i class="fa-solid fa-circle-question"></i> Kiểm tra</div>';
+      html += mod.quiz.map((q, qi) =>
+        `<div class="pvw-quiz-card">
+          <div class="pvw-quiz-num">Câu ${qi + 1}</div>
+          <div class="pvw-quiz-q">${esc(q.question || '')}</div>
+          <div class="pvw-quiz-opts">
+            ${(q.options || []).map((opt, oi) =>
+              `<div class="pvw-quiz-opt ${oi === q.correct ? 'correct' : ''}">
+                <span class="pvw-opt-key">${'ABCD'[oi]}</span> ${esc(opt)}
+                ${oi === q.correct ? '<i class="fa-solid fa-check" style="color:#5ea12a;margin-left:auto"></i>' : ''}
+              </div>`
+            ).join('')}
+          </div>
+          ${q.explanation ? `<div class="pvw-explanation"><i class="fa-solid fa-lightbulb"></i> ${esc(q.explanation)}</div>` : ''}
+        </div>`
+      ).join('');
+    }
+  }
+
+  return html;
+}
+
+function _previewRenderBlocks(blocks) {
+  let html = '';
+  blocks.forEach(block => {
+    const d = block.data || {};
+    switch (block.type) {
+
+      case 'text':
+        if (d.content) {
+          const paras = String(d.content).split('\n').filter(l => l.trim());
+          html += '<div class="pvw-text">' + paras.map(p => `<p>${esc(p)}</p>`).join('') + '</div>';
+        }
+        break;
+
+      case 'steps':
+        if (d.items && d.items.length) {
+          html += '<div class="pvw-section-title"><i class="fa-solid fa-list-check"></i> Quy trình</div>';
+          d.items.forEach((s, i) => {
+            html += `<div class="pvw-step">
+              <div class="pvw-step-num">${i + 1}</div>
+              <div class="pvw-step-body">
+                <div class="pvw-step-title">${esc(s.title || '')}</div>
+                ${s.desc ? `<div class="pvw-step-desc">${esc(s.desc)}</div>` : ''}
+                ${s.note ? `<div class="pvw-note"><i class="fa-solid fa-circle-info"></i> ${esc(s.note)}</div>` : ''}
+              </div>
+            </div>`;
+          });
+        }
+        break;
+
+      case 'checklist':
+        if (d.items && d.items.length) {
+          html += '<div class="pvw-checklist">' +
+            d.items.map(item => `<div class="pvw-cl-item"><i class="fa-regular fa-square-check"></i><span>${esc(item.text || '')}</span></div>`).join('') +
+          '</div>';
+        }
+        break;
+
+      case 'quiz':
+        if (d.questions && d.questions.length) {
+          html += '<div class="pvw-section-title"><i class="fa-solid fa-circle-question"></i> Kiểm tra</div>';
+          d.questions.forEach((q, qi) => {
+            html += `<div class="pvw-quiz-card">
+              <div class="pvw-quiz-num">Câu ${qi + 1}</div>
+              <div class="pvw-quiz-q">${esc(q.question || '')}</div>
+              <div class="pvw-quiz-opts">
+                ${(q.options || []).map((opt, oi) =>
+                  `<div class="pvw-quiz-opt ${oi === q.correct ? 'correct' : ''}">
+                    <span class="pvw-opt-key">${'ABCD'[oi]}</span> ${esc(opt)}
+                    ${oi === q.correct ? '<i class="fa-solid fa-check" style="color:#5ea12a;margin-left:auto"></i>' : ''}
+                  </div>`
+                ).join('')}
+              </div>
+              ${q.explanation ? `<div class="pvw-explanation"><i class="fa-solid fa-lightbulb"></i> ${esc(q.explanation)}</div>` : ''}
+            </div>`;
+          });
+        }
+        break;
+
+      case 'video':
+        if (d.url && d.url.includes('youtube.com/embed')) {
+          html += `<div class="pvw-block-label">${d.title ? esc(d.title) : 'Video'}</div>
+            <div class="pvw-video-wrap"><iframe src="${esc(d.url)}" allowfullscreen></iframe></div>`;
+        }
+        break;
+
+      case 'image':
+        if (d.url) {
+          html += `<div class="pvw-image">
+            <img src="${esc(d.url)}" alt="${esc(d.caption || '')}" loading="lazy">
+            ${d.caption ? `<div class="pvw-image-caption">${esc(d.caption)}</div>` : ''}
+          </div>`;
+        }
+        break;
+
+      case 'file':
+        html += `<div class="pvw-file">
+          <i class="fa-solid fa-paperclip"></i>
+          <span>${esc(d.name || 'Tài liệu')}</span>
+          ${d.size ? `<span class="pvw-file-size">${esc(d.size)}</span>` : ''}
+          ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" class="pvw-file-dl"><i class="fa-solid fa-download"></i></a>` : ''}
+        </div>`;
+        break;
+
+      case 'callout': {
+        const icons = { info: 'fa-circle-info', warning: 'fa-triangle-exclamation', tip: 'fa-lightbulb', danger: 'fa-circle-xmark' };
+        const v = d.variant || 'info';
+        html += `<div class="pvw-callout pvw-callout--${v}">
+          <i class="fa-solid ${icons[v] || 'fa-circle-info'}"></i>
+          <div>
+            ${d.title ? `<div class="pvw-callout-title">${esc(d.title)}</div>` : ''}
+            ${d.text  ? `<div class="pvw-callout-text">${esc(d.text)}</div>` : ''}
+          </div>
+        </div>`;
+        break;
+      }
+    }
+  });
+  return html;
 }
 
 async function moveModule(id, dir) {

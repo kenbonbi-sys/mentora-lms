@@ -456,6 +456,33 @@
     </div>
   </div>
 
+  <!-- ╔══════════════════════════════════════╗ -->
+  <!-- ║  MODAL: MODULE PREVIEW               ║ -->
+  <!-- ╚══════════════════════════════════════╝ -->
+  <div class="modal-overlay" id="modal-preview" style="display:none" onclick="if(event.target===this)closePreview()">
+    <div class="modal-box modal-preview-box">
+      <div class="preview-topbar">
+        <div class="preview-topbar-left">
+          <span class="preview-badge-device active" id="pvw-btn-desktop" onclick="setPreviewDevice('desktop')">
+            <i class="fa-solid fa-desktop"></i> Desktop
+          </span>
+          <span class="preview-badge-device" id="pvw-btn-mobile" onclick="setPreviewDevice('mobile')">
+            <i class="fa-solid fa-mobile-screen"></i> Mobile
+          </span>
+        </div>
+        <div class="preview-topbar-title" id="preview-module-name">—</div>
+        <button class="btn-ghost btn-sm" onclick="closePreview()">
+          <i class="fa-solid fa-xmark"></i> Đóng
+        </button>
+      </div>
+      <div class="preview-viewport" id="preview-viewport">
+        <div class="preview-doc" id="preview-doc">
+          <!-- rendered module content injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div id="admin-toast" class="admin-toast" style="display:none"></div>
 
