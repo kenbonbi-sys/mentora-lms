@@ -91,8 +91,8 @@
           </button>
         </div>
 
-        <!-- Stat cards -->
-        <div class="stats-grid stats-primary">
+        <!-- Stat cards (single compact strip, 7 KPIs) -->
+        <div class="stats-strip">
           <div class="stat-card">
             <div class="stat-icon views"><i class="fa-solid fa-eye"></i></div>
             <div class="stat-body">
@@ -129,8 +129,6 @@
               <div class="stat-spark"><canvas id="spark-pass"></canvas></div>
             </div>
           </div>
-        </div>
-        <div class="stats-grid stats-secondary">
           <div class="stat-card">
             <div class="stat-icon e2e"><i class="fa-solid fa-flag-checkered"></i></div>
             <div class="stat-body">
@@ -160,48 +158,41 @@
           </div>
         </div>
 
-        <!-- Charts row -->
-        <div class="charts-row">
-          <div class="admin-card chart-card">
-            <div class="admin-card-header">
-              <div class="admin-card-title" id="chart-daily-title">Traffic theo ngày</div>
+        <!-- Dashboard grid: tabbed charts (left) + funnel & top/bottom (right) -->
+        <div class="dashboard-grid">
+          <div class="admin-card chart-tabs-card">
+            <div class="chart-tabs-bar">
+              <button class="chart-tab-btn active" data-chart="daily"  onclick="switchChartTab('daily')"><i class="fa-solid fa-chart-line"></i> <span id="chart-daily-title">Theo ngày</span></button>
+              <button class="chart-tab-btn"        data-chart="source" onclick="switchChartTab('source')"><i class="fa-solid fa-share-nodes"></i> Nguồn truy cập</button>
+              <button class="chart-tab-btn"        data-chart="hour"   onclick="switchChartTab('hour')"><i class="fa-solid fa-clock"></i> Theo giờ</button>
             </div>
-            <canvas id="chart-daily" height="110" role="img" aria-label="Biểu đồ traffic theo ngày"></canvas>
-          </div>
-          <div class="admin-card chart-card">
-            <div class="admin-card-header">
-              <div class="admin-card-title">Nguồn truy cập</div>
+            <div class="chart-tab-panel active" data-chart="daily">
+              <canvas id="chart-daily" height="110" role="img" aria-label="Biểu đồ traffic theo ngày"></canvas>
             </div>
-            <canvas id="chart-source" height="110" role="img" aria-label="Biểu đồ nguồn truy cập"></canvas>
-            <div id="source-legend" class="source-legend"></div>
-          </div>
-        </div>
-
-        <!-- Funnel + Top/Bottom analytics row -->
-        <div class="analytics-row">
-          <div class="admin-card">
-            <div class="admin-card-header">
-              <div class="admin-card-title">Funnel học tập</div>
-              <span class="journey-hint"><i class="fa-solid fa-circle-info"></i> View → Quiz → Đạt</span>
+            <div class="chart-tab-panel" data-chart="source">
+              <div class="source-row">
+                <canvas id="chart-source" height="110" role="img" aria-label="Biểu đồ nguồn truy cập"></canvas>
+                <div id="source-legend" class="source-legend"></div>
+              </div>
             </div>
-            <div style="padding:8px 20px 20px">
-              <canvas id="chart-funnel" height="90" role="img" aria-label="Funnel học tập"></canvas>
+            <div class="chart-tab-panel" data-chart="hour">
+              <canvas id="chart-hour" height="55" role="img" aria-label="Biểu đồ traffic theo giờ trong ngày"></canvas>
             </div>
           </div>
-          <div class="admin-card">
-            <div class="admin-card-header">
-              <div class="admin-card-title">Hiệu suất Module</div>
+          <div class="side-pane">
+            <div class="admin-card side-card">
+              <div class="admin-card-header">
+                <div class="admin-card-title">Funnel học tập</div>
+              </div>
+              <div style="padding:6px 16px 14px"><canvas id="chart-funnel" height="80" role="img" aria-label="Funnel học tập"></canvas></div>
             </div>
-            <div id="top-bottom-modules"></div>
+            <div class="admin-card side-card">
+              <div class="admin-card-header">
+                <div class="admin-card-title">Hiệu suất Module</div>
+              </div>
+              <div id="top-bottom-modules"></div>
+            </div>
           </div>
-        </div>
-
-        <!-- Heatmap -->
-        <div class="admin-card chart-card" style="margin-bottom:20px">
-          <div class="admin-card-header">
-            <div class="admin-card-title">Traffic theo giờ trong ngày</div>
-          </div>
-          <canvas id="chart-hour" height="55" role="img" aria-label="Biểu đồ traffic theo giờ trong ngày"></canvas>
         </div>
 
         <!-- Per-module breakdown -->

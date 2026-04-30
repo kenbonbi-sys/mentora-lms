@@ -169,9 +169,9 @@ function setDayFilter(days) {
   document.querySelectorAll('.day-filter-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.days) === days);
   });
-  const titleMap = { 7: '7 ngày', 30: '30 ngày', 90: '90 ngày', 0: 'tất cả (hiện 90 ngày gần nhất)' };
+  const titleMap = { 7: '7 ngày', 30: '30 ngày', 90: '90 ngày', 0: 'Tất cả' };
   const el = document.getElementById('chart-daily-title');
-  if (el) el.textContent = 'Traffic theo ngày (' + titleMap[days] + ')';
+  if (el) el.textContent = 'Theo ngày · ' + titleMap[days];
   Promise.all([loadStats(), loadCharts(), loadHeatmap()]);
 }
 
@@ -186,6 +186,15 @@ function _dateRange() {
 }
 
 function _renderTarget() {}
+
+function switchChartTab(name) {
+  document.querySelectorAll('.chart-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.chart === name));
+  document.querySelectorAll('.chart-tab-panel').forEach(p => p.classList.toggle('active', p.dataset.chart === name));
+  // Force chart resize when becoming visible (Chart.js needs a nudge after display:none → block)
+  if (name === 'daily'  && _chartDaily)  _chartDaily.resize();
+  if (name === 'source' && _chartSource) _chartSource.resize();
+  if (name === 'hour'   && _chartHour)   _chartHour.resize();
+}
 
 function _renderDelta(elId, curr, prev) {
   const el = document.getElementById(elId);
@@ -687,6 +696,8 @@ async function loadCharts() {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 3.2,
         plugins: { legend: { display: false } },
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 11 } } },
