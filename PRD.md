@@ -1,485 +1,555 @@
-# PRD — Mentora LMS
-## Compliance Training Portal · MoMo Internal
-
-**Phiên bản:** 1.0  
-**Ngày cập nhật:** 26/04/2026  
-**Đội sản phẩm:** HR-L&OD  
-**Trạng thái:** Production — deployed tại `https://mentora-lms-tau.vercel.app`
+# PRD — Mentora LMS: Compliance Training Portal
 
 ---
 
-## 1. Tóm tắt sản phẩm
+## 1. THÔNG TIN CHUNG (Meta Data)
 
-**Mentora LMS** là hệ thống quản lý đào tạo (Learning Management System) nội bộ của MoMo, được thiết kế để số hóa toàn bộ quy trình đào tạo tuân thủ (compliance training) — từ phân phối nội dung, kiểm tra kiến thức, đến theo dõi tiến độ và cấp chứng chỉ.
+| Trường | Nội dung |
+|---|---|
+| **Tên dự án** | Mentora LMS — Compliance Training Portal |
+| **Tên sản phẩm** | Mentora |
+| **Thương hiệu** | MoMo |
+| **Người phụ trách (PM)** | HR-L&OD Team |
+| **Trạng thái tài liệu** | ✅ Approved (Production-ready) |
+| **Phiên bản hiện tại** | v1.0 — MVP Live |
+| **Ngày cập nhật** | 30/04/2026 |
+| **URL Production** | https://mentora-lms-tau.vercel.app |
+| **Tech Lead** | — |
+| **Design Lead** | — |
+| **QA Lead** | — |
+| **Thành viên cốt lõi** | HR-L&OD, IT/Dev Team |
 
-Hệ thống hoạt động hoàn toàn trên trình duyệt, không yêu cầu cài đặt phần mềm. Admin có thể tạo và phát hành module mới trong vài phút; learner có thể truy cập từ bất kỳ thiết bị nào có kết nối internet.
+---
 
-### Vấn đề cần giải quyết
+## 2. VẤN ĐỀ VÀ MỤC ĐÍCH (Problem Statement & Purpose)
 
-| Vấn đề | Trạng thái trước | Giải pháp Mentora |
+### Vấn đề
+
+Hiện tại, quá trình đào tạo tuân thủ nội bộ tại MoMo đang gặp các điểm đau sau:
+
+- **Phân tán công cụ**: Tài liệu chính sách nằm rải rác trên Google Drive, Sharepoint, và email — nhân viên không biết phiên bản nào là mới nhất.
+- **Không có cơ chế xác nhận**: HR không thể biết nhân viên nào đã đọc và hiểu chính sách, dẫn đến rủi ro tuân thủ.
+- **Trải nghiệm học tập đứt gãy**: Nhân viên phải tự tìm tài liệu, không có lộ trình học rõ ràng, không có phản hồi ngay sau khi học.
+- **Thiếu dữ liệu cho HR**: Không có báo cáo ai đã hoàn thành module nào, tỷ lệ pass/fail quiz, điểm số trung bình để phục vụ audit nội bộ.
+- **Onboarding kém hiệu quả**: Nhân viên mới không có nguồn học chuẩn hoá, phụ thuộc nhiều vào buddy/manager trực tiếp.
+
+### Mục đích & Giải pháp
+
+**Mentora LMS** là nền tảng học tập tuân thủ tập trung, cho phép:
+
+- Nhân viên MoMo học các module chính sách, quy trình và an toàn lao động theo tiến độ cá nhân, bất cứ lúc nào, trên mọi thiết bị.
+- HR-L&OD team quản lý nội dung đào tạo, theo dõi tiến độ học và xuất báo cáo tuân thủ.
+- Hệ thống tự động hoá việc chứng nhận hoàn thành, giảm tải công việc thủ công cho HR.
+
+**Tagline:** *"Làm Đúng từ đầu"*
+
+---
+
+## 3. CHÂN DUNG NGƯỜI DÙNG (User Personas)
+
+### Persona 1 — Nhân viên (Learner)
+
+| Thuộc tính | Chi tiết |
+|---|---|
+| **Tên đại diện** | Minh — Nhân viên kinh doanh, 2 năm kinh nghiệm |
+| **Mục tiêu** | Hoàn thành đủ module bắt buộc, nắm rõ chính sách để tránh vi phạm |
+| **Pain points** | Bận rộn — cần học nhanh, dễ tiếp thu; Không nhớ đã đọc tài liệu phiên bản nào |
+| **Hành vi** | Học trên điện thoại lúc di chuyển, thích học theo từng module nhỏ |
+| **Kỳ vọng** | Giao diện đẹp, tải nhanh, biết rõ mình còn phải học gì, có chứng chỉ để lưu |
+
+### Persona 2 — Admin / HR-L&OD (Content Manager)
+
+| Thuộc tính | Chi tiết |
+|---|---|
+| **Tên đại diện** | Linh — HR Specialist, phụ trách L&OD |
+| **Mục tiêu** | Cập nhật nội dung đào tạo kịp thời, theo dõi tỷ lệ hoàn thành, xuất báo cáo cho ban lãnh đạo |
+| **Pain points** | Tốn thời gian gửi email nhắc nhở thủ công; Không có số liệu để chứng minh hiệu quả đào tạo |
+| **Hành vi** | Làm việc trên máy tính desktop, cần dashboard dễ đọc và export được dữ liệu |
+| **Kỳ vọng** | CMS đơn giản để upload nội dung không cần biết code; Báo cáo tự động theo ngày/tuần/tháng |
+
+---
+
+## 4. MỤC TIÊU VÀ CHỈ SỐ THÀNH CÔNG (Goals & Success Metrics)
+
+### Mục tiêu kinh doanh
+
+| # | Mục tiêu | Thời hạn |
 |---|---|---|
-| Tài liệu đào tạo phân tán | File PDF gửi qua email, khó kiểm soát phiên bản | Module tập trung, cập nhật tức thì trên toàn bộ người dùng |
-| Không biết ai đã đọc tài liệu | Không có tracking | Dashboard analytics real-time |
-| Kiểm tra kiến thức thủ công | Form Google, chấm tay | Quiz tự động, kết quả tức thì |
-| Chứng chỉ hoàn thành | In tay, mất thời gian | Tự động generate, nhân viên tự in |
-| Không biết nội dung nào khó hiểu | Không có dữ liệu | Phân tích tỉ lệ sai từng câu hỏi |
+| 1 | 100% nhân viên mới (onboarding) hoàn thành module M001 trong tuần đầu làm việc | Q3/2026 |
+| 2 | ≥ 80% nhân viên toàn công ty hoàn thành ít nhất 3/5 module bắt buộc | Q4/2026 |
+| 3 | Giảm 70% thời gian HR dành cho việc theo dõi tuân thủ thủ công | Q4/2026 |
 
----
+### KPIs (Chỉ số đo lường)
 
-## 2. Đối tượng sử dụng
-
-### Learner (Người học)
-- **Ai:** Toàn bộ nhân viên MoMo
-- **Mục tiêu:** Học và nắm vững chính sách, quy trình, tiêu chuẩn nội bộ theo yêu cầu
-- **Điểm đau:** Không có thời gian đọc tài liệu dài; cần biết mình đang học đến đâu; muốn có bằng chứng đã học
-
-### Admin / L&OD Team
-- **Ai:** HR-L&OD, Compliance Officer
-- **Mục tiêu:** Tạo và phát hành module mới, theo dõi tiến độ toàn tổ chức, phân tích hiệu quả đào tạo
-- **Điểm đau:** Không biết nội dung nào đang có vấn đề; không có dữ liệu để báo cáo lên ban lãnh đạo
-
----
-
-## 3. Kiến trúc kỹ thuật
-
-```
-┌─────────────────────────────────────────┐
-│           FRONTEND (Static)             │
-│   HTML5 · CSS3 · Vanilla JavaScript     │
-│   Deployed: Vercel (CDN global)         │
-│                                         │
-│  /index.html        ← Learner portal    │
-│  /admin/index.html  ← Admin dashboard   │
-│  /data/modules.json ← Static fallback   │
-└──────────────┬──────────────────────────┘
-               │ REST API (fetch)
-               │ Supabase anon key
-               ▼
-┌─────────────────────────────────────────┐
-│           BACKEND (Supabase)            │
-│   PostgreSQL · Auth · REST API          │
-│                                         │
-│  page_views      ← traffic analytics   │
-│  quiz_attempts   ← quiz results        │
-│  quiz_answers    ← per-question data   │
-│  modules_cms     ← CMS content         │
-│  announcements   ← banner system       │
-└─────────────────────────────────────────┘
-```
-
-### Stack lý do chọn
-
-| Quyết định | Lý do |
-|---|---|
-| **Static HTML** (không dùng React/Vue) | Zero build pipeline — deploy trong 30 giây; không phụ thuộc npm ecosystem |
-| **Vercel** | Free tier, CDN global, auto-deploy từ GitHub push |
-| **Supabase** | PostgreSQL managed, Auth built-in, REST API miễn phí, không cần viết backend |
-| **Vanilla JS** | Không có bundle size; chạy được mọi môi trường corporate (proxy, security policy) |
-| **Chart.js** (CDN) | Thư viện chart nhẹ, không cần build step |
-
-### Database Schema
-
-```sql
--- Traffic analytics
-CREATE TABLE page_views (
-  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  module_id  text,
-  module_name text,
-  session_id text,
-  source     text DEFAULT 'direct',  -- 'direct' | 'search' | 'referral'
-  created_at timestamptz DEFAULT now()
-);
-
--- Quiz completion tracking
-CREATE TABLE quiz_attempts (
-  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  module_id   text,
-  module_name text,
-  score       int,
-  total       int,
-  pct         int,
-  passed      boolean,
-  session_id  text,
-  created_at  timestamptz DEFAULT now()
-);
-
--- Per-question answer tracking
-CREATE TABLE quiz_answers (
-  id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  module_id      text,
-  question_index int,
-  question_text  text,
-  is_correct     boolean,
-  session_id     text,
-  created_at     timestamptz DEFAULT now()
-);
-
--- Content Management System
-CREATE TABLE modules_cms (
-  id         text PRIMARY KEY,
-  data       jsonb,          -- full module JSON
-  status     text DEFAULT 'published',  -- 'draft' | 'published' | 'hidden'
-  sort_order int  DEFAULT 0,
-  updated_at timestamptz DEFAULT now()
-);
-
--- Announcement banner
-CREATE TABLE announcements (
-  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  message    text NOT NULL,
-  type       text DEFAULT 'info',  -- 'info' | 'warning' | 'success' | 'danger'
-  active     boolean DEFAULT true,
-  created_at timestamptz DEFAULT now()
-);
-```
-
----
-
-## 4. Giai đoạn hình thành
-
-### Phase 0 — Khởi đầu · `Initial commit`
-> *"Cần một hệ thống để nhân viên đọc tài liệu compliance và kiểm tra kiến thức"*
-
-**Bối cảnh:** HR-L&OD cần số hóa tài liệu đào tạo, vốn đang được phân phối qua email dưới dạng file PDF. Không có ngân sách mua LMS thương mại (Cornerstone, TalentLMS), không có team engineering riêng.
-
-**Quyết định:** Build static site thuần — HTML + CSS + JS, deploy trên Vercel miễn phí, dùng Supabase làm database/backend. Không framework, không build tool.
-
-**Deliverables Phase 0:**
-- Trang danh sách module với card UI (filter theo danh mục, tìm kiếm)
-- Trang chi tiết module (steps, video, tài liệu đính kèm)
-- Quiz system cơ bản (trắc nghiệm, tự chấm điểm)
-- 5 module mẫu: Onboarding, PDPA, An toàn lao động, Chống rửa tiền, Đạo đức nghề nghiệp
-- Supabase tracking: `page_views` và `quiz_attempts`
-- Deploy lên Vercel + GitHub
-- Dark mode toggle
-
----
-
-### Phase 1 — Analytics · `Add daily traffic chart + traffic source tracking`
-> *"Chúng ta biết có người dùng, nhưng không biết bao nhiêu và từ đâu đến"*
-
-**Bối cảnh:** Sau khi deploy, HR muốn có số liệu để báo cáo: bao nhiêu người đã xem, module nào được xem nhiều nhất, người dùng đến từ đâu.
-
-**Deliverables Phase 1:**
-- Admin dashboard với Supabase Auth (email/password)
-- **4 stat cards:** Lượt xem · Lượt quiz · Điểm trung bình · Tỉ lệ đạt
-- **Daily traffic line chart** (Chart.js) — 14 ngày gần nhất
-- **Traffic source doughnut chart** — Direct / Search / Referral
-  - Detection logic: phân tích `document.referrer` so với danh sách search engine domains
-- Per-module breakdown table: views, quiz attempts, average score, pass rate
-- Cột `source` được thêm vào `page_views` table
-
----
-
-### Phase 2 — Advanced Analytics · `Add day filter, delta comparison, heatmap, CSV export, funnel`
-> *"Cần so sánh được kỳ này với kỳ trước, và biết giờ nào người dùng hoạt động nhiều nhất"*
-
-**Bối cảnh:** L&OD cần báo cáo hàng tuần/tháng/quý. Ban lãnh đạo muốn thấy xu hướng (tăng/giảm). Đội training muốn lên schedule push thông báo đúng giờ cao điểm.
-
-**Deliverables Phase 2:**
-- **Day filter pill buttons:** 7 ngày · 30 ngày · 90 ngày · Tất cả
-- **Delta badges** (▲/▼ %) so sánh với kỳ trước tương đương
-- **Hourly heatmap** (bar chart 24h) — xác định giờ cao điểm truy cập
-- **Export CSV** — toàn bộ module stats với UTF-8 BOM (mở đúng tiếng Việt trong Excel)
-- **Conversion funnel** per module: Xem → Làm quiz → Đạt
-- Tất cả chart auto-refresh khi đổi day filter
-
----
-
-### Phase 3 — Learner Experience · `Add reading progress, done badge, certificate...`
-> *"Learner cần biết họ đang ở đâu trong quá trình học, và có bằng chứng đã hoàn thành"*
-
-**Bối cảnh:** Feedback từ nhân viên: không biết đọc đến đâu rồi, đọc xong rồi cũng không có gì để ghi nhớ mình đã học. HR muốn nhân viên có thể tự print chứng chỉ nộp cho manager.
-
-**Deliverables Phase 3:**
-
-| Tính năng | Mô tả kỹ thuật |
-|---|---|
-| **Reading progress bar** | Fixed bar đầu trang, tính `scrollY / (scrollHeight - innerHeight)`, reset về 0 khi quay trang list |
-| **Mark as Done** | Toggle button + localStorage key `lms-done-{id}` + green badge trên card |
-| **Personal notes** | Textarea với debounce 800ms auto-save vào localStorage per module; flush ngay khi đổi module |
-| **Completion certificate** | Modal với tên learner (nhập tay), `window.print()` + `@media print` CSS ẩn hết ngoài cert |
-| **Share module link** | Copy `?module=ID` vào clipboard; graceful fallback nếu `clipboard API` không khả dụng |
-| **Announcement banner** | Fetch `announcements` table (active=true), 4 type variants (info/warning/success/danger), dismiss lưu localStorage |
-| **Per-question tracking** | Insert vào `quiz_answers` với `is_correct` per câu; dedup bằng `_answeredKeys` Set (chỉ ghi lần đầu/session) |
-| **URL param deep link** | `?module=ID` → retry loop 10 lần × 300ms → graceful toast nếu không tìm thấy |
-
----
-
-### Phase 4 — Content Management · `Add Draft/Published/Hidden status for modules`
-> *"Admin cần workflow để tạo nội dung trước khi phát hành, và tạm ẩn module cần review"*
-
-**Bối cảnh:** L&OD muốn chuẩn bị nội dung trước khi announce, cần cho compliance team review nội dung trước khi publish cho toàn bộ nhân viên. Đồng thời cần tạm ẩn module đang cập nhật.
-
-**Deliverables Phase 4:**
-
-| Tính năng | Mô tả |
-|---|---|
-| **Status system** | 3 trạng thái: `draft` (chưa publish) · `published` (hiện trên site) · `hidden` (tạm ẩn) |
-| **Module builder** | Form tạo/sửa module trực tiếp trong admin: basic info + step builder (thêm/xóa bước) + quiz builder |
-| **Sort order** | Kéo thứ tự module bằng nút ↑↓, swap `sort_order` value trong DB |
-| **Preview** | Mở `/?module=ID` trong tab mới để xem trước trước khi publish |
-| **Announcement manager** | Tạo · bật/tắt · xóa thông báo; 4 loại type; hiện danh sách đang active |
-| **Question analysis** | Nhóm `quiz_answers` theo module+câu hỏi, tính `wrong_rate`, badge Khó/Trung bình/Dễ |
-| **Activity feed** | Timeline 80 sự kiện gần nhất (page views + quiz attempts), format thời gian tương đối |
-
----
-
-### Phase 5 — Quality & Polish · `Fix edge cases + Redesign user journey`
-> *"Kiểm tra kỹ lại trước khi ra mắt chính thức với toàn bộ nhân viên"*
-
-**Bối cảnh:** Trước khi broadcast link đến toàn bộ nhân viên, team thực hiện audit toàn bộ edge case, UX và data quality.
-
-**Deliverables Phase 5:**
-
-**Bug fixes:**
-- `?module=ID` graceful fallback — retry 10 lần, toast + clean URL nếu không tìm thấy
-- Notes debounce flush — lưu ghi chú ngay khi chuyển module, không mất data
-- Reading progress bar null guard + reset khi về trang list
-- Admin `loadCmsModules()` fallback query khi column `sort_order`/`status` chưa tồn tại
-- `loadAnnouncements()` / `loadQuestionAnalysis()` friendly message khi table chưa tạo
-- `moveModule()` guard khi column `sort_order` missing
-- Certificate modal chuyển sang `.open` class (fade animation thay vì display:none toggle)
-- ESC key đóng tất cả modal (site + admin)
-- Quiz answer dedup — `_answeredKeys` Set ngăn duplicate insert khi learner làm lại
-- Daily chart `displayDays` — bỏ Math.min(30) cap; 90 ngày hiện đúng 90 cột
-- Xóa dead code: `fillEl`, `labelEl`, `scrollHandler`, no-op scroll listener
-
-**UX improvements:**
-- Xóa Login/Register button trên navbar (internal LMS, không cần user auth)
-- Đổi tên tab admin "Thông báo" → "Thông báo & Phân tích"
-- **User Journey Guide** — thay list đơn giản bằng 5-step interactive slideshow:
-  - Progress pill dots (active dot animate thành 28px pill)
-  - Slide transition: fade + translateX theo chiều di chuyển
-  - Illustration riêng cho mỗi bước (icon lớn + gradient background)
-  - "Bắt đầu học!" scroll đến danh sách module
-
----
-
-## 5. Tính năng chi tiết
-
-### 5.1 Learner Portal (`/`)
-
-#### Module Discovery
-- **Grid view** với card thumbnail (icon + gradient background theo category)
-- **Category filter:** Tất cả · Policy · Process · Safety
-- **Tìm kiếm real-time:** match theo tên, mô tả, owner, category
-- **Done badge:** Badge xanh lá "Đã hoàn thành" trên card module đã qua quiz
-- **Hero count:** Số module đang active cập nhật tự động
-
-#### Module Detail
-- **Breadcrumb navigation** + nút Quay lại
-- **Header:** Tên · Mô tả · Owner · Ngày cập nhật · Thời lượng · Level badge · Category badge
-- **Reading progress bar:** Fixed bar đầu trang (gradient pink), cập nhật theo scroll
-- **Step-by-step content:** Quy trình chia bước với step number, tiêu đề, mô tả, ghi chú
-- **Video section:** YouTube embed iframe (responsive 16:9), ẩn nếu không có video
-- **Related modules gallery:** Các module cùng hệ thống, click để mở nhanh
-- **Resource attachments:** Danh sách file PDF/PPTX với icon type và nút download
-
-#### Sidebar
-- **Tài liệu đính kèm** — download link
-- **Step tracker** — dot timeline highlight step đang xem (IntersectionObserver)
-- **Ghi chú cá nhân** — textarea auto-save (debounce 800ms), persist trong localStorage
-
-#### Action buttons
-- **Chia sẻ** — copy `?module=ID` URL vào clipboard
-- **Đánh dấu hoàn thành** — toggle localStorage, cập nhật badge trên card
-
-#### Quiz System
-- Trắc nghiệm 4 đáp án (A/B/C/D)
-- Instant feedback: highlight đúng/sai, giải thích ngay
-- Không thể thay đổi câu đã trả lời
-- Kết quả hiện sau khi hoàn thành tất cả câu
-- **≥75%:** Hiện nút "Nhận chứng chỉ" + tự động mark as done
-- **"Làm lại"** — reset quiz, không ghi duplicate vào Supabase
-
-#### Certificate
-- Modal với thông tin: Tên learner (nhập tay) · Tên module · Điểm số · Ngày
-- `@media print` CSS — ẩn tất cả ngoại trừ certificate khi in
-- Tên được lưu localStorage (`lms-cert-name`) cho lần sau
-
-#### User Journey Guide
-- Popup 5-step slideshow khi bấm "Hướng dẫn sử dụng"
-- Progress dot animation · slide transition · illustration per step
-- Step 5 → "Bắt đầu học!" scroll đến module grid
-
-#### System
-- **Announcement banner** — top of page, 4 màu theo type, dismiss lưu localStorage
-- **Dark mode** — toggle ☀/🌙, persist localStorage
-- **URL deep link** — `?module=ID` mở thẳng vào module, retry loop + graceful fallback
-- **Traffic tracking** — anonymous session ID, detect source (direct/search/referral)
-
----
-
-### 5.2 Admin Dashboard (`/admin`)
-
-#### Authentication
-- Supabase email/password (JWT session)
-- Auto-check session khi load
-- Logout xóa session
-
-#### Tab: Tổng quan
-
-**Filters & Actions:**
-- Day filter: 7 · 30 · 90 ngày · Tất cả (mặc định 30)
-- Export CSV (UTF-8 BOM, tương thích Excel)
-
-**Stat Cards (với delta ▲/▼ so kỳ trước):**
-- Lượt xem · Lượt làm quiz · Điểm trung bình · Tỉ lệ đạt (≥75%)
-
-**Charts (Chart.js v4):**
-- **Daily traffic line chart** — số cột = số ngày filter (7/30/90); "Tất cả" → 90 ngày gần nhất
-- **Traffic source doughnut** — Direct / Search / Referral với legend tỉ lệ
-- **Hourly heatmap bar chart** — 24 khung giờ, màu sắc intensity theo traffic
-
-**Per-module stats table:**
-- Cột: Module · Danh mục · Lượt xem · Lượt quiz · Điểm TB · Đạt quiz · Funnel
-- **Conversion funnel mini:** Xem → % làm quiz → % đạt (màu good/med/low)
-
-#### Tab: Modules
-
-**CMS table columns:** ID · Tên · Danh mục · Cập nhật · Trạng thái · Thao tác nhanh · Actions
-
-**Status workflow:**
-```
-[Draft] ──publish──▶ [Published] ──hide──▶ [Hidden]
-   ▲                      │                    │
-   └──────draft────────────┘◀────draft──────────┘
-```
-
-**Module actions:**
-- Xem trước (mở `/?module=ID` tab mới)
-- Chỉnh sửa (mở modal builder)
-- Thay đổi status (1-click)
-- Sắp xếp thứ tự (↑↓ swap sort_order)
-- Xóa (CMS-only modules)
-
-**Module Builder modal:**
-- Basic info: ID · Tên · Danh mục · Level · Thời lượng · Ngày CN · Trạng thái · Mô tả · Thumbnail · Icon · Video URL
-- **Step builder:** Thêm/xóa bước, mỗi bước có: Tiêu đề · Nội dung · Ghi chú
-- **Quiz builder:** Thêm/xóa câu hỏi, mỗi câu: Câu hỏi · 4 đáp án · Chọn đáp án đúng · Giải thích
-- Module mới mặc định `draft`
-- Save → upsert vào `modules_cms`
-
-#### Tab: Hoạt động
-- Timeline 80 sự kiện gần nhất
-- Page view events: "Mở module [tên]"
-- Quiz events: "Hoàn thành quiz [tên] — X/Y (Z%)" với badge Đạt/Chưa đạt
-- Timestamp tương đối: "Vừa xong · X phút/giờ/ngày trước"
-
-#### Tab: Thông báo & Phân tích
-
-**Announcement manager:**
-- Tạo thông báo: nhập nội dung + chọn type (Info/Warning/Success/Danger)
-- Danh sách với toggle bật/tắt và xóa
-- Thông báo active → hiện banner trên learner portal
-
-**Question analysis table:**
-- Cột: Module · Câu hỏi · Số lần trả lời · Tỉ lệ sai · Độ khó
-- Sort: câu khó nhất (tỉ lệ sai cao) lên đầu
-- Badge độ khó: Khó (≥70% sai) · Trung bình (40–70%) · Dễ (<40%)
-- Friendly message nếu table `quiz_answers` chưa tạo
-
----
-
-## 6. Data & Privacy
-
-### Anonymous tracking
-- Không thu thập tên, email hay bất kỳ PII nào của learner
-- Mỗi session được gán một `session_id` ngẫu nhiên (`sess_` + timestamp36 + random)
-- Session ID lưu trong `window._sessionId` (memory only, không persist)
-- Traffic source detect từ `document.referrer` (không log URL đầy đủ)
-
-### LocalStorage (client-only)
-- `lms-done-{id}` — trạng thái hoàn thành per module
-- `lms-notes-{id}` — ghi chú cá nhân per module
-- `lms-cert-name` — tên learner cho certificate
-- `lms-ann-{id}` — đã dismiss announcement
-- `lms-theme` — light/dark preference
-
----
-
-## 7. Deployment & Operations
-
-### Workflow
-```
-Developer edits code locally
-        │
-        ▼
-git push → GitHub (kenbonbi-sys/mentora-lms)
-        │
-        ▼ (auto-trigger)
-Vercel build (static, ~15 giây)
-        │
-        ▼
-Live tại mentora-lms-tau.vercel.app
-```
-
-### Không có downtime khi deploy
-Vercel dùng atomic deployment — URL cũ vẫn phục vụ request cho đến khi deploy mới hoàn tất 100%.
-
-### Content update workflow
-```
-Admin mở /admin → Tab Modules
-        │
-        ▼
-Tạo module mới → Status: Draft
-        │
-        ▼ (L&OD review, Compliance review)
-Bấm "Publish" → Status: Published
-        │
-        ▼
-Module xuất hiện ngay trên learner portal (không cần deploy lại)
-```
-
----
-
-## 8. Known Limitations & Roadmap
-
-### Limitations hiện tại
-| Item | Mô tả | Workaround |
+| KPI | Định nghĩa | Target |
 |---|---|---|
-| No user authentication | Learner không đăng nhập — không biết ai học ai | Tracking qua session ID (anonymous) |
-| No progress sync across devices | LocalStorage không sync giữa thiết bị | — |
-| No email notifications | Không gửi reminder cho learner chưa hoàn thành | Admin export CSV rồi gửi email thủ công |
-| No Supabase RLS | Anon key public — cần setup RLS policies | Ưu tiên setup trước khi public rộng |
-| Quiz randomization | Thứ tự câu hỏi cố định | Có thể add trong Phase 2 |
-
-### Roadmap đề xuất (Phase 6+)
-
-**P1 — Security:**
-- [ ] Setup Supabase RLS policies cho tất cả tables
-- [ ] Rate limiting cho `quiz_answers` insert
-
-**P2 — Learner identity:**
-- [ ] SSO với hệ thống nội bộ MoMo (nếu có API)
-- [ ] Hoặc: email-based "magic link" (không cần password)
-- [ ] Learning history per user
-
-**P3 — Content:**
-- [ ] Image upload trực tiếp trong admin (thay URL text)
-- [ ] Rich text editor cho step content (thay textarea)
-- [ ] Module categories mở rộng (ngoài Policy/Process/Safety)
-- [ ] Prerequisite: module A phải hoàn thành trước khi mở module B
-
-**P4 — Reporting:**
-- [ ] Báo cáo xuất PDF cho ban lãnh đạo
-- [ ] Dashboard embed cho HR portal
-- [ ] Scheduled email report hàng tuần
+| **Module Completion Rate** | % học viên hoàn thành toàn bộ nội dung + quiz | ≥ 75% |
+| **Quiz Pass Rate** | % lượt làm quiz đạt ngưỡng ≥ 75 điểm | ≥ 80% |
+| **Average Quiz Score** | Điểm trung bình toàn bộ quiz attempts | ≥ 80/100 |
+| **Time-to-Complete** | Thời gian TB để hoàn thành 1 module (phút) | ≤ 45 phút |
+| **7-Day Retention** | % học viên quay lại học sau 7 ngày | ≥ 40% |
+| **Admin Report Lead Time** | Thời gian từ request đến khi có báo cáo | ≤ 5 phút (tự động) |
 
 ---
 
-## 9. Metrics thành công
+## 5. YÊU CẦU CHỨC NĂNG & USER STORIES (Functional Requirements)
 
-| Metric | Mục tiêu 3 tháng |
+### A. MUST-HAVE ✅ (MVP — Đã triển khai)
+
+#### 5.1 Module Learning System
+
+**User Story:** *"Là một nhân viên, tôi muốn xem nội dung module theo từng bước có cấu trúc để dễ nắm bắt và không bỏ sót thông tin quan trọng."*
+
+| Acceptance Criteria | Chi tiết |
 |---|---|
-| Module completion rate | ≥ 70% nhân viên bắt buộc hoàn thành module được assign |
-| Quiz pass rate | ≥ 75% learner pass trong lần thứ nhất hoặc thứ hai |
-| Admin adoption | L&OD publish ≥ 1 module mới/tháng |
-| Time-to-publish | < 30 phút từ khi tạo module đến khi publish |
-| Page load time | < 2 giây trên 4G (Vercel CDN) |
+| Mỗi module hiển thị | Tiêu đề, mô tả, thời lượng, danh mục, cấp độ (Bắt buộc / Theo phòng ban) |
+| Nội dung module | Steps có tiêu đề + mô tả + ghi chú, hỗ trợ video, ảnh, tài liệu đính kèm |
+| Tài nguyên hỗ trợ | PDF, PPTX, DOC với tên file và dung lượng |
+| Trạng thái hoàn thành | Lưu tự động vào localStorage khi nhấn "Đánh dấu hoàn thành" |
 
 ---
 
-*Document này được tạo bởi AI assistant dựa trên codebase thực tế của dự án.*  
-*Codebase: `github.com/kenbonbi-sys/mentora-lms` · Live: `mentora-lms-tau.vercel.app`*
+**User Story:** *"Là một nhân viên, tôi muốn lọc và tìm kiếm module theo danh mục để nhanh chóng tìm thấy nội dung cần học."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Filter tabs | Tất cả / Policy / Process / Safety — không cần reload trang |
+| Tìm kiếm | Real-time theo tên module, không cần nhấn Enter |
+| Module count | Hiển thị số lượng module theo từng danh mục |
+
+---
+
+#### 5.2 Quiz & Assessment System
+
+**User Story:** *"Là một nhân viên, tôi muốn làm bài kiểm tra sau khi học để xác nhận tôi đã hiểu nội dung và nhận phản hồi ngay lập tức."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Câu hỏi | Trắc nghiệm 1 đáp án đúng trong 4 lựa chọn |
+| Phản hồi | Highlight đáp án đúng/sai + giải thích ngay sau khi chọn |
+| Tiến trình | Thanh progress bar hiển thị câu hiện tại / tổng số câu |
+| Ngưỡng đạt | ≥ 75% tổng điểm |
+| Lưu điểm | Kết quả lưu vào localStorage, hiển thị điểm lần gần nhất |
+
+---
+
+#### 5.3 Progress & Statistics Dashboard
+
+**User Story:** *"Là một nhân viên, tôi muốn thấy tổng quan tiến độ học tập của mình ngay trên trang chủ để biết mình còn phải làm gì."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Stats Strip | Số module hoàn thành / Điểm TB quiz / Streak (ngày liên tiếp) / % tổng tiến độ |
+| Progress bar | Thanh trực quan cho tổng tiến độ toàn bộ module |
+| Module card | Badge "Đã hoàn thành" hiển thị trên card sau khi đánh dấu |
+| Gamification | Streak tăng khi học ít nhất 1 module mỗi ngày |
+
+---
+
+#### 5.4 Certificate Generation
+
+**User Story:** *"Là một nhân viên, tôi muốn tải chứng chỉ hoàn thành sau khi xong toàn bộ module để lưu hồ sơ và chứng minh với HR."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Nhập tên | Modal cho phép nhập tên học viên (lưu localStorage) |
+| Nội dung chứng chỉ | Tên học viên, danh sách module hoàn thành, ngày cấp, logo MoMo |
+| Tải xuống | Nút in/export chứng chỉ |
+
+---
+
+#### 5.5 Admin Dashboard & CMS
+
+**User Story:** *"Là một HR Specialist, tôi muốn đăng nhập vào trang quản trị để xem báo cáo học tập và cập nhật nội dung mà không cần nhờ IT."*
+
+| Tab | Tính năng |
+|---|---|
+| **Dashboard** | KPI cards (Lượt xem, Quiz attempts, Điểm TB, Pass rate) + Biểu đồ traffic + Heatmap |
+| **Modules** | Danh sách module + trạng thái Draft/Published/Hidden + CRUD |
+| **Activity** | Log hoạt động học viên real-time |
+| **Announcements** | Tạo và quản lý banner thông báo |
+
+---
+
+**User Story:** *"Là một HR Specialist, tôi muốn tạo module đào tạo mới trong vòng 30 phút bằng công cụ có sẵn, không cần biết code."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Form cơ bản | Tên, danh mục, cấp độ, thumbnail, icon, thời lượng |
+| Step editor | Thêm/xóa/sắp xếp bước nội dung |
+| Quiz builder | Thêm câu hỏi + 4 lựa chọn + đáp án đúng + giải thích |
+| Publish control | Toggle Published / Draft / Hidden |
+
+---
+
+**User Story:** *"Là một HR Specialist, tôi muốn xuất báo cáo dữ liệu ra file CSV để đính kèm vào báo cáo tuân thủ nội bộ."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Export button | Nút "Export CSV" trên Dashboard tab |
+| Nội dung file | Lượt xem, quiz attempts, điểm số, tỷ lệ pass |
+| Filter thời gian | 7 ngày / 30 ngày / 90 ngày / Tất cả |
+
+---
+
+#### 5.6 Announcement System
+
+**User Story:** *"Là một HR Specialist, tôi muốn gửi thông báo lên banner trang chủ để toàn bộ nhân viên thấy ngay khi vào học."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Loại thông báo | Info / Warning / Success / Danger (màu semantic) |
+| Dismiss | Học viên có thể đóng banner |
+| Quản lý | Bật/tắt từ admin panel |
+
+---
+
+### B. SHOULD-HAVE 📋 (Đã triển khai — Nâng cao)
+
+#### 5.7 Knowledge Map — Bản đồ Kiến thức
+
+**User Story:** *"Là một nhân viên, tôi muốn thấy sơ đồ module và mối liên hệ tiên quyết để học đúng thứ tự và hiệu quả hơn."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Sơ đồ | SVG interactive: nodes (module) + edges (dependency) |
+| Trạng thái node | ✅ Đã hoàn thành / 🔵 Có thể học / 🔒 Bị khóa |
+| Interaction | Click node → mở detail module |
+| Legend | Giải thích 3 trạng thái |
+
+---
+
+#### 5.8 Interactive Hotspots — Điểm Tương tác
+
+**User Story:** *"Là nhân viên học về an toàn lao động, tôi muốn click vào điểm trên sơ đồ mặt bằng để xem hướng dẫn chi tiết từng khu vực."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Pin overlay | Điểm đánh dấu trên ảnh với animation pulsing |
+| Popup | Click pin → hiển thị tiêu đề + mô tả chi tiết |
+| Multi-pin | Hỗ trợ nhiều hotspot trên 1 ảnh |
+| Responsive | Hoạt động tốt trên mobile |
+
+---
+
+#### 5.9 AI Recommendation — Gợi ý Thông minh
+
+**User Story:** *"Là một nhân viên, tôi muốn được gợi ý module tiếp theo phù hợp để không mất thời gian quyết định nên học gì."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Vị trí | Banner hiển thị trên trang chủ, trên danh sách module |
+| Thuật toán | Ưu tiên: cùng danh mục đang học + chưa từng thử + đủ prerequisites |
+| Lý do gợi ý | Hiển thị context string giải thích tại sao gợi ý module này |
+| Cập nhật | Tự động cập nhật sau mỗi lần hoàn thành module |
+
+---
+
+#### 5.10 Dark Mode & Accessibility
+
+**User Story:** *"Là nhân viên làm việc tối, tôi muốn chuyển sang giao diện tối để không mỏi mắt."*
+
+| Acceptance Criteria | Chi tiết |
+|---|---|
+| Toggle | Nút chuyển dark/light trên nav bar |
+| Persistence | Lưu preference qua localStorage |
+| Full coverage | Tất cả components hỗ trợ dark mode |
+| WCAG | Đáp ứng WCAG 2.1 AA (contrast, ARIA, keyboard nav) |
+
+---
+
+### C. COULD-HAVE 🔮 (Phiên bản V2)
+
+| # | Tính năng | Mô tả |
+|---|---|---|
+| C1 | **Learner Accounts** | Nhân viên tự đăng ký bằng email công ty |
+| C2 | **SSO Integration** | Đăng nhập qua Google Workspace / Microsoft 365 |
+| C3 | **Email Notifications** | Nhắc nhở tự động khi có module mới / deadline |
+| C4 | **Compliance Deadlines** | Đặt deadline hoàn thành per module, cảnh báo nhân viên |
+| C5 | **Learning Path Templates** | Lộ trình học theo vai trò (Nhân viên mới / Sales / Finance) |
+| C6 | **RBAC Admin** | Phân quyền admin theo phòng ban |
+| C7 | **PWA / Mobile App** | Cài app, hỗ trợ offline |
+| C8 | **PDF Compliance Report** | Báo cáo tuân thủ PDF gửi tự động cho manager |
+| C9 | **SCORM/xAPI Export** | Tích hợp với LMS lớn hơn |
+| C10 | **Bulk User Import** | Import danh sách nhân viên qua Excel |
+
+### D. WON'T-HAVE ❌ (Không làm)
+
+| Tính năng | Lý do |
+|---|---|
+| Live streaming / Virtual Classroom | Không phải mục tiêu compliance training |
+| VR/AR interactive training | Chi phí cao, ROI thấp với compliance |
+| Social learning / learner feed | Không phù hợp với culture compliance nội bộ |
+| Marketplace / Monetization | Tool nội bộ, không bán ra ngoài |
+
+---
+
+## 6. YÊU CẦU PHI CHỨC NĂNG (Non-Functional Requirements)
+
+### Hiệu suất (Performance)
+
+| Tiêu chí | Target |
+|---|---|
+| First Contentful Paint (FCP) | ≤ 1.5 giây |
+| Time to Interactive (TTI) | ≤ 2 giây |
+| Module content load | ≤ 1 giây |
+| Quiz feedback response | ≤ 200ms |
+| Concurrent users | ≥ 500 đồng thời |
+| Uptime SLA | ≥ 99.5% / tháng |
+
+### Bảo mật (Security)
+
+| Tiêu chí | Spec |
+|---|---|
+| Authentication | Supabase Auth (JWT + session expiry) |
+| Authorization | Admin routes được bảo vệ server-side |
+| XSS Protection | Tất cả user input HTML-escape trước khi render |
+| Transport | HTTPS bắt buộc (Vercel SSL/TLS enforced) |
+| API Keys | Chỉ expose Supabase anon key (Row-Level Security) |
+| Data Privacy | Không lưu PII nhạy cảm — chỉ session ID + module activity |
+
+### Tính tương thích (Compatibility)
+
+| Tiêu chí | Spec |
+|---|---|
+| Browsers | Chrome 90+, Firefox 88+, Safari 14+, Edge 90+ |
+| Devices | Desktop, Tablet, Mobile (iOS 14+, Android 10+) |
+| Layout | Mobile-First Responsive |
+| Min screen width | 320px |
+| Accessibility | WCAG 2.1 Level AA |
+
+### Khả năng bảo trì (Maintainability)
+
+- **Zero build pipeline** — HTML/CSS/JS thuần, deploy bằng `git push`
+- **No framework lock-in** — Không bị breaking changes của React/Vue
+- **CMS-driven content** — Nội dung quản lý qua Admin UI, không cần chỉnh code
+- **Supabase managed DB** — Không cần quản lý server
+
+---
+
+## 7. PHẠM VI DỰ ÁN (Scope)
+
+### Trong phạm vi V1 ✅
+
+| Domain | Tính năng |
+|---|---|
+| Learner Portal | Browse, filter, search module; xem nội dung; quiz; tiến độ; certificate; notes; share |
+| Visual Features | Knowledge Map, Hotspots, AI Recommendation, Dark Mode |
+| Gamification | Streak, progress bar, completion badge |
+| Admin CMS | Login, CRUD module, step editor, quiz builder, status toggle |
+| Admin Analytics | Dashboard KPI, traffic chart, heatmap, activity log, CSV export |
+| Announcements | Tạo và quản lý banner thông báo |
+
+### Ngoài phạm vi V1 ❌
+
+| Tính năng | Lý do loại khỏi V1 |
+|---|---|
+| User registration (nhân viên tự đăng ký) | Cần tích hợp HR system — phức tạp hơn MVP |
+| SSO (Google/Microsoft) | Cần IT infra approval |
+| Email notifications | Cần email service provider, thêm cost |
+| Compliance deadlines per module | Cần user accounts trước |
+| Mobile PWA | Web đã responsive, không cần gấp |
+| Video self-hosting | YouTube embed đủ dùng cho V1 |
+| Multi-language (i18n) | Toàn bộ content là tiếng Việt |
+| Learner-to-learner messaging | Ngoài scope compliance |
+
+---
+
+## 8. TRẢI NGHIỆM NGƯỜI DÙNG & LUỒNG THIẾT KẾ (UX/UI & User Flow)
+
+### Design System
+
+| Thuộc tính | Giá trị |
+|---|---|
+| Brand Color | MoMo Pink `#a50064` (PANTONE 234 C) |
+| Fonts | MoMo Trust Display (headings), MoMo Trust Sans (body), MoMo Signature (accent) |
+| Design Language | shadcn/ui principles — semantic tokens, composition, accessibility-first |
+| Component Style | Neomorphism cards + shadcn pill navigation |
+| Status Colors | Green `#5ea12a` / Red `#e5303f` / Amber `#f6c315` / Blue `#1c66bb` |
+| Dark Mode | Full support — CSS variable theming |
+
+### User Flow A — Nhân viên (Happy Path)
+
+```
+1. Vào trang chủ (mentora-lms-tau.vercel.app)
+   ↓
+2. Xem Stats Strip → biết tiến độ hiện tại (X/5 module, điểm TB, streak)
+   ↓
+3. Đọc AI Recommendation Banner → gợi ý module tiếp theo
+   ↓
+4. Click vào Module Card → vào Detail Page
+   ↓
+5. Đọc nội dung từng Step → Xem Hotspot (nếu có) → Xem Video
+   ↓
+6. Làm Quiz → Nhận phản hồi tức thì per câu → Xem điểm tổng kết
+   ↓
+7. Nhấn "Đánh dấu hoàn thành" → Badge + Stats cập nhật
+   ↓
+8. AI Recommendation cập nhật → Gợi ý module mới
+   ↓
+9. Vào trang "Lộ trình" (Knowledge Map) → Thấy node nào available tiếp theo
+   ↓
+10. Khi hoàn thành đủ module → Tải Certificate
+```
+
+### User Flow B — Admin (Tạo module mới)
+
+```
+1. Truy cập /admin → Login email/password
+   ↓
+2. Dashboard Tab → Xem KPIs + Charts + Heatmap
+   ↓
+3. Modules Tab → Nhấn "Tạo module mới"
+   ↓
+4. Nhập: Tên, Danh mục, Cấp độ, Thumbnail, Thời lượng
+   ↓
+5. Thêm Steps (Tiêu đề + Nội dung + Ghi chú)
+   ↓
+6. Thêm Quiz Questions (Câu hỏi + 4 lựa chọn + Đáp án đúng + Giải thích)
+   ↓
+7. Chọn Status: "Published" → Save
+   ↓
+8. Activity Tab → Theo dõi học viên truy cập
+   ↓
+9. Export CSV → Đính kèm vào báo cáo tuân thủ
+```
+
+### Responsive Breakpoints
+
+| Breakpoint | Layout |
+|---|---|
+| `< 640px` | Mobile — 1 cột, stacked layout, nav hamburger |
+| `640–1024px` | Tablet — 2 cột grid |
+| `> 1024px` | Desktop — 3 cột grid, detail sidebar hiển thị |
+
+---
+
+## 9. RỦI RO, GIẢ ĐỊNH & PHỤ THUỘC (Risks, Assumptions & Dependencies)
+
+### Giả định (Assumptions)
+
+| # | Giả định |
+|---|---|
+| A1 | Nhân viên MoMo có thể truy cập internet và trình duyệt hiện đại trong giờ làm việc |
+| A2 | HR-L&OD đã có sẵn nội dung đào tạo (text, ảnh, video YouTube) — không cần công cụ sản xuất video |
+| A3 | Chưa cần tích hợp HRMS (SAP, Workday) trong V1 |
+| A4 | Số lượng nhân viên đồng thời không vượt quá 500 trong V1 |
+| A5 | Dữ liệu học tập không cần audit trail pháp lý cấp cao (không cần SCORM compliance) |
+
+### Sự phụ thuộc (Dependencies)
+
+| Hệ thống | Phụ thuộc | Mức độ ảnh hưởng |
+|---|---|---|
+| **Supabase** | Backend DB + Authentication | 🔴 Cao — Admin không login, analytics mất |
+| **Vercel** | Hosting & CDN | 🔴 Cao — Toàn bộ app không truy cập |
+| **YouTube** | Video embedding | 🟡 Trung bình — Video không phát, nội dung khác vẫn học được |
+| **Font Awesome CDN** | Icons | 🟢 Thấp — Fallback text label |
+| **Google Fonts CDN** | JetBrains Mono | 🟢 Thấp — Fallback system monospace |
+
+### Rủi ro & Giảm thiểu (Risks & Mitigation)
+
+| Rủi ro | Mức độ | Giảm thiểu |
+|---|---|---|
+| **Nhân viên không có động lực tự học** | 🔴 Cao | Gamification (streak, certificate), announcement nhắc nhở định kỳ |
+| **Dữ liệu mất khi clear localStorage** | 🟡 Trung bình | Cảnh báo khi dùng incognito; V2 cần user accounts |
+| **Nội dung module lỗi thời** | 🟡 Trung bình | Quy trình review 3-6 tháng/lần, admin cập nhật real-time |
+| **YouTube bị block trong mạng nội bộ** | 🟡 Trung bình | Self-host hoặc chuyển Vimeo trong V2 |
+| **Supabase free tier limit** | 🟢 Thấp | Monitor usage; upgrade nếu vượt 50K rows / 500MB |
+| **Admin account bị compromise** | 🟢 Thấp | Strong password + 2FA (Supabase support), IP whitelist |
+
+---
+
+## 10. KẾ HOẠCH PHÁT HÀNH & CỘT MỐC (Timeline & Milestones)
+
+### Lịch sử phát triển V1 (Retrospective)
+
+| Phase | Deliverables | Trạng thái |
+|---|---|---|
+| **Phase 0 — Foundation** | Design system, DB schema, static skeleton, MoMo brand integration | ✅ Done |
+| **Phase 1 — Core Learning** | Module browser, filter/search, detail page, reading progress bar | ✅ Done |
+| **Phase 2 — Assessment** | Quiz system, instant feedback, score tracking, streak, certificate | ✅ Done |
+| **Phase 3 — Admin CMS** | Login, module CRUD, step editor, quiz builder, announcements | ✅ Done |
+| **Phase 4 — Analytics** | Dashboard KPI, traffic chart, heatmap, activity log, CSV export | ✅ Done |
+| **Phase 5 — Advanced Features** | Knowledge Map, Interactive Hotspots, AI Recommendation, Dark Mode | ✅ Done |
+| **Phase 6 — Design Polish** | shadcn/ui tokens, filter tabs redesign, modal animation, stats strip | ✅ Done |
+| **🚀 V1.0 Launch** | **Production live** | ✅ **LIVE** |
+
+### Roadmap V2 (Dự kiến)
+
+| Milestone | Target | Key Features |
+|---|---|---|
+| **V2.0 — User Accounts** | Q3/2026 | Nhân viên đăng ký + SSO, dữ liệu persistent thực sự |
+| **V2.1 — Notifications** | Q3/2026 | Email reminders, compliance deadline, push notifications |
+| **V2.2 — Learning Paths** | Q4/2026 | Lộ trình học theo vai trò, mandatory curriculum theo phòng ban |
+| **V2.3 — Reporting** | Q4/2026 | PDF compliance report, weekly email digest cho manager |
+| **V3.0 — Scale** | Q1/2027 | SCORM export, HRMS integration, multi-company |
+
+---
+
+## PHỤ LỤC — Thông tin kỹ thuật
+
+### Tech Stack
+
+| Layer | Technology | Lý do chọn |
+|---|---|---|
+| Frontend | HTML5 + CSS3 + Vanilla JS | Không cần build pipeline, deploy instant, không bị framework lock-in |
+| Charts | Chart.js | Lightweight, dễ tùy biến, free |
+| Icons | Font Awesome 6 | Phong phú, free tier đủ dùng |
+| Backend | Supabase (PostgreSQL) | Free tier, real-time, Auth built-in, no server management |
+| Hosting | Vercel | Auto-deploy từ GitHub push, CDN toàn cầu |
+| Design System | MoMo Brand + shadcn/ui principles | Đồng nhất brand, accessibility-first, semantic tokens |
+
+### Supabase Database Schema
+
+| Table | Mục đích |
+|---|---|
+| `page_views` | Track lượt xem module per session + source |
+| `quiz_attempts` | Kết quả quiz (score, passed, module_id, timestamp) |
+| `quiz_answers` | Chi tiết từng câu trả lời (cho question analytics) |
+| `modules_cms` | Nội dung module từ Admin CMS |
+| `announcements` | Thông báo admin broadcast |
+
+### Module Data Schema (JSON)
+
+```json
+{
+  "id": "M001",
+  "name": "Quy trình Onboarding Nhân viên Mới",
+  "category": "Process",
+  "level": "Bắt buộc",
+  "duration": "30 phút đọc",
+  "prerequisites": [],
+  "steps": [
+    { "title": "string", "desc": "string", "note": "string" }
+  ],
+  "quiz": [
+    {
+      "question": "string",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "explanation": "string"
+    }
+  ],
+  "hotspotImage": "url",
+  "hotspots": [
+    { "x": 25, "y": 40, "label": "string", "description": "string" }
+  ]
+}
+```
+
+### localStorage Schema (Client-side)
+
+| Key | Value | Mục đích |
+|---|---|---|
+| `lms-done-{id}` | `"1"` | Đánh dấu module đã hoàn thành |
+| `lms-quiz-score-{id}` | `"85"` | Điểm quiz lần cuối |
+| `lms-streak-date` | ISO date string | Ngày hoạt động gần nhất |
+| `lms-streak-count` | `"3"` | Số ngày streak liên tiếp |
+| `lms-notes-{id}` | text | Ghi chú của học viên per module |
+| `lms-theme` | `"dark"\|"light"` | Theme preference |
+| `lms-cert-name` | string | Tên học viên cho certificate |
+
+---
+
+*PRD này mô tả trạng thái V1.0 của Mentora LMS — Compliance Training Portal.*
+*Cập nhật lần cuối: 30/04/2026 | Người phụ trách: HR-L&OD Team*
