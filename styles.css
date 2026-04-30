@@ -263,15 +263,21 @@ body.dark .brand-logo { filter: brightness(0) invert(1); }
 .promo-box {
   display: inline-block;
   font-family: 'MoMo Trust Display', sans-serif;
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background-color: var(--accent-subtle);
-  border: 1px solid var(--accent-ring);
+  color: #fff;
+  letter-spacing: -.2px;
+  padding: 10px 22px;
+  border-radius: 12px;
+  background-color: #f95396;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px,
+    transparent 9px,
+    rgba(165, 0, 100, .28) 9px,
+    rgba(165, 0, 100, .28) 18px
+  );
+  box-shadow: 0 4px 16px rgba(165,0,100,.3);
 }
 
 /* Heading: Signature line + bold dark line */
