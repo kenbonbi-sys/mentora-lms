@@ -698,17 +698,32 @@ document.addEventListener('DOMContentLoaded', function () {
   updateStreak();
 
   // ── Mobile drawer ──
+  var lastDrawerTrigger = null;
   function openDrawer() {
-    document.getElementById('mobile-drawer').classList.add('open');
-    document.getElementById('drawer-overlay').classList.add('active');
+    var drawer = document.getElementById('mobile-drawer');
+    var overlay = document.getElementById('drawer-overlay');
+    var toggle = document.getElementById('nav-toggle');
+    lastDrawerTrigger = document.activeElement;
+    drawer.classList.add('open');
+    overlay.classList.add('active');
     document.body.classList.add('drawer-open');
-    document.getElementById('nav-toggle').setAttribute('aria-label', 'Đóng menu');
+    toggle.setAttribute('aria-label', 'Đóng menu');
+    toggle.setAttribute('aria-expanded', 'true');
+    drawer.focus({ preventScroll: true });
   }
   function closeDrawer() {
-    document.getElementById('mobile-drawer').classList.remove('open');
-    document.getElementById('drawer-overlay').classList.remove('active');
+    var drawer = document.getElementById('mobile-drawer');
+    var overlay = document.getElementById('drawer-overlay');
+    var toggle = document.getElementById('nav-toggle');
+    var wasOpen = drawer.classList.contains('open');
+    drawer.classList.remove('open');
+    overlay.classList.remove('active');
     document.body.classList.remove('drawer-open');
-    document.getElementById('nav-toggle').setAttribute('aria-label', 'Mở menu');
+    toggle.setAttribute('aria-label', 'Mở menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    if (wasOpen && lastDrawerTrigger && document.contains(lastDrawerTrigger)) {
+      lastDrawerTrigger.focus({ preventScroll: true });
+    }
   }
   window.openDrawer = openDrawer;
   window.closeDrawer = closeDrawer;
@@ -773,6 +788,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── ESC key closes any open modal ──
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
+    closeDrawer();
     document.querySelectorAll('.modal-overlay.open').forEach(function (m) {
       m.classList.remove('open');
     });

@@ -38,15 +38,15 @@
           <i class="fa-solid fa-moon" id="theme-icon" aria-hidden="true"></i>
         </button>
       </div>
-      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu">
+      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu" aria-controls="mobile-drawer" aria-expanded="false">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
   </nav>
 
   <!-- Mobile drawer -->
-  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-  <aside class="mobile-drawer" id="mobile-drawer" aria-label="Menu điều hướng">
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()" aria-hidden="true"></div>
+  <aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu điều hướng" tabindex="-1">
     <div class="drawer-header">
       <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo drawer-logo">
       <button class="btn btn-ghost btn-icon drawer-close" onclick="closeDrawer()" aria-label="Đóng menu">
