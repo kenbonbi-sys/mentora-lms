@@ -463,19 +463,48 @@ async function loadHeatmap() {
 // ══════════════════════════════════════════════════════════
 function exportCSV() {
   if (!_lastModStats.length) { showToast('Chưa có dữ liệu để xuất', 'error'); return; }
-  const header = ['Module ID', 'Tên Module', 'Danh mục', 'Lượt xem', 'Lượt quiz', 'Điểm TB (%)', 'Tỉ lệ đạt (%)', 'Tỉ lệ làm quiz (%)'];
-  const rows   = _lastModStats.map(m => {
-    const avgQ    = m.attempts ? Math.round(m.pctSum / m.attempts) : '';
-    const pRate   = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : '';
-    const qRate   = m.views    ? Math.round((m.attempts / m.views) * 100) : 0;
-    return [m.id, m.name, m.category, m.views, m.attempts, avgQ, pRate, qRate];
+
+  const today    = new Date().toLocaleDateString('vi-VN');
+  const dayLabel = currentDays === 0 ? 'Tất cả thời gian' : currentDays + ' ngày gần nhất';
+
+  const q = v => '"' + String(v === '' || v == null ? '—' : v).replace(/"/g, '""') + '"';
+
+  const meta = [
+    ['Báo cáo Mentora LMS', '', '', '', '', '', '', ''],
+    ['Ngày xuất', today, '', '', '', '', '', ''],
+    ['Khoảng thời gian', dayLabel, '', '', '', '', '', ''],
+    [],
+  ];
+
+  const header = [
+    'Module ID',
+    'Tên Module',
+    'Danh mục',
+    'Lượt xem',
+    'Lượt làm quiz',
+    'Điểm trung bình (%)',
+    'Tỉ lệ đạt (%)',
+    'Tỉ lệ chuyển đổi view→quiz (%)',
+  ];
+
+  const rows = _lastModStats.map(m => {
+    const avgScore  = m.attempts ? Math.round(m.pctSum / m.attempts) + '%'  : '—';
+    const passRate  = m.attempts ? Math.round((m.passCount / m.attempts) * 100) + '%' : '—';
+    const convRate  = m.views    ? Math.round((m.attempts / m.views) * 100) + '%' : '0%';
+    return [m.id, m.name, m.category, m.views, m.attempts, avgScore, passRate, convRate];
   });
-  const csv   = [header, ...rows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
-  const bom   = '﻿'; // UTF-8 BOM for Excel
-  const blob  = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
-  const url   = URL.createObjectURL(blob);
-  const a     = Object.assign(document.createElement('a'), { href: url, download: 'mentora-stats-' + new Date().toISOString().slice(0,10) + '.csv' });
-  a.click(); URL.revokeObjectURL(url);
+
+  const allRows = [...meta, header, ...rows];
+  const csv  = allRows.map(r => r.length ? r.map(q).join(',') : '').join('\n');
+  const bom  = '﻿';
+  const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), {
+    href: url,
+    download: 'mentora-stats-' + new Date().toISOString().slice(0, 10) + '.csv',
+  });
+  a.click();
+  URL.revokeObjectURL(url);
   showToast('Đã xuất CSV!', 'success');
 }
 
