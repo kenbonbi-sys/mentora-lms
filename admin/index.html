@@ -290,144 +290,169 @@
   <!-- ╚══════════════════════════════════════╝ -->
   <div class="modal-overlay" id="modal-module" style="display:none">
     <div class="modal-box modal-large">
+
+      <!-- ── Top bar ── -->
       <div class="modal-header">
-        <h3 id="modal-module-title">Thêm Module mới</h3>
-        <button class="btn-ghost" onclick="closeModuleModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display:flex;align-items:center;gap:12px">
+          <h3 id="modal-module-title">Thêm Module mới</h3>
+          <span class="modal-panel-sep">|</span>
+          <span style="font-size:12px;color:var(--text-tertiary)">Thông tin bên trái · Nội dung bên phải</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn-ghost btn-sm" onclick="closeModuleModal()">
+            <i class="fa-solid fa-xmark"></i> Đóng
+          </button>
+          <button class="btn-primary btn-sm" id="btn-save-module" onclick="saveModule()">
+            <i class="fa-solid fa-floppy-disk"></i> Lưu module
+          </button>
+        </div>
       </div>
 
+      <!-- ── Two-panel body ── -->
       <div class="modal-body">
 
-        <!-- Basic fields -->
-        <div class="form-grid">
-          <div class="form-group">
-            <label>ID Module *</label>
-            <input type="text" id="mod-id" placeholder="M006">
-          </div>
-          <div class="form-group">
-            <label>Tên Module *</label>
-            <input type="text" id="mod-name" placeholder="Quy trình XYZ...">
-          </div>
-          <div class="form-group">
-            <label>Danh mục</label>
-            <select id="mod-category">
-              <option value="Process">Process</option>
-              <option value="Policy">Policy</option>
-              <option value="Safety">Safety</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Cấp độ</label>
-            <select id="mod-level">
-              <option value="Bắt buộc">Bắt buộc</option>
-              <option value="Theo phòng ban">Theo phòng ban</option>
-              <option value="Tự nguyện">Tự nguyện</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Thời lượng</label>
-            <input type="text" id="mod-duration" placeholder="30 phút đọc">
-          </div>
-          <div class="form-group">
-            <label>Ngày cập nhật</label>
-            <input type="text" id="mod-updated" placeholder="25/04/2026">
-          </div>
-          <div class="form-group">
-            <label>Trạng thái</label>
-            <select id="mod-status">
-              <option value="draft">📝 Draft — chưa đăng</option>
-              <option value="published">✅ Published — hiện trên site</option>
-              <option value="hidden">🔒 Hidden — tạm ẩn</option>
-            </select>
-          </div>
-          <div class="form-group form-full">
-            <label>Mô tả ngắn</label>
-            <input type="text" id="mod-subtitle" placeholder="Tổng quan về quy trình...">
-          </div>
-          <div class="form-group">
-            <label>Thumbnail URL</label>
-            <input type="text" id="mod-thumbnail" placeholder="/assets/images/hero/hero-01.jpg">
-          </div>
-          <div class="form-group">
-            <label>Icon URL</label>
-            <input type="text" id="mod-icon" placeholder="/assets/icons/education.png">
-          </div>
-          <div class="form-group form-full">
-            <label>Video URL (YouTube embed, để trống nếu chưa có)</label>
-            <input type="text" id="mod-video" placeholder="https://www.youtube.com/embed/...">
-          </div>
-        </div>
+        <!-- LEFT: Metadata panel -->
+        <div class="modal-meta-panel">
 
-        <!-- Word Upload -->
-        <div class="builder-section">
-          <div class="builder-header">
-            <div class="builder-title"><i class="fa-solid fa-file-word" style="color:#2b579a;margin-right:6px"></i>Nhập từ file Word</div>
+          <div class="meta-panel-section">
+            <div class="meta-section-title">Thông tin cơ bản</div>
+            <div class="form-group">
+              <label>ID Module *</label>
+              <input type="text" id="mod-id" placeholder="M006">
+            </div>
+            <div class="form-group">
+              <label>Tên Module *</label>
+              <input type="text" id="mod-name" placeholder="Quy trình XYZ...">
+            </div>
+            <div class="form-group">
+              <label>Mô tả ngắn</label>
+              <input type="text" id="mod-subtitle" placeholder="Tổng quan về quy trình...">
+            </div>
           </div>
-          <div class="word-upload-area" id="word-upload-area">
-            <label for="word-upload" class="word-upload-label">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              <span>Kéo thả file <strong>.docx</strong> hoặc <u>chọn file</u></span>
-              <small>Hệ thống tự phân tích cấu trúc theo template → điền vào blocks bên dưới</small>
-            </label>
-            <input type="file" id="word-upload" accept=".docx" style="display:none" onchange="handleWordUpload(event)">
-            <button class="btn-ghost btn-sm" onclick="downloadWordTemplate()">
-              <i class="fa-solid fa-download"></i> Tải template mẫu
-            </button>
-          </div>
-          <div id="word-upload-status" style="display:none"></div>
-        </div>
 
-        <!-- Content Blocks Builder -->
-        <div class="builder-section">
-          <div class="builder-header">
-            <div class="builder-title"><i class="fa-solid fa-cubes" style="color:#a50064;margin-right:6px"></i>Nội dung bài học</div>
-            <div class="block-add-wrap">
-              <button class="btn-sm" id="btn-add-block" onclick="toggleBlockPicker(event)">
-                <i class="fa-solid fa-plus"></i> Thêm block
+          <div class="meta-panel-section">
+            <div class="meta-section-title">Phân loại</div>
+            <div class="form-group">
+              <label>Danh mục</label>
+              <select id="mod-category">
+                <option value="Process">Process</option>
+                <option value="Policy">Policy</option>
+                <option value="Safety">Safety</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cấp độ</label>
+              <select id="mod-level">
+                <option value="Bắt buộc">Bắt buộc</option>
+                <option value="Theo phòng ban">Theo phòng ban</option>
+                <option value="Tự nguyện">Tự nguyện</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Trạng thái</label>
+              <select id="mod-status">
+                <option value="draft">📝 Draft</option>
+                <option value="published">✅ Published</option>
+                <option value="hidden">🔒 Hidden</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Thời lượng</label>
+              <input type="text" id="mod-duration" placeholder="30 phút đọc">
+            </div>
+            <div class="form-group">
+              <label>Ngày cập nhật</label>
+              <input type="text" id="mod-updated" placeholder="25/04/2026">
+            </div>
+          </div>
+
+          <div class="meta-panel-section">
+            <div class="meta-section-title">Media</div>
+            <div class="form-group">
+              <label>Thumbnail URL</label>
+              <input type="text" id="mod-thumbnail" placeholder="/assets/images/hero/hero-01.jpg">
+            </div>
+            <div class="form-group">
+              <label>Icon URL</label>
+              <input type="text" id="mod-icon" placeholder="/assets/icons/education.png">
+            </div>
+            <div class="form-group">
+              <label>Video URL (YouTube embed)</label>
+              <input type="text" id="mod-video" placeholder="https://www.youtube.com/embed/...">
+            </div>
+          </div>
+
+          <!-- Word Upload in left panel -->
+          <div class="meta-panel-section">
+            <div class="meta-section-title"><i class="fa-solid fa-file-word" style="color:#2b579a;margin-right:5px"></i>Nhập từ Word</div>
+            <div class="word-upload-area" id="word-upload-area">
+              <label for="word-upload" class="word-upload-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Kéo thả <strong>.docx</strong> hoặc <u>chọn file</u></span>
+                <small>Tự phân tích → tạo blocks bên phải</small>
+              </label>
+              <input type="file" id="word-upload" accept=".docx" style="display:none" onchange="handleWordUpload(event)">
+              <button class="btn-ghost btn-sm" onclick="downloadWordTemplate()">
+                <i class="fa-solid fa-download"></i> Template mẫu
               </button>
-              <div class="block-type-picker" id="block-type-picker" style="display:none">
-                <button class="btp-item" onclick="addBlock('text');toggleBlockPicker()">
-                  <i class="fa-solid fa-paragraph"></i><span>Đoạn văn bản</span>
+            </div>
+            <div id="word-upload-status" style="display:none"></div>
+          </div>
+
+        </div><!-- /modal-meta-panel -->
+
+        <!-- RIGHT: Block editor panel -->
+        <div class="modal-editor-panel">
+          <div class="builder-section">
+            <div class="builder-header">
+              <div class="builder-title"><i class="fa-solid fa-file-lines" style="color:#a50064;margin-right:6px"></i>Nội dung bài học</div>
+              <div class="block-add-wrap">
+                <button class="btn-sm" id="btn-add-block" onclick="toggleBlockPicker(event)">
+                  <i class="fa-solid fa-plus"></i> Thêm block
                 </button>
-                <button class="btp-item" onclick="addBlock('steps');toggleBlockPicker()">
-                  <i class="fa-solid fa-list-check"></i><span>Các bước quy trình</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('checklist');toggleBlockPicker()">
-                  <i class="fa-solid fa-square-check"></i><span>Checklist</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('quiz');toggleBlockPicker()">
-                  <i class="fa-solid fa-circle-question"></i><span>Quiz kiểm tra</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('video');toggleBlockPicker()">
-                  <i class="fa-solid fa-video"></i><span>Video YouTube</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('image');toggleBlockPicker()">
-                  <i class="fa-solid fa-image"></i><span>Hình ảnh</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('file');toggleBlockPicker()">
-                  <i class="fa-solid fa-paperclip"></i><span>Tài liệu đính kèm</span>
-                </button>
-                <button class="btp-item" onclick="addBlock('callout');toggleBlockPicker()">
-                  <i class="fa-solid fa-lightbulb"></i><span>Callout / Lưu ý</span>
-                </button>
+                <div class="block-type-picker" id="block-type-picker" style="display:none">
+                  <button class="btp-item" onclick="addBlock('text');toggleBlockPicker()">
+                    <i class="fa-solid fa-paragraph"></i><span>Đoạn văn bản</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('steps');toggleBlockPicker()">
+                    <i class="fa-solid fa-list-check"></i><span>Các bước quy trình</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('checklist');toggleBlockPicker()">
+                    <i class="fa-solid fa-square-check"></i><span>Checklist</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('quiz');toggleBlockPicker()">
+                    <i class="fa-solid fa-circle-question"></i><span>Quiz kiểm tra</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('video');toggleBlockPicker()">
+                    <i class="fa-solid fa-video"></i><span>Video YouTube</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('image');toggleBlockPicker()">
+                    <i class="fa-solid fa-image"></i><span>Hình ảnh</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('file');toggleBlockPicker()">
+                    <i class="fa-solid fa-paperclip"></i><span>Tài liệu đính kèm</span>
+                  </button>
+                  <button class="btp-item" onclick="addBlock('callout');toggleBlockPicker()">
+                    <i class="fa-solid fa-lightbulb"></i><span>Callout / Lưu ý</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- The document "page" -->
+            <div id="content-blocks-builder" class="content-blocks-builder">
+              <div class="blocks-empty-hint" id="blocks-empty-hint">
+                <i class="fa-solid fa-file-pen"></i>
+                <p>Trang trống.<br>Nhấn <strong>+ Thêm block</strong> hoặc upload file Word để bắt đầu.</p>
               </div>
             </div>
           </div>
-          <div id="content-blocks-builder" class="content-blocks-builder">
-            <div class="blocks-empty-hint" id="blocks-empty-hint">
-              <i class="fa-solid fa-cubes"></i>
-              <p>Chưa có block nào.<br>Nhấn <strong>+ Thêm block</strong> hoặc upload file Word để bắt đầu soạn thảo.</p>
-            </div>
-          </div>
-        </div>
+        </div><!-- /modal-editor-panel -->
 
       </div><!-- /modal-body -->
 
-      <div class="modal-footer">
-        <button class="btn-ghost" onclick="closeModuleModal()">Hủy</button>
-        <button class="btn-primary" id="btn-save-module" onclick="saveModule()">
-          <i class="fa-solid fa-floppy-disk"></i> Lưu module
-        </button>
-      </div>
+      <!-- Footer hidden — save button moved to header -->
+      <div class="modal-footer" style="display:none"></div>
+
     </div>
   </div>
 
