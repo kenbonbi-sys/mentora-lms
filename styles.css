@@ -299,7 +299,7 @@ body.dark .brand-logo { filter: brightness(0) invert(1); }
   display: block;
 }
 
-.hero-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.65; max-width: 480px; margin-bottom: 32px; }
+.hero-desc { font-size: 16px; font-weight: 500; color: var(--text-secondary); line-height: 1.65; max-width: 480px; margin-bottom: 32px; }
 .hero-actions { display: flex; flex-direction: row; gap: 12px; flex-wrap: wrap; align-items: center; }
 
 /* Image — blob shape + decorative circles */
