@@ -1097,22 +1097,35 @@ body {
 /* ── Sparkline ──────────────────────────────────── */
 .stat-spark {
   position: relative; display: block;
-  width: 100%; height: 32px; margin-top: 10px;
+  width: 100%; height: 30px; margin-top: auto;
 }
 .stat-spark canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .stat-hint {
-  font-size: 11px; color: var(--text-tertiary); margin-top: 4px; line-height: 1.4;
+  font-size: 11px; color: var(--text-tertiary); margin-top: auto;
+  padding-top: 8px; line-height: 1.4;
 }
+
+/* ── Stat card layout: push spark/hint to bottom for uniform heights ── */
+.stat-body { display: flex; flex-direction: column; min-height: 86px; }
+.stat-card { align-items: stretch; }
 
 /* ── New stat icon colours ───────────────────────── */
 .stat-icon.e2e    { background: #e8f5e9; color: #2e7d32; }
 .stat-icon.repeat { background: #fff3e0; color: #e65100; }
 .stat-icon.weekly { background: #e3f2fd; color: #1565c0; }
 
+/* ── Stats grid layouts: primary 4-col, secondary 3-col ── */
+.stats-primary   { grid-template-columns: repeat(4, 1fr); }
+.stats-secondary { grid-template-columns: repeat(3, 1fr); margin-bottom: 24px; }
+
 /* ── Analytics row ───────────────────────────────── */
 .analytics-row {
   display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
+  align-items: stretch;
 }
+.analytics-row .admin-card { display: flex; flex-direction: column; }
+.analytics-row .admin-card > .admin-card-header + div,
+.analytics-row .admin-card > #top-bottom-modules { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
 /* ── Top / Bottom modules ────────────────────────── */
 .tb-wrap    { padding: 14px 20px 18px; display: flex; flex-direction: column; gap: 10px; }
@@ -1175,6 +1188,7 @@ body {
 @media (max-width: 640px) {
   .admin-body  { padding: 16px 12px 40px; }
   .stats-grid  { grid-template-columns: 1fr 1fr; }
+  .stats-primary, .stats-secondary { grid-template-columns: 1fr 1fr; }
   .charts-row  { grid-template-columns: 1fr; }
   .analytics-row { grid-template-columns: 1fr; }
   .journey-layout { grid-template-columns: 1fr; }
