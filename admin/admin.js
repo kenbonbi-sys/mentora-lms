@@ -812,6 +812,7 @@ function addBlock(type, data) {
     + '</div>'
     + '<button class="block-remove" onclick="_removeBlock(this)" title="Xóa block"><i class="fa-solid fa-xmark"></i></button>';
   _setupBlockDrag(div);
+  _setupAutoResize(div);
   document.getElementById('content-blocks-builder').appendChild(div);
   _updateEmptyHint();
   return div;
@@ -951,12 +952,18 @@ function addStepItem(blockId) {
   if (!container) return;
   const n = container.querySelectorAll('.step-block-item').length + 1;
   container.insertAdjacentHTML('beforeend', _stepItemHtml(n, null));
+  container.querySelectorAll('.step-block-item:last-child textarea').forEach(ta => {
+    ta.addEventListener('input', () => _autoResizeTextarea(ta));
+    _autoResizeTextarea(ta);
+  });
+  container.querySelector('.step-block-item:last-child .step-item-title')?.focus();
 }
 
 function addChecklistItem(blockId) {
   const container = document.getElementById('cli-' + blockId);
   if (!container) return;
   container.insertAdjacentHTML('beforeend', _checklistItemHtml(null));
+  container.querySelector('.checklist-block-item:last-child .cl-item-text')?.focus();
 }
 
 function addQuizItem(blockId) {
@@ -964,10 +971,27 @@ function addQuizItem(blockId) {
   if (!container) return;
   const n = container.querySelectorAll('.quiz-block-item').length + 1;
   container.insertAdjacentHTML('beforeend', _quizItemHtml(n, null));
+  container.querySelectorAll('.quiz-block-item:last-child textarea').forEach(ta => {
+    ta.addEventListener('input', () => _autoResizeTextarea(ta));
+    _autoResizeTextarea(ta);
+  });
+  container.querySelector('.quiz-block-item:last-child .qi-question')?.focus();
 }
 
 // ── Drag & Drop ───────────────────────────────────────────
 let _dragSrc = null;
+
+// ── Auto-resize textareas ─────────────────────────────────
+function _autoResizeTextarea(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+function _setupAutoResize(blockEl) {
+  blockEl.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => _autoResizeTextarea(ta));
+    _autoResizeTextarea(ta); // initial
+  });
+}
 
 function _setupBlockDrag(el) {
   el.addEventListener('dragstart', e => {
