@@ -188,7 +188,7 @@ function _renderDelta(elId, curr, prev) {
   const el = document.getElementById(elId);
   if (!el) return;
   if (prev === 0 && curr === 0) { el.innerHTML = ''; return; }
-  if (prev === 0) { el.innerHTML = '<span class="delta up">Mới</span>'; return; }
+  if (prev === 0) { el.innerHTML = ''; return; }
   const pct = Math.round(((curr - prev) / prev) * 100);
   if (pct === 0) { el.innerHTML = '<span class="delta neutral">= kỳ trước</span>'; return; }
   const cls = pct > 0 ? 'up' : 'down';
