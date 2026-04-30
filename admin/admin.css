@@ -505,28 +505,21 @@ body {
 }
 .block-item:hover::before { background: var(--accent); }
 
-/* Drag states */
-.block-item.block-dragging { opacity: .35; background: #fdf4fa; }
-.block-item.drag-above::after,
-.block-item.drag-below::after {
-  content: ''; position: absolute; left: 8px; right: 8px; height: 2px;
-  background: var(--accent); border-radius: 2px; z-index: 10;
+/* ── Arrow buttons — hidden in left margin, shown on hover ── */
+.block-arrows {
+  position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 1px;
+  opacity: 0; transition: opacity .15s;
 }
-.block-item.drag-above::after { top: -1px; }
-.block-item.drag-below::after { bottom: -1px; }
-
-/* ── Handle — hidden in left margin, shown on hover ────── */
-.block-handle {
-  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-  width: 24px; height: 24px;
+.block-item:hover .block-arrows { opacity: 1; }
+.block-arrow-btn {
+  width: 22px; height: 20px;
   display: flex; align-items: center; justify-content: center;
-  cursor: grab; color: #c0c8d4;
-  border: none; background: none; border-radius: 4px;
-  opacity: 0; transition: opacity .15s, color .15s;
+  background: none; border: none; cursor: pointer;
+  color: #c0c8d4; border-radius: 4px; font-size: 10px;
+  transition: color .12s, background .12s;
 }
-.block-item:hover .block-handle { opacity: 1; }
-.block-handle:hover { color: var(--accent); background: rgba(165,0,100,.06); }
-.block-handle:active { cursor: grabbing; }
+.block-arrow-btn:hover { color: var(--accent); background: rgba(165,0,100,.08); }
 
 /* ── Block inner ── */
 .block-inner {

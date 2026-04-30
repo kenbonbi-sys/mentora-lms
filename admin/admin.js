@@ -801,17 +801,18 @@ function addBlock(type, data) {
   const meta = BLOCK_META[type] || { icon: 'fa-cube', label: type };
   const div = document.createElement('div');
   div.className = 'block-item';
-  div.draggable = true;
   div.dataset.blockId = blockId;
   div.dataset.blockType = type;
   div.innerHTML =
-    '<div class="block-handle" title="Kéo để sắp xếp"><i class="fa-solid fa-grip-vertical"></i></div>'
+    '<div class="block-arrows">'
+    +   '<button class="block-arrow-btn" onclick="_moveBlock(this,-1)" title="Lên"><i class="fa-solid fa-chevron-up"></i></button>'
+    +   '<button class="block-arrow-btn" onclick="_moveBlock(this,1)" title="Xuống"><i class="fa-solid fa-chevron-down"></i></button>'
+    + '</div>'
     + '<div class="block-inner">'
     +   '<div class="block-type-label"><i class="fa-solid ' + meta.icon + '"></i> ' + meta.label + '</div>'
     +   '<div class="block-editor-content">' + _buildBlockEditor(type, blockId, data) + '</div>'
     + '</div>'
     + '<button class="block-remove" onclick="_removeBlock(this)" title="Xóa block"><i class="fa-solid fa-xmark"></i></button>';
-  _setupBlockDrag(div);
   _setupAutoResize(div);
   document.getElementById('content-blocks-builder').appendChild(div);
   _updateEmptyHint();
@@ -978,8 +979,18 @@ function addQuizItem(blockId) {
   container.querySelector('.quiz-block-item:last-child .qi-question')?.focus();
 }
 
-// ── Drag & Drop ───────────────────────────────────────────
-let _dragSrc = null;
+// ── Move block up / down ──────────────────────────────────
+function _moveBlock(btn, dir) {
+  const block = btn.closest('.block-item');
+  const container = block.parentNode;
+  if (dir === -1) {
+    const prev = block.previousElementSibling;
+    if (prev && prev.classList.contains('block-item')) container.insertBefore(block, prev);
+  } else {
+    const next = block.nextElementSibling;
+    if (next && next.classList.contains('block-item')) container.insertBefore(next, block);
+  }
+}
 
 // ── Auto-resize textareas ─────────────────────────────────
 function _autoResizeTextarea(ta) {
@@ -993,36 +1004,6 @@ function _setupAutoResize(blockEl) {
   });
 }
 
-function _setupBlockDrag(el) {
-  el.addEventListener('dragstart', e => {
-    _dragSrc = el;
-    el.classList.add('block-dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', el.dataset.blockId);
-  });
-  el.addEventListener('dragend', () => {
-    el.classList.remove('block-dragging');
-    document.querySelectorAll('.block-item').forEach(b => b.classList.remove('drag-above','drag-below'));
-    _dragSrc = null;
-  });
-  el.addEventListener('dragover', e => {
-    e.preventDefault();
-    if (!_dragSrc || _dragSrc === el) return;
-    e.dataTransfer.dropEffect = 'move';
-    document.querySelectorAll('.block-item').forEach(b => b.classList.remove('drag-above','drag-below'));
-    const rect = el.getBoundingClientRect();
-    el.classList.add(e.clientY < rect.top + rect.height / 2 ? 'drag-above' : 'drag-below');
-  });
-  el.addEventListener('dragleave', () => el.classList.remove('drag-above','drag-below'));
-  el.addEventListener('drop', e => {
-    e.preventDefault();
-    if (!_dragSrc || _dragSrc === el) return;
-    const container = el.parentNode;
-    const rect = el.getBoundingClientRect();
-    container.insertBefore(_dragSrc, e.clientY < rect.top + rect.height / 2 ? el : el.nextSibling);
-    el.classList.remove('drag-above','drag-below');
-  });
-}
 
 // ── Collect all blocks ────────────────────────────────────
 function _collectBlocks() {
