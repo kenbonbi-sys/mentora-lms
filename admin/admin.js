@@ -22,6 +22,9 @@ let _blockIdSeed    = 0;
 let _journeyItems   = [];
 let _journeyDragId  = null;
 let _editingPrerequisites = [];
+let _chartFunnel    = null;
+let _chartDrillDaily = null;
+let _sparkCharts    = {};
 
 // ── Block system helpers ───────────────────────────────────
 function genBlockId() { return 'blk-' + Date.now() + '-' + (++_blockIdSeed); }
@@ -217,7 +220,7 @@ async function loadStats() {
     }
 
     // ── Quiz ──────────────────────────────────────────────
-    let qq = sb.from('quiz_attempts').select('module_id, module_name, pct, passed');
+    let qq = sb.from('quiz_attempts').select('module_id, module_name, pct, passed, created_at, session_id');
     if (curr) qq = qq.gte('created_at', curr);
     const { data: quizData } = await qq;
     const qTotal = quizData ? quizData.length : 0;
@@ -252,7 +255,7 @@ async function loadStats() {
     }
 
     // ── Per-module ────────────────────────────────────────
-    let vr = sb.from('page_views').select('module_id, module_name');
+    let vr = sb.from('page_views').select('module_id, module_name, created_at, session_id');
     if (curr) vr = vr.gte('created_at', curr);
     const { data: viewRows } = await vr;
 
@@ -273,7 +276,46 @@ async function loadStats() {
     });
 
     _lastModStats = Object.values(modMap);
-    const tbody   = document.getElementById('module-stats-body');
+
+    // ── New KPIs ──────────────────────────────────────────
+    // E2E rate: unique session_ids who passed / unique session_ids who viewed
+    const viewerSessions = new Set((viewRows||[]).map(r=>r.session_id).filter(Boolean));
+    const passerSessions = new Set((quizData||[]).filter(r=>r.passed).map(r=>r.session_id).filter(Boolean));
+    const e2eRate = viewerSessions.size ? Math.round(passerSessions.size / viewerSessions.size * 100) : 0;
+    document.getElementById('stat-e2e').textContent = e2eRate + '%';
+    const hintE2e = document.getElementById('hint-e2e');
+    if (hintE2e) hintE2e.textContent = passerSessions.size + '/' + viewerSessions.size + ' học viên';
+
+    // Repeat attempt rate: total attempts / unique quiz takers
+    const quizSessions = new Set((quizData||[]).map(r=>r.session_id).filter(Boolean));
+    const repeatRate = quizSessions.size ? (qTotal / quizSessions.size).toFixed(1) : null;
+    document.getElementById('stat-repeat').textContent = repeatRate ? repeatRate + 'x' : '—';
+    const hintRepeat = document.getElementById('hint-repeat');
+    if (hintRepeat) hintRepeat.textContent = qTotal + ' lượt / ' + quizSessions.size + ' người';
+
+    // Weekly active learners (always last 7 days, independent of currentDays filter)
+    const weekAgo = new Date(Date.now() - 7 * 864e5).toISOString();
+    const { data: weekRows } = await sb.from('page_views').select('session_id').gte('created_at', weekAgo);
+    const weeklyCount = new Set((weekRows||[]).map(r=>r.session_id).filter(Boolean)).size;
+    document.getElementById('stat-weekly').textContent = weeklyCount.toLocaleString('vi');
+
+    // ── Sparklines (last 14 data-points from current filter range) ──
+    const SPARK_DAYS = 14;
+    _renderSpark('spark-views',  _buildDailyCounts(viewRows,  'created_at', SPARK_DAYS), '#a50064');
+    _renderSpark('spark-quiz',   _buildDailyCounts(quizData,  'created_at', SPARK_DAYS), '#7759d2');
+    _renderSpark('spark-score',  _buildDailyAvg(quizData, 'created_at', 'pct', SPARK_DAYS), '#ca8a04');
+    _renderSpark('spark-pass',   _buildDailyPassRate(quizData, 'created_at', SPARK_DAYS), '#5ea12a');
+    _renderSpark('spark-weekly', _buildDailyUnique(viewRows, 'created_at', 'session_id', SPARK_DAYS), '#1c66bb');
+
+    // ── Funnel chart ──────────────────────────────────────
+    const totalPasses = (quizData||[]).filter(r=>r.passed).length;
+    renderFunnel(viewCount||0, qTotal, totalPasses);
+
+    // ── Top / Bottom modules ──────────────────────────────
+    renderTopBottom(_lastModStats);
+
+    // ── Module table ──────────────────────────────────────
+    const tbody = document.getElementById('module-stats-body');
     if (!_lastModStats.length) {
       tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có dữ liệu. Người dùng sẽ xuất hiện khi họ mở module.</td></tr>';
       return;
@@ -282,8 +324,7 @@ async function loadStats() {
       const avgQ   = m.attempts ? Math.round(m.pctSum / m.attempts) : null;
       const pRate  = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : null;
       const cls    = avgQ === null ? '' : avgQ >= 75 ? 'good' : avgQ >= 50 ? 'medium' : 'bad';
-      // Funnel: views → quiz rate → pass rate
-      const quizRate = m.views ? Math.round((m.attempts / m.views) * 100) : 0;
+      const quizRate  = m.views   ? Math.round((m.attempts  / m.views)   * 100) : 0;
       const passRate2 = m.attempts ? Math.round((m.passCount / m.attempts) * 100) : 0;
       const funnel = `<div class="funnel-mini">
         <span class="funnel-step" title="Xem module">👁 ${m.views}</span>
@@ -292,7 +333,7 @@ async function loadStats() {
         <span class="funnel-arrow">→</span>
         <span class="funnel-step ${passRate2 >= 75 ? 'good' : passRate2 >= 50 ? 'med' : 'low'}" title="Tỉ lệ qua quiz">✅ ${passRate2}%</span>
       </div>`;
-      return `<tr>
+      return `<tr onclick="openDrilldown(${JSON.stringify(m.id)},${JSON.stringify(m.name)})">
         <td style="font-weight:600">${esc(m.name)}</td>
         <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + m.category + '</span>' : '—'}</td>
         <td>${m.views.toLocaleString('vi')}</td>
@@ -305,6 +346,291 @@ async function loadStats() {
   } catch (err) {
     console.error('loadStats:', err.message);
   }
+}
+
+// ══════════════════════════════════════════════════════════
+//  SPARKLINE HELPERS
+// ══════════════════════════════════════════════════════════
+function _buildDailyCounts(rows, dateField, days) {
+  const buckets = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    buckets[d.toISOString().slice(0, 10)] = 0;
+  }
+  (rows||[]).forEach(r => { const k = (r[dateField]||'').slice(0,10); if (k in buckets) buckets[k]++; });
+  return Object.values(buckets);
+}
+
+function _buildDailyAvg(rows, dateField, valField, days) {
+  const sums = {}, cnts = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = d.toISOString().slice(0, 10); sums[k] = 0; cnts[k] = 0;
+  }
+  (rows||[]).forEach(r => {
+    const k = (r[dateField]||'').slice(0,10);
+    if (k in sums) { sums[k] += r[valField]||0; cnts[k]++; }
+  });
+  return Object.keys(sums).map(k => cnts[k] ? Math.round(sums[k]/cnts[k]) : 0);
+}
+
+function _buildDailyPassRate(rows, dateField, days) {
+  const totals = {}, passes = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = d.toISOString().slice(0, 10); totals[k] = 0; passes[k] = 0;
+  }
+  (rows||[]).forEach(r => {
+    const k = (r[dateField]||'').slice(0,10);
+    if (k in totals) { totals[k]++; if (r.passed) passes[k]++; }
+  });
+  return Object.keys(totals).map(k => totals[k] ? Math.round(passes[k]/totals[k]*100) : 0);
+}
+
+function _buildDailyUnique(rows, dateField, idField, days) {
+  const sets = {};
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    sets[d.toISOString().slice(0, 10)] = new Set();
+  }
+  (rows||[]).forEach(r => {
+    const k = (r[dateField]||'').slice(0,10);
+    if (k in sets && r[idField]) sets[k].add(r[idField]);
+  });
+  return Object.values(sets).map(s => s.size);
+}
+
+function _renderSpark(canvasId, data, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  if (_sparkCharts[canvasId]) { _sparkCharts[canvasId].destroy(); delete _sparkCharts[canvasId]; }
+  const ctx = canvas.getContext('2d');
+  _sparkCharts[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map((_, i) => i),
+      datasets: [{
+        data,
+        borderColor: color,
+        backgroundColor: color + '18',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        fill: true,
+        tension: 0.4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: { x: { display: false }, y: { display: false, beginAtZero: true } },
+      animation: { duration: 400 },
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  FUNNEL CHART
+// ══════════════════════════════════════════════════════════
+function renderFunnel(views, quizAttempts, passes) {
+  const canvas = document.getElementById('chart-funnel');
+  if (!canvas) return;
+  if (_chartFunnel) { _chartFunnel.destroy(); _chartFunnel = null; }
+  const ctx = canvas.getContext('2d');
+  const maxVal = views || 1;
+  _chartFunnel = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Lượt xem', 'Làm quiz', 'Đạt quiz'],
+      datasets: [{
+        data: [views, quizAttempts, passes],
+        backgroundColor: ['#a5006499', '#7759d299', '#5ea12a99'],
+        borderColor:     ['#a50064',   '#7759d2',   '#5ea12a'],
+        borderWidth: 1.5,
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: ctx => {
+            const pct = Math.round(ctx.raw / maxVal * 100);
+            return ' ' + ctx.raw.toLocaleString('vi') + ' (' + pct + '%)';
+          }
+        }}
+      },
+      scales: {
+        x: { display: false, beginAtZero: true, max: maxVal * 1.05 },
+        y: { grid: { display: false }, ticks: { font: { size: 12, weight: '600' }, color: '#475569' } }
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════════
+//  TOP / BOTTOM MODULES
+// ══════════════════════════════════════════════════════════
+function renderTopBottom(modStats) {
+  const el = document.getElementById('top-bottom-modules');
+  if (!el) return;
+  const valid = modStats.filter(m => m.views > 0);
+  if (!valid.length) {
+    el.innerHTML = '<div style="padding:20px;color:var(--text-tertiary);font-size:13px">Chưa có dữ liệu</div>';
+    return;
+  }
+
+  // Top 3 by views
+  const byViews = [...valid].sort((a, b) => b.views - a.views);
+  const top3 = byViews.slice(0, 3);
+  const maxViews = top3[0]?.views || 1;
+
+  // Bottom 3 by pass rate (only modules with quiz attempts)
+  const withQuiz = valid.filter(m => m.attempts > 0);
+  const byPassRate = [...withQuiz].sort((a, b) => {
+    const pa = Math.round(a.passCount / a.attempts * 100);
+    const pb = Math.round(b.passCount / b.attempts * 100);
+    return pa - pb;
+  });
+  const bot3 = byPassRate.slice(0, 3);
+
+  const topHtml = top3.map((m, i) => {
+    const w = Math.round(m.views / maxViews * 100);
+    return `<div class="tb-row">
+      <span class="tb-rank">${i + 1}</span>
+      <div class="tb-info"><div class="tb-name" title="${esc(m.name)}">${esc(m.name)}</div></div>
+      <div class="tb-bar-wrap"><div class="tb-bar-top" style="width:${w}%"></div></div>
+      <span class="tb-views">${m.views}</span>
+    </div>`;
+  }).join('');
+
+  const botHtml = bot3.length ? bot3.map((m, i) => {
+    const rate = Math.round(m.passCount / m.attempts * 100);
+    return `<div class="tb-row">
+      <span class="tb-rank">${i + 1}</span>
+      <div class="tb-info"><div class="tb-name" title="${esc(m.name)}">${esc(m.name)}</div></div>
+      <div class="tb-bar-wrap"><div class="tb-bar-bot" style="width:${rate}%"></div></div>
+      <span class="tb-views">${rate}%</span>
+    </div>`;
+  }).join('') : '<div style="font-size:12px;color:var(--text-tertiary);padding:4px 0">Chưa có dữ liệu quiz</div>';
+
+  el.innerHTML = `<div class="tb-wrap">
+    <div class="tb-section">
+      <div class="tb-label top"><i class="fa-solid fa-arrow-trend-up"></i> Top module (lượt xem)</div>
+      ${topHtml}
+    </div>
+    <hr class="tb-divider">
+    <div class="tb-section">
+      <div class="tb-label bot"><i class="fa-solid fa-triangle-exclamation"></i> Cần cải thiện (tỉ lệ đạt thấp)</div>
+      ${botHtml}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+//  DRILL-DOWN PANEL
+// ══════════════════════════════════════════════════════════
+async function openDrilldown(moduleId, moduleName) {
+  document.getElementById('drilldown-title').textContent = moduleName;
+  document.getElementById('drilldown-sub').textContent   = 'Module ID: ' + moduleId;
+  document.getElementById('drilldown-kpis').innerHTML    = '<div style="color:var(--text-tertiary);font-size:13px;padding:4px 0"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
+  document.getElementById('drilldown-overlay').classList.add('open');
+  document.getElementById('drilldown-panel').classList.add('open');
+
+  try {
+    const since30 = new Date(Date.now() - 30 * 864e5).toISOString();
+    const [{ data: views }, { data: quizRows }] = await Promise.all([
+      sb.from('page_views').select('created_at').eq('module_id', moduleId).gte('created_at', since30),
+      sb.from('quiz_attempts').select('pct, passed, created_at').eq('module_id', moduleId),
+    ]);
+
+    const totalViews    = (views||[]).length;
+    const totalAttempts = (quizRows||[]).length;
+    const passes        = (quizRows||[]).filter(r => r.passed).length;
+    const avgScore      = totalAttempts ? Math.round((quizRows||[]).reduce((s,r)=>s+r.pct,0)/totalAttempts) : null;
+    const passRate      = totalAttempts ? Math.round(passes/totalAttempts*100) : null;
+    const convRate      = totalViews    ? Math.round(totalAttempts/totalViews*100) : null;
+
+    document.getElementById('drilldown-kpis').innerHTML = [
+      { val: totalViews,                                          label: 'Lượt xem (30 ngày)' },
+      { val: totalAttempts,                                       label: 'Lượt quiz' },
+      { val: passes,                                              label: 'Lượt đạt' },
+      { val: avgScore  !== null ? avgScore  + '%' : '—',          label: 'Điểm trung bình' },
+      { val: passRate  !== null ? passRate  + '%' : '—',          label: 'Tỉ lệ đạt' },
+      { val: convRate  !== null ? convRate  + '%' : '—',          label: 'View → Quiz' },
+    ].map(k => `<div class="drill-kpi">
+      <div class="drill-kpi-val">${k.val}</div>
+      <div class="drill-kpi-label">${k.label}</div>
+    </div>`).join('');
+
+    // Daily bar chart (30 days)
+    const dlabels = [], dcounts = {};
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      dlabels.push(d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit' }));
+      dcounts[key] = 0;
+    }
+    (views||[]).forEach(r => { const k = (r.created_at||'').slice(0,10); if (k in dcounts) dcounts[k]++; });
+
+    const ctxDrill = document.getElementById('chart-drill-daily').getContext('2d');
+    if (_chartDrillDaily) { _chartDrillDaily.destroy(); _chartDrillDaily = null; }
+    _chartDrillDaily = new Chart(ctxDrill, {
+      type: 'bar',
+      data: {
+        labels: dlabels,
+        datasets: [{
+          label: 'Lượt xem',
+          data: Object.values(dcounts),
+          backgroundColor: '#a5006428',
+          borderColor: '#a50064',
+          borderWidth: 1.5,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 }, maxTicksLimit: 8 } },
+          y: { beginAtZero: true, ticks: { precision: 0, font: { size: 10 } }, grid: { color: '#f0f0f4' } }
+        }
+      }
+    });
+
+    // Score distribution
+    const buckets = [
+      { range: '0–24%',   min:  0, max:  25, count: 0, color: '#ef4444' },
+      { range: '25–49%',  min: 25, max:  50, count: 0, color: '#f97316' },
+      { range: '50–74%',  min: 50, max:  75, count: 0, color: '#eab308' },
+      { range: '75–89%',  min: 75, max:  90, count: 0, color: '#22c55e' },
+      { range: '90–100%', min: 90, max: 101, count: 0, color: '#10b981' },
+    ];
+    (quizRows||[]).forEach(r => {
+      const b = buckets.find(b => r.pct >= b.min && r.pct < b.max);
+      if (b) b.count++;
+    });
+    const maxCount = Math.max(...buckets.map(b => b.count), 1);
+    document.getElementById('drill-score-dist').innerHTML = '<div class="score-dist">' +
+      buckets.map(b => `<div class="score-bucket">
+        <span class="score-range">${b.range}</span>
+        <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${Math.round(b.count/maxCount*100)}%;background:${b.color}"></div></div>
+        <span class="score-count">${b.count}</span>
+      </div>`).join('') + '</div>';
+
+  } catch (err) {
+    console.error('openDrilldown:', err.message);
+    document.getElementById('drilldown-kpis').innerHTML = '<div style="color:var(--red);font-size:13px">Lỗi tải dữ liệu: ' + esc(err.message) + '</div>';
+  }
+}
+
+function closeDrilldown() {
+  document.getElementById('drilldown-overlay').classList.remove('open');
+  document.getElementById('drilldown-panel').classList.remove('open');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1825,9 +2151,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('modal-module').addEventListener('click', e => {
     if (e.target === document.getElementById('modal-module')) closeModuleModal();
   });
-  // ESC key closes module modal
+  // ESC key closes module modal and drill-down
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModuleModal();
+    if (e.key === 'Escape') { closeModuleModal(); closeDrilldown(); }
   });
   initTabs();
   checkAuth();

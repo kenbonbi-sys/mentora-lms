@@ -99,7 +99,7 @@
               <div class="stat-label">Lượt xem</div>
               <div class="stat-value" id="stat-total-views">—</div>
               <div class="stat-delta" id="delta-views"></div>
-              <div class="stat-target" id="target-views"></div>
+              <canvas class="stat-spark" id="spark-views"></canvas>
             </div>
           </div>
           <div class="stat-card">
@@ -108,7 +108,7 @@
               <div class="stat-label">Lượt làm quiz</div>
               <div class="stat-value" id="stat-total-quiz">—</div>
               <div class="stat-delta" id="delta-quiz"></div>
-              <div class="stat-target" id="target-quiz"></div>
+              <canvas class="stat-spark" id="spark-quiz"></canvas>
             </div>
           </div>
           <div class="stat-card">
@@ -117,7 +117,7 @@
               <div class="stat-label">Điểm trung bình</div>
               <div class="stat-value" id="stat-avg-score">—</div>
               <div class="stat-delta" id="delta-score"></div>
-              <div class="stat-target" id="target-score"></div>
+              <canvas class="stat-spark" id="spark-score"></canvas>
             </div>
           </div>
           <div class="stat-card">
@@ -126,7 +126,34 @@
               <div class="stat-label">Tỉ lệ đạt (≥75%)</div>
               <div class="stat-value" id="stat-pass-rate">—</div>
               <div class="stat-delta" id="delta-pass"></div>
-              <div class="stat-target" id="target-pass"></div>
+              <canvas class="stat-spark" id="spark-pass"></canvas>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon e2e"><i class="fa-solid fa-flag-checkered"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Hoàn thành end-to-end</div>
+              <div class="stat-value" id="stat-e2e">—</div>
+              <div class="stat-delta" id="delta-e2e"></div>
+              <div class="stat-hint" id="hint-e2e"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon repeat"><i class="fa-solid fa-rotate-right"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Lượt thi lại TB</div>
+              <div class="stat-value" id="stat-repeat">—</div>
+              <div class="stat-delta" id="delta-repeat"></div>
+              <div class="stat-hint" id="hint-repeat"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon weekly"><i class="fa-solid fa-users"></i></div>
+            <div class="stat-body">
+              <div class="stat-label">Học viên tuần này</div>
+              <div class="stat-value" id="stat-weekly">—</div>
+              <div class="stat-delta" id="delta-weekly"></div>
+              <canvas class="stat-spark" id="spark-weekly"></canvas>
             </div>
           </div>
         </div>
@@ -148,6 +175,25 @@
           </div>
         </div>
 
+        <!-- Funnel + Top/Bottom analytics row -->
+        <div class="analytics-row">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Funnel học tập</div>
+              <span class="journey-hint"><i class="fa-solid fa-circle-info"></i> View → Quiz → Đạt</span>
+            </div>
+            <div style="padding:8px 20px 20px">
+              <canvas id="chart-funnel" height="90" role="img" aria-label="Funnel học tập"></canvas>
+            </div>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">Hiệu suất Module</div>
+            </div>
+            <div id="top-bottom-modules"></div>
+          </div>
+        </div>
+
         <!-- Heatmap -->
         <div class="admin-card chart-card" style="margin-bottom:20px">
           <div class="admin-card-header">
@@ -159,7 +205,7 @@
         <!-- Per-module breakdown -->
         <div class="admin-card">
           <div class="admin-card-header">
-            <div class="admin-card-title">Thống kê theo Module</div>
+            <div class="admin-card-title">Thống kê theo Module <span style="font-weight:400;color:var(--text-tertiary);font-size:11px;margin-left:6px">· click để xem chi tiết</span></div>
             <button class="btn-ghost" onclick="Promise.all([loadStats(),loadCharts(),loadHeatmap()])">
               <i class="fa-solid fa-rotate-right"></i> Làm mới
             </button>
@@ -172,7 +218,7 @@
                 <th>Lượt xem</th>
                 <th>Lượt quiz</th>
                 <th>Điểm TB</th>
-                <th>Đạt quiz</th>
+                <th>Tỉ lệ đạt</th>
                 <th>Funnel</th>
               </tr>
             </thead>
@@ -183,6 +229,29 @@
         </div>
 
       </div><!-- /tab-overview -->
+
+      <!-- ── DRILL-DOWN PANEL ── -->
+      <div class="drilldown-overlay" id="drilldown-overlay" onclick="closeDrilldown()"></div>
+      <div class="drilldown-panel" id="drilldown-panel">
+        <div class="drilldown-header">
+          <div>
+            <div class="drilldown-title" id="drilldown-title">—</div>
+            <div class="drilldown-sub" id="drilldown-sub"></div>
+          </div>
+          <button class="btn-ghost" onclick="closeDrilldown()"><i class="fa-solid fa-xmark"></i> Đóng</button>
+        </div>
+        <div class="drilldown-body">
+          <div class="drilldown-kpis" id="drilldown-kpis"></div>
+          <div class="admin-card" style="margin-bottom:16px">
+            <div class="admin-card-header"><div class="admin-card-title">Traffic 30 ngày</div></div>
+            <div style="padding:8px 16px 16px"><canvas id="chart-drill-daily" height="110"></canvas></div>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-header"><div class="admin-card-title">Phân bố điểm Quiz</div></div>
+            <div id="drill-score-dist"></div>
+          </div>
+        </div>
+      </div>
 
       <!-- ── TAB: MODULES ── -->
       <div id="tab-modules" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-modules">
