@@ -1104,11 +1104,34 @@ function drawMapEdges(svgEl) {
 
       var fromR = fromEl.getBoundingClientRect();
       var toR   = toEl.getBoundingClientRect();
-      var x1    = fromR.right  - wrapRect.left;
-      var y1    = fromR.top    + fromR.height / 2 - wrapRect.top;
-      var x2    = toR.left     - wrapRect.left;
-      var y2    = toR.top      + toR.height  / 2 - wrapRect.top;
-      var cx    = (x1 + x2) / 2;
+      var fromCx = fromR.left + fromR.width / 2;
+      var fromCy = fromR.top + fromR.height / 2;
+      var toCx   = toR.left + toR.width / 2;
+      var toCy   = toR.top + toR.height / 2;
+      var horizontal = Math.abs(toCx - fromCx) > Math.abs(toCy - fromCy);
+      var x1, y1, x2, y2, cx;
+      if (horizontal && toCx >= fromCx) {
+        x1 = fromR.right - wrapRect.left;
+        y1 = fromCy - wrapRect.top;
+        x2 = toR.left - wrapRect.left;
+        y2 = toCy - wrapRect.top;
+      } else if (horizontal) {
+        x1 = fromR.left - wrapRect.left;
+        y1 = fromCy - wrapRect.top;
+        x2 = toR.right - wrapRect.left;
+        y2 = toCy - wrapRect.top;
+      } else if (toCy >= fromCy) {
+        x1 = fromCx - wrapRect.left;
+        y1 = fromR.bottom - wrapRect.top;
+        x2 = toCx - wrapRect.left;
+        y2 = toR.top - wrapRect.top;
+      } else {
+        x1 = fromCx - wrapRect.left;
+        y1 = fromR.top - wrapRect.top;
+        x2 = toCx - wrapRect.left;
+        y2 = toR.bottom - wrapRect.top;
+      }
+      cx    = (x1 + x2) / 2;
       var done  = isDone(pid);
       var dc    = done ? ' done' : '';
 

@@ -1349,10 +1349,10 @@ body.dark .map-node.done { background: rgba(94,161,42,.1); }
   letter-spacing: .5px; text-transform: uppercase;
 }
 /* SVG arrows */
-.map-edge      { stroke: var(--border); stroke-width: 2; fill: none; stroke-dasharray: 6 4; animation: dashMove 16s linear infinite; }
-.map-edge.done { stroke: var(--green);  opacity: .6; stroke-dasharray: none; }
-.map-arrowhead      { fill: var(--text-tertiary); }
-.map-arrowhead.done { fill: var(--green); opacity: .6; }
+.map-edge      { stroke: #cbd5e1; stroke-width: 1.5; fill: none; opacity: .38; stroke-linecap: round; }
+.map-edge.done { stroke: var(--green); opacity: .55; }
+.map-arrowhead      { display: none; }
+.map-arrowhead.done { display: none; }
 @keyframes dashMove { to { stroke-dashoffset: -100; } }
 @media (forced-colors: active) { .map-node { box-shadow: none; } }
 

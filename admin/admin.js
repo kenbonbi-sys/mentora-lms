@@ -707,6 +707,12 @@ function renderJourneyBuilder() {
   builder.innerHTML = _journeyItems.map((item, idx) => {
     const mod = item.data || {};
     const prereqs = Array.isArray(mod.prerequisites) ? mod.prerequisites : [];
+    const options = _journeyItems
+      .filter(opt => opt.id !== item.id)
+      .map(opt => {
+        const selected = prereqs.includes(opt.id) ? ' selected' : '';
+        return `<option value="${esc(opt.id)}"${selected}>${esc(opt.data.name || opt.id)}</option>`;
+      }).join('');
     return `<div class="journey-item" draggable="true" data-id="${esc(item.id)}">
       <div class="journey-drag"><i class="fa-solid fa-grip-vertical"></i></div>
       <div class="journey-index">${idx + 1}</div>
@@ -718,24 +724,67 @@ function renderJourneyBuilder() {
           <span class="journey-source">${esc(item.source)}</span>
           ${prereqs.length ? '<span class="journey-prereq"><i class="fa-solid fa-lock"></i> Sau ' + esc(prereqs.join(', ')) + '</span>' : '<span class="journey-prereq open"><i class="fa-solid fa-unlock"></i> Điểm bắt đầu</span>'}
         </div>
+        <label class="journey-deps">
+          <span>Dieu kien mo khoa</span>
+          <select class="journey-prereq-select" multiple aria-label="Chon module dieu kien cho ${esc(mod.name || item.id)}">
+            ${options}
+          </select>
+        </label>
       </div>
     </div>`;
   }).join('');
 
-  preview.innerHTML = _journeyItems.map((item, idx) => {
-    const mod = item.data || {};
-    return `<div class="journey-preview-node">
-      <span class="journey-preview-step">${idx + 1}</span>
-      <span class="journey-preview-title">${esc(mod.name || item.id)}</span>
-      ${idx < _journeyItems.length - 1 ? '<i class="fa-solid fa-arrow-down journey-preview-arrow"></i>' : ''}
-    </div>`;
-  }).join('');
+  renderJourneyPreview();
 
   builder.querySelectorAll('.journey-item').forEach(item => {
     item.addEventListener('dragstart', onJourneyDragStart);
     item.addEventListener('dragover', onJourneyDragOver);
     item.addEventListener('drop', onJourneyDrop);
     item.addEventListener('dragend', onJourneyDragEnd);
+  });
+  builder.querySelectorAll('.journey-prereq-select').forEach(select => {
+    select.addEventListener('change', function () {
+      const id = this.closest('.journey-item').dataset.id;
+      const target = _journeyItems.find(item => item.id === id);
+      if (!target) return;
+      target.data.prerequisites = Array.from(this.selectedOptions).map(opt => opt.value);
+      renderJourneyPreview();
+    });
+  });
+}
+
+function renderJourneyPreview() {
+  const preview = document.getElementById('journey-preview');
+  if (!preview) return;
+  preview.innerHTML = _journeyItems.map((item, idx) => {
+    const mod = item.data || {};
+    const prereqs = Array.isArray(mod.prerequisites) ? mod.prerequisites : [];
+    const prereqNames = prereqs.map(id => {
+      const found = _journeyItems.find(x => x.id === id);
+      return found ? (found.data.name || id) : id;
+    });
+    return `<div class="journey-preview-node">
+      <span class="journey-preview-step">${idx + 1}</span>
+      <span class="journey-preview-title">${esc(mod.name || item.id)}</span>
+      <span class="journey-preview-rule ${prereqs.length ? '' : 'open'}">
+        <i class="fa-solid ${prereqs.length ? 'fa-lock' : 'fa-unlock'}"></i>
+        ${prereqs.length ? 'Mo sau: ' + esc(prereqNames.join(', ')) : 'Diem bat dau'}
+      </span>
+    </div>`;
+  }).join('');
+}
+
+function syncJourneyDepsFromForm(linearLock) {
+  if (linearLock) {
+    _journeyItems.forEach((item, idx) => {
+      item.data.prerequisites = idx > 0 ? [_journeyItems[idx - 1].id] : [];
+    });
+    return;
+  }
+  document.querySelectorAll('.journey-item').forEach(el => {
+    const item = _journeyItems.find(x => x.id === el.dataset.id);
+    const select = el.querySelector('.journey-prereq-select');
+    if (item && select) item.data.prerequisites = Array.from(select.selectedOptions).map(opt => opt.value);
   });
 }
 
@@ -787,9 +836,10 @@ async function saveJourneyOrder() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Đang lưu...';
   try {
+    syncJourneyDepsFromForm(linearLock);
     const updates = _journeyItems.map((item, idx) => {
       const data = Object.assign({}, item.data || {}, { id: item.id });
-      data.prerequisites = linearLock && idx > 0 ? [_journeyItems[idx - 1].id] : (Array.isArray(data.prerequisites) ? data.prerequisites : []);
+      data.prerequisites = Array.isArray(data.prerequisites) ? data.prerequisites : [];
       return {
         id: item.id,
         data: JSON.stringify(data),
