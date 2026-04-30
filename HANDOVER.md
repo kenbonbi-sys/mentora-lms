@@ -81,10 +81,10 @@ Dự án này chạy nhờ **3 dịch vụ bên ngoài**. Bạn cần được b
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    BẠN (HR Admin)                        │
+│                    BẠN (HR Admin)                       │
 │                                                         │
-│  Muốn cập nhật nội dung  →  Chỉnh sửa file trên GitHub │
-│  Muốn xem báo cáo        →  Vào /admin trên website    │
+│  Muốn cập nhật nội dung  →  Chỉnh sửa file trên GitHub  │
+│  Muốn xem báo cáo        →  Vào /admin trên website     │
 └───────────────────┬─────────────────────────────────────┘
                     │ tự động deploy
                     ▼
