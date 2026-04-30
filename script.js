@@ -364,7 +364,6 @@ function markDone() {
     showToast('Đã đánh dấu hoàn thành!', 'success');
   }
   filterAndRender(); // update cards
-  updateStatsStrip();
   renderAiRecommend();
 }
 
@@ -653,41 +652,6 @@ function getStreak() {
   return parseInt(localStorage.getItem('lms-streak-count') || '0', 10);
 }
 
-// ════════════════════════════════════════
-//  LEARNER STATS STRIP
-// ════════════════════════════════════════
-function updateStatsStrip() {
-  if (!allModules.length) return;
-  var total     = allModules.length;
-  var completed = allModules.filter(function(m) { return isDone(m.id); }).length;
-  var pct       = Math.round((completed / total) * 100);
-  var scores    = allModules.map(function(m) {
-    var s = localStorage.getItem('lms-quiz-score-' + m.id);
-    return s !== null ? parseFloat(s) : null;
-  }).filter(function(s) { return s !== null; });
-  var avgScore  = scores.length
-    ? Math.round(scores.reduce(function(a,b){return a+b;},0) / scores.length) + '%'
-    : '—';
-
-  var el = document.getElementById('stats-strip');
-  if (!el) return;
-  document.getElementById('strip-completed').textContent     = completed;
-  document.getElementById('strip-total').textContent         = total;
-  document.getElementById('strip-avg-score').textContent     = avgScore;
-  document.getElementById('strip-streak').textContent        = getStreak();
-  document.getElementById('strip-progress-label').textContent = pct + '%';
-  var fill = document.getElementById('strip-progress-fill');
-  var bar  = el.querySelector('[role="progressbar"]');
-  if (fill) fill.style.width = pct + '%';
-  if (bar)  bar.setAttribute('aria-valuenow', pct);
-
-  // Streak color boost (gamification)
-  var streakEl = document.getElementById('strip-streak');
-  var streak   = getStreak();
-  if (streakEl) {
-    streakEl.style.color = streak >= 7 ? '#f6c315' : streak >= 3 ? '#a50064' : '';
-  }
-}
 
 // ════════════════════════════════════════
 //  INIT
@@ -932,7 +896,6 @@ function loadModules() {
       showSkeleton(false);
       renderModules(allModules);
       updateHeroCount();
-      updateStatsStrip();
       renderAiRecommend();
     })
     .catch(function (err) {
@@ -941,7 +904,6 @@ function loadModules() {
       showSkeleton(false);
       renderModules(allModules);
       updateHeroCount();
-      updateStatsStrip();
       renderAiRecommend();
     });
 }
@@ -1769,11 +1731,9 @@ function showQuizResult() {
   var t = quizState.total;
   var pct = Math.round((s / t) * 100);
 
-  // Persist best quiz score for learner stats strip
   if (currentModuleId) {
     var existing = parseFloat(localStorage.getItem('lms-quiz-score-' + currentModuleId) || '-1');
     if (pct > existing) localStorage.setItem('lms-quiz-score-' + currentModuleId, String(pct));
-    updateStatsStrip();
   }
 
   if (pct === 100) {
