@@ -697,31 +697,6 @@ document.addEventListener('DOMContentLoaded', function () {
     isOpen ? closeDrawer() : openDrawer();
   });
 
-  // ── Theme ──
-  var themeBtn  = document.getElementById('btn-theme');
-  var themeIcon = document.getElementById('theme-icon');
-  function _syncDrawerTheme(isDark) {
-    var icon = document.getElementById('drawer-theme-icon');
-    var label = document.getElementById('drawer-theme-label');
-    if (!icon || !label) return;
-    if (isDark) { icon.className = 'fa-solid fa-sun'; label.textContent = 'Giao diện sáng'; }
-    else        { icon.className = 'fa-solid fa-moon'; label.textContent = 'Giao diện tối'; }
-  }
-  function applyTheme(dark) {
-    document.body.classList.toggle('dark', dark);
-    themeIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-    themeIcon.setAttribute('aria-hidden', 'true');
-    themeBtn.setAttribute('aria-label', dark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
-    _syncDrawerTheme(dark);
-  }
-  function toggleTheme() {
-    var isDark = !document.body.classList.contains('dark');
-    localStorage.setItem('lms-theme', isDark ? 'dark' : 'light');
-    applyTheme(isDark);
-  }
-  window.toggleTheme = toggleTheme;
-  applyTheme(localStorage.getItem('lms-theme') === 'dark');
-  themeBtn.addEventListener('click', toggleTheme);
 
   // ── Nav scroll links (navbar + drawer) ──
   document.querySelectorAll('[data-scroll]').forEach(function (link) {
