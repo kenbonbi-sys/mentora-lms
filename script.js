@@ -322,6 +322,9 @@ function loadAnnouncement() {
     var banner = document.getElementById('announcement-banner');
     banner.className = 'announcement-banner ann-' + (ann.type || 'info');
     banner.style.display = '';
+    // Update hero pill text with live announcement
+    var heroText = document.getElementById('hero-ann-text');
+    if (heroText) heroText.textContent = ann.message;
   })
   .catch(function () {});
 }
