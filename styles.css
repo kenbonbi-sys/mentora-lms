@@ -260,6 +260,41 @@ h1, h2, h3, h4,
 
 .nav-spacer { flex: 1; }
 .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Language toggle (VI / EN) */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-light);
+  border-radius: 100px;
+  padding: 3px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.lang-btn {
+  font-family: 'MoMo Trust Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.lang-btn:hover { color: var(--text-primary); }
+.lang-btn.active {
+  background: var(--accent);
+  color: var(--primary-foreground);
+  box-shadow: 0 2px 6px rgba(165,0,100,.25);
+}
+@media (max-width: 540px) {
+  .lang-toggle { padding: 2px; margin-right: 6px; }
+  .lang-btn { padding: 5px 9px; font-size: 11px; }
+}
 .nav-toggle  { display: flex; }
 
 /* ══════════════════════════════ BUTTONS */
