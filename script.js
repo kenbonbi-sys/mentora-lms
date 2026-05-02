@@ -1100,31 +1100,60 @@ function drawMapEdges(svgEl) {
 }
 
 // ════════════════════════════════════════
-//  PAGE NAVIGATION (SPA)
+//  PAGE NAVIGATION (SPA) — fade+slide transitions
 // ════════════════════════════════════════
+
+// Duration synced with --dur-normal (.25s) in styles.css
+var PAGE_TRANSITION_MS = 250;
+
+function _getPageEl(page) {
+  if (page === 'list')   return document.getElementById('page-list');
+  if (page === 'detail') return document.getElementById('page-detail');
+  if (page === 'map')    return document.getElementById('page-map');
+  return null;
+}
+
+function _activatePage(page, el) {
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (page === 'list')   updateReadingProgress();
+  if (page === 'map')    renderKnowledgeMap();
+  if (reduceMotion) { el.style.display = ''; return; }
+  el.style.display = '';
+  el.classList.remove('page-exit', 'page-enter');
+  requestAnimationFrame(function () {
+    el.classList.add('page-enter');
+    window.setTimeout(function () { el.classList.remove('page-enter'); }, PAGE_TRANSITION_MS + 50);
+  });
+}
+
 function showPage(page) {
   var pageList   = document.getElementById('page-list');
   var pageDetail = document.getElementById('page-detail');
   var pageMap    = document.getElementById('page-map');
-  updateNavActive(page);
-  // Hide all pages
-  pageList.style.display   = 'none';
-  pageDetail.style.display = 'none';
-  if (pageMap) pageMap.style.display = 'none';
+  var allPages   = [pageList, pageDetail, pageMap].filter(Boolean);
+  var nextEl     = _getPageEl(page);
+  if (!nextEl) return;
 
-  if (page === 'list') {
-    pageList.style.display = '';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateReadingProgress();
-  } else if (page === 'map') {
-    if (pageMap) {
-      pageMap.style.display = '';
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      renderKnowledgeMap();
-    }
+  updateNavActive(page);
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Find currently visible page
+  var currentEl = allPages.find(function (el) { return el !== nextEl && el.style.display !== 'none' && el.style.display !== null; });
+
+  if (currentEl && !reduceMotion) {
+    // Exit animation on current, then swap
+    currentEl.classList.add('page-exit');
+    window.setTimeout(function () {
+      currentEl.style.display = 'none';
+      currentEl.classList.remove('page-exit');
+      _activatePage(page, nextEl);
+    }, PAGE_TRANSITION_MS);
   } else {
-    pageDetail.style.display = '';
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // No current page visible or reduced motion — hide all and show next instantly
+    allPages.forEach(function (el) { if (el !== nextEl) el.style.display = 'none'; });
+    _activatePage(page, nextEl);
   }
 }
 
@@ -1154,6 +1183,9 @@ function renderFilteredModulesWithMotion() {
     return;
   }
 
+  // Synced with --dur-fast (.15s) and --dur-slow (.4s) in styles.css
+  var DUR_OUT = 150, DUR_IN_CLEANUP = 400;
+
   window.clearTimeout(filterMotionTimer);
   window.clearTimeout(filterMotionCleanupTimer);
   grid.classList.remove('is-filtering-in');
@@ -1165,8 +1197,8 @@ function renderFilteredModulesWithMotion() {
     grid.classList.add('is-filtering-in');
     filterMotionCleanupTimer = window.setTimeout(function () {
       grid.classList.remove('is-filtering-in');
-    }, 260);
-  }, 90);
+    }, DUR_IN_CLEANUP);
+  }, DUR_OUT);
 }
 
 function activateFilterTab(tab, skipRender) {
