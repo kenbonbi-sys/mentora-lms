@@ -47,15 +47,17 @@
       <div class="menu-col">
         <h3 class="menu-col-title">Tổng Quan</h3>
         <a class="menu-link" href="javascript:void(0)" data-scroll="hero" onclick="closeDrawer()">Trang chủ</a>
-        <a class="menu-link" href="javascript:void(0)" data-route="map" onclick="showPage('map');closeDrawer()">Lộ trình học</a>
-        <a class="menu-link" href="javascript:void(0)" data-scroll="instructors" onclick="closeDrawer()">Về chúng tôi</a>
+        <a class="menu-link" href="javascript:void(0)" data-scroll="support" onclick="closeDrawer()">Tài nguyên hỗ trợ</a>
       </div>
       <div class="menu-col">
         <h3 class="menu-col-title">Modules</h3>
         <a class="menu-link" href="javascript:void(0)" data-scroll="courses" onclick="closeDrawer()">Tất cả modules</a>
-        <a class="menu-link" href="javascript:void(0)" data-cat="Policy" onclick="filterByCategory('Policy');closeDrawer()">Policy</a>
-        <a class="menu-link" href="javascript:void(0)" data-cat="Process" onclick="filterByCategory('Process');closeDrawer()">Process</a>
-        <a class="menu-link" href="javascript:void(0)" data-cat="Safety" onclick="filterByCategory('Safety');closeDrawer()">Safety</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="overview"     onclick="openCategory('overview');closeDrawer()">Quy trình tổng quan</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="goal-setting" onclick="openCategory('goal-setting');closeDrawer()">Hướng dẫn Thiết lập mục tiêu</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="mid-year"     onclick="openCategory('mid-year');closeDrawer()">Hướng dẫn Đánh giá giữa năm</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="year-end"     onclick="openCategory('year-end');closeDrawer()">Hướng dẫn Đánh giá cuối năm</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="hrm"          onclick="openCategory('hrm');closeDrawer()">Hướng dẫn về hệ thống HRM</a>
+        <a class="menu-link menu-link-sub" href="javascript:void(0)" data-cat="feedback"     onclick="openCategory('feedback');closeDrawer()">Văn hóa phản hồi hiệu quả</a>
       </div>
     </div>
     <div class="menu-footer">

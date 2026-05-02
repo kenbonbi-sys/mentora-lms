@@ -2266,6 +2266,29 @@ h1, h2, h3, h4,
 .menu-link:hover { color: var(--accent); transform: translateX(6px); }
 .menu-link:focus-visible { outline: none; color: var(--accent); box-shadow: 0 2px 0 var(--accent); }
 
+/* Sub-level menu links (smaller, indented) */
+.menu-link-sub {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: -.2px;
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+.menu-link-sub::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12px;
+  height: 1px;
+  background: var(--border);
+  transform: translateY(-50%);
+  transition: background var(--dur-fast) var(--ease-out), width var(--dur-fast) var(--ease-out);
+}
+.menu-link-sub:hover { color: var(--accent); transform: translateX(4px); }
+.menu-link-sub:hover::before { background: var(--accent); width: 16px; }
+
 .menu-footer {
   display: flex; align-items: center; gap: 12px;
   padding-top: 24px;
