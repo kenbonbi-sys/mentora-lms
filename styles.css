@@ -293,9 +293,10 @@ h1, h2, h3, h4,
    ══════════════════════════════════════════════════════ */
 .hero-section {
   position: relative;
-  background: #07080e;
+  background: #ffffff;
   overflow: hidden;
   animation: fadeSlideIn var(--dur-slow) var(--ease-out) both;
+  border-bottom: 1px solid var(--border-light);
 }
 
 /* Decorative canvas (background elements) */
@@ -304,22 +305,22 @@ h1, h2, h3, h4,
 .hero-glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   pointer-events: none;
 }
 .hero-glow-1 {
   width: 700px; height: 600px;
-  background: radial-gradient(ellipse, rgba(165,0,100,.45) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(165,0,100,.08) 0%, transparent 65%);
   top: -200px; right: -80px;
 }
 .hero-glow-2 {
   width: 500px; height: 400px;
-  background: radial-gradient(ellipse, rgba(249,83,150,.18) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(249,83,150,.07) 0%, transparent 65%);
   bottom: -80px; left: -60px;
 }
 .hero-glow-3 {
   width: 300px; height: 300px;
-  background: radial-gradient(ellipse, rgba(119,89,210,.2) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(165,0,100,.05) 0%, transparent 65%);
   top: 40%; left: 40%;
 }
 
@@ -330,7 +331,7 @@ h1, h2, h3, h4,
   font-weight: 800;
   letter-spacing: -6px;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,.04);
+  -webkit-text-stroke: 1px rgba(165,0,100,.05);
   user-select: none;
   white-space: nowrap;
   top: 50%;
@@ -391,7 +392,7 @@ h1, h2, h3, h4,
   font-family: 'MoMo Trust Display', sans-serif;
   font-size: clamp(52px, 5.5vw, 80px);
   font-weight: 800;
-  color: rgba(255,255,255,.85);
+  color: var(--text-primary);
   letter-spacing: -2px;
   display: block;
 }
@@ -399,7 +400,7 @@ h1, h2, h3, h4,
   font-family: 'MoMo Signature', sans-serif;
   font-size: clamp(60px, 7vw, 100px);
   font-weight: 400;
-  color: var(--accent-light);
+  color: var(--accent);
   line-height: 1.05;
   display: block;
 }
@@ -407,7 +408,7 @@ h1, h2, h3, h4,
   font-family: 'MoMo Trust Display', sans-serif;
   font-size: clamp(52px, 5.5vw, 80px);
   font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   letter-spacing: -2px;
   display: block;
 }
@@ -416,7 +417,7 @@ h1, h2, h3, h4,
 .hero-desc {
   font-size: 16px;
   font-weight: 400;
-  color: rgba(255,255,255,.55);
+  color: var(--text-secondary);
   line-height: 1.75;
   max-width: 460px;
   margin-bottom: 36px;
@@ -454,9 +455,9 @@ h1, h2, h3, h4,
 .btn-hero-ghost {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 14px 24px;
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.75);
-  border: 1px solid rgba(255,255,255,.14);
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
   border-radius: 999px;
   font-size: 15px; font-weight: 500;
   cursor: pointer;
@@ -464,8 +465,8 @@ h1, h2, h3, h4,
   font-family: inherit;
 }
 .btn-hero-ghost:hover {
-  background: rgba(255,255,255,.11);
-  border-color: rgba(255,255,255,.26);
+  background: var(--bg-hover);
+  border-color: var(--text-tertiary);
 }
 
 /* Stats row */
@@ -480,20 +481,20 @@ h1, h2, h3, h4,
 .hero-stat-num {
   font-family: 'MoMo Trust Display', sans-serif;
   font-size: 26px; font-weight: 800;
-  color: #ffffff;
+  color: var(--text-primary);
   line-height: 1;
 }
 .hero-stat-lbl {
   font-size: 10px;
   font-weight: 600;
-  color: rgba(255,255,255,.35);
+  color: var(--text-tertiary);
   margin-top: 3px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 .hero-stat-div {
   width: 1px; height: 32px;
-  background: rgba(255,255,255,.1);
+  background: var(--border);
   margin: 0 24px;
 }
 
@@ -511,32 +512,31 @@ h1, h2, h3, h4,
   height: 380px;
 }
 
-/* Glass cards */
+/* Cards — light theme */
 .hcard {
   position: absolute;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.11);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
   padding: 20px 24px;
+  box-shadow: var(--shadow-md);
 }
 
 .hcard--back {
   width: 280px;
   top: 20px; right: 0;
   transform: rotate(5deg);
-  background: rgba(165,0,100,.12);
-  border-color: rgba(165,0,100,.22);
+  background: var(--pink-50);
+  border-color: var(--accent-ring);
 }
-.hcard--back .hcard-title { color: rgba(255,255,255,.6); font-size: 13px; }
-.hcard--back .hcard-meta  { color: rgba(255,255,255,.35); }
+.hcard--back .hcard-title { color: var(--text-secondary); font-size: 13px; }
+.hcard--back .hcard-meta  { color: var(--text-tertiary); }
 
 .hcard--main {
   width: 330px;
   bottom: 40px; left: 0;
   display: flex; gap: 14px; align-items: flex-start;
-  box-shadow: 0 24px 64px rgba(0,0,0,.35);
+  box-shadow: var(--shadow-lg);
   z-index: 2;
   animation: floatDeco 6s var(--ease-in-out) infinite;
 }
@@ -545,20 +545,20 @@ h1, h2, h3, h4,
   bottom: 20px; right: 10px;
   display: flex; align-items: center; gap: 8px;
   padding: 10px 16px;
-  background: rgba(94,161,42,.18);
-  border-color: rgba(94,161,42,.28);
+  background: var(--success-bg);
+  border-color: rgba(94,161,42,.2);
   font-size: 12px; font-weight: 600;
-  color: #86efac;
+  color: var(--success-text);
   white-space: nowrap;
   z-index: 3;
   animation: floatDeco 5s var(--ease-in-out) infinite reverse;
 }
-.hcard--badge i { color: #86efac; font-size: 15px; }
+.hcard--badge i { color: var(--green); font-size: 15px; }
 
 .hcard-ring {
   position: absolute;
   width: 280px; height: 280px;
-  border: 1px solid rgba(165,0,100,.15);
+  border: 1px solid var(--accent-ring);
   border-radius: 50%;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -570,7 +570,7 @@ h1, h2, h3, h4,
   width: 44px; height: 44px;
   flex-shrink: 0;
   border-radius: var(--radius);
-  background: rgba(165,0,100,.25);
+  background: var(--accent-subtle);
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
 }
@@ -586,12 +586,12 @@ h1, h2, h3, h4,
   border-radius: 999px;
   margin-bottom: 6px;
 }
-.hcard-cat-pill--policy  { background: rgba(165,0,100,.3); color: #ffa0c8; }
-.hcard-cat-pill--process { background: rgba(94,161,42,.3); color: #86efac; }
-.hcard-cat-pill--safety  { background: rgba(246,195,21,.3); color: #fde68a; }
+.hcard-cat-pill--policy  { background: var(--accent-subtle); color: var(--accent); }
+.hcard-cat-pill--process { background: rgba(94,161,42,.12); color: var(--green); }
+.hcard-cat-pill--safety  { background: var(--warning-bg); color: #ca8a04; }
 
-.hcard-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.9); line-height: 1.45; }
-.hcard-meta  { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+.hcard-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.45; }
+.hcard-meta  { font-size: 11px; color: var(--text-tertiary); margin-top: 6px; display: flex; align-items: center; gap: 5px; }
 
 @keyframes floatDeco {
   0%, 100% { transform: translateY(0); }
@@ -602,7 +602,7 @@ h1, h2, h3, h4,
 .hero-fade-bottom {
   position: absolute; bottom: 0; left: 0; right: 0;
   height: 80px;
-  background: linear-gradient(to bottom, transparent, var(--bg-app));
+  background: linear-gradient(to bottom, transparent, #ffffff);
   pointer-events: none;
 }
 
