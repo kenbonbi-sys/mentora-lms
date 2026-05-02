@@ -359,11 +359,11 @@ h1, h2, h3, h4,
   display: inline-flex;
   align-items: center;
   font-family: 'MoMo Trust Display', sans-serif;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--primary-foreground);
-  letter-spacing: .5px;
-  padding: 14px 28px;
+  letter-spacing: -0.5px;
+  padding: 11px 22px;
   border-radius: var(--radius-md);
   background-color: var(--pink-400);
   background-image: repeating-linear-gradient(
