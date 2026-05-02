@@ -130,7 +130,76 @@
       'j.hod.m3.t':       'Vai trò trong văn hóa Performance',
       'j.hod.m3.d':       'Dẫn dắt và lan tỏa văn hóa phản hồi liên tục trong đơn vị.',
       'j.hod.m4.t':       'Talent review & succession',
-      'j.hod.m4.d':       'Sử dụng kết quả đánh giá để phát triển và kế hoạch hóa nhân sự.'
+      'j.hod.m4.d':       'Sử dụng kết quả đánh giá để phát triển và kế hoạch hóa nhân sự.',
+
+      // Drawer
+      'drawer.eyebrow':   'Chủ đề',
+      'drawer.empty':     'Module cho chủ đề này đang được cập nhật. Hãy quay lại sau nhé!',
+
+      // FAQ
+      'faq.title':        'Câu hỏi thường gặp',
+      'faq.q1':           'Quy trình Quản lý Hiệu quả Công việc tại MoMo gồm mấy giai đoạn?',
+      'faq.a1':           'Gồm 3 giai đoạn chính: Goal Setting (đầu chu kỳ), Mid-year Review (giữa chu kỳ) và Year-end Review (cuối chu kỳ). Xuyên suốt 3 giai đoạn là văn hóa Cho và nhận phản hồi liên tục (Continuous Feedback).',
+      'faq.q2':           'Tôi cần làm gì khi mới bắt đầu chu kỳ đánh giá?',
+      'faq.a2':           'Bạn cần thiết lập mục tiêu cá nhân (cascade từ mục tiêu team), trao đổi và thống nhất với quản lý trực tiếp, sau đó nhập lên hệ thống HRM trước deadline được công bố.',
+      'faq.q3':           'Self-assessment được làm khi nào?',
+      'faq.a3':           'Self-assessment thực hiện ở 2 thời điểm: giữa năm (Mid-year Review) để đánh giá tiến độ và cuối năm (Year-end Review) để tổng kết kết quả. Hướng dẫn chi tiết có trong các module tương ứng.',
+      'faq.q4':           'Nếu gặp lỗi đăng nhập hệ thống HRM thì liên hệ ai?',
+      'faq.a4':           'Mọi vấn đề kỹ thuật về hệ thống HRM (đăng nhập, lỗi giao diện, mất quyền truy cập) hãy liên hệ bộ phận IT. Câu hỏi về quy trình hoặc cách viết mục tiêu thì liên hệ LnOD.',
+      'faq.q5':           'Tôi có thể chỉnh sửa mục tiêu sau khi đã thiết lập không?',
+      'faq.a5':           'Có. Mục tiêu có thể được điều chỉnh trong kỳ Mid-year Review nếu có thay đổi lớn về phạm vi công việc. Mọi điều chỉnh cần được thống nhất với quản lý trực tiếp và cập nhật trên hệ thống HRM.',
+      'faq.q6':           'Phản hồi liên tục (Continuous Feedback) là gì?',
+      'faq.a6':           'Là văn hóa cho và nhận phản hồi xuyên suốt cả năm — không chỉ tại các kỳ đánh giá chính thức. Mục đích giúp cải thiện hiệu quả công việc nhanh hơn và xây dựng mối quan hệ tin cậy giữa nhân viên và quản lý.',
+
+      'journey.tabsAria': 'Chọn vai trò',
+
+      // Detail page
+      'detail.bc':            'Chi tiết Module',
+      'detail.updated':       'Cập nhật:',
+      'detail.share':         'Chia sẻ',
+      'detail.markDone':      'Đánh dấu hoàn thành',
+      'detail.notDone':       'Chưa hoàn thành',
+      'detail.toc':           'Mục lục',
+      'detail.contentTitle':  'Nội dung & Quy trình',
+      'detail.hotspot':       'Sơ đồ tương tác',
+      'detail.related':       'Bài viết liên quan',
+      'detail.video':         'Video hướng dẫn',
+      'detail.quiz':          'Kiểm tra kiến thức',
+      'detail.attachments':   'Tài liệu đính kèm',
+      'detail.notes':         'Ghi chú cá nhân',
+      'detail.notesPh':       'Ghi chú của bạn về module này...',
+
+      // Map page
+      'map.bc':           'Lộ trình học tập',
+      'map.title':        'Lộ trình <span class="sig">học tập</span>',
+      'map.subtitle':     'Khám phá mối liên hệ giữa các module và lộ trình học tối ưu của bạn.',
+      'map.done':         'Đã hoàn thành',
+      'map.available':    'Sẵn sàng học',
+      'map.locked':       'Chưa mở khóa',
+
+      // Toasts
+      'toast.unmarkedDone': 'Đã bỏ đánh dấu hoàn thành',
+      'toast.markedDone':   'Đã đánh dấu hoàn thành!',
+      'toast.copied':       'Đã copy link module!',
+      'toast.pickModule':   'Chọn một module để bắt đầu! 🚀',
+      'toast.nameUpdated':  'Đã cập nhật tên!',
+      'toast.wip':          'Trang này đang được phát triển.',
+      'toast.modNotFound':  'Không tìm thấy module "{id}". Link có thể đã hết hạn.',
+
+      // Detail dynamic strings
+      'detail.doneNote':  'Đã hoàn thành',
+      'detail.saved':     'Đã lưu ✓',
+      'detail.videoTbd':  'Video chưa được cập nhật.',
+
+      // Quiz result
+      'quiz.r1':   'Xuất sắc! Bạn nắm vững toàn bộ nội dung module.',
+      'quiz.r2':   'Tốt lắm! Hãy xem lại phần bạn trả lời sai để củng cố thêm.',
+      'quiz.r3':   'Khá ổn, nhưng nên đọc lại nội dung để hiểu sâu hơn.',
+      'quiz.r4':   'Hãy đọc lại module này trước khi thử lại nhé.',
+      'quiz.cert': 'Nhận chứng chỉ',
+
+      // Hero modules count
+      'hero.modulesActive': 'modules đang hoạt động'
     },
     en: {
       'nav.menu':         'Menu',
@@ -250,7 +319,76 @@
       'j.hod.m3.t':       'Role in performance culture',
       'j.hod.m3.d':       'Lead and spread a continuous feedback culture in the department.',
       'j.hod.m4.t':       'Talent review & succession',
-      'j.hod.m4.d':       'Use review outcomes to develop and plan workforce succession.'
+      'j.hod.m4.d':       'Use review outcomes to develop and plan workforce succession.',
+
+      // Drawer
+      'drawer.eyebrow':   'Topic',
+      'drawer.empty':     'Modules for this topic are being prepared. Please check back soon!',
+
+      // FAQ
+      'faq.title':        'Frequently asked questions',
+      'faq.q1':           'How many phases does MoMo\'s Performance Management process have?',
+      'faq.a1':           'Three key phases: Goal Setting (start), Mid-year Review (midpoint) and Year-end Review (closing). Continuous Feedback runs throughout all three.',
+      'faq.q2':           'What should I do at the start of a review cycle?',
+      'faq.a2':           'Set your personal goals (cascaded from your team\'s goals), discuss and align with your direct manager, then enter them in the HRM system before the published deadline.',
+      'faq.q3':           'When are self-assessments done?',
+      'faq.a3':           'Self-assessment happens twice: at mid-year (Mid-year Review) to gauge progress, and at year-end (Year-end Review) to summarise outcomes. Detailed guidance is in the corresponding modules.',
+      'faq.q4':           'Who do I contact for HRM system login issues?',
+      'faq.a4':           'For any technical issue with the HRM system (login, UI errors, lost access), contact IT. For questions about process or how to write goals, contact LnOD.',
+      'faq.q5':           'Can I edit goals after I\'ve set them?',
+      'faq.a5':           'Yes. Goals can be adjusted during Mid-year Review if there\'s a major change in scope. Any change must be agreed with your direct manager and updated in HRM.',
+      'faq.q6':           'What is Continuous Feedback?',
+      'faq.a6':           'A culture of giving and receiving feedback throughout the year — not just at formal review windows. It speeds up performance improvements and builds trust between employees and managers.',
+
+      'journey.tabsAria': 'Select role',
+
+      // Detail page
+      'detail.bc':            'Module detail',
+      'detail.updated':       'Updated:',
+      'detail.share':         'Share',
+      'detail.markDone':      'Mark as completed',
+      'detail.notDone':       'Not completed',
+      'detail.toc':           'Table of contents',
+      'detail.contentTitle':  'Content & Process',
+      'detail.hotspot':       'Interactive diagram',
+      'detail.related':       'Related articles',
+      'detail.video':         'Video guide',
+      'detail.quiz':          'Knowledge check',
+      'detail.attachments':   'Attachments',
+      'detail.notes':         'Personal notes',
+      'detail.notesPh':       'Your notes about this module...',
+
+      // Map page
+      'map.bc':           'Learning journey',
+      'map.title':        'Learning <span class="sig">journey</span>',
+      'map.subtitle':     'Explore how modules connect and find your optimal learning path.',
+      'map.done':         'Completed',
+      'map.available':    'Ready to learn',
+      'map.locked':       'Locked',
+
+      // Toasts
+      'toast.unmarkedDone': 'Marked as not completed',
+      'toast.markedDone':   'Marked as completed!',
+      'toast.copied':       'Module link copied!',
+      'toast.pickModule':   'Pick a module to begin! 🚀',
+      'toast.nameUpdated':  'Name updated!',
+      'toast.wip':          'This page is under development.',
+      'toast.modNotFound':  'Module "{id}" not found. The link may have expired.',
+
+      // Detail dynamic strings
+      'detail.doneNote':  'Completed',
+      'detail.saved':     'Saved ✓',
+      'detail.videoTbd':  'Video not yet available.',
+
+      // Quiz result
+      'quiz.r1':   'Excellent! You\'ve mastered the module content.',
+      'quiz.r2':   'Great work! Review the questions you missed to lock it in.',
+      'quiz.r3':   'Not bad — re-read the content to deepen understanding.',
+      'quiz.r4':   'Please review this module before trying again.',
+      'quiz.cert': 'Get certificate',
+
+      // Hero modules count
+      'hero.modulesActive': 'active modules'
     }
   };
 
@@ -268,6 +406,8 @@
     document.documentElement.setAttribute('lang', lang);
     apply(lang);
     updateToggleUI(lang);
+    // Notify listeners (e.g. script.js) to re-render dynamic strings
+    try { document.dispatchEvent(new CustomEvent('mentora:langchange', { detail: { lang: lang } })); } catch (e) {}
   }
 
   function apply(lang) {
@@ -319,8 +459,14 @@
     });
   }
 
+  function t(key, fallback) {
+    var lang = getLang();
+    var d = dict[lang] || dict[DEFAULT_LANG];
+    return (d && d[key] != null) ? d[key] : (fallback != null ? fallback : key);
+  }
+
   // Expose for debugging / external use
-  window.MentoraI18n = { setLang: setLang, getLang: getLang, apply: apply };
+  window.MentoraI18n = { setLang: setLang, getLang: getLang, apply: apply, t: t };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

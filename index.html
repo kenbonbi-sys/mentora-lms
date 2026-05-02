@@ -70,6 +70,68 @@
     </div>
   </div>
 
+  <!-- ══ CATEGORY DRAWER (drill-down from "Học ngay") ══ -->
+  <div class="cat-drawer-overlay" id="cat-drawer-overlay" aria-hidden="true"></div>
+  <aside class="cat-drawer" id="cat-drawer" role="dialog" aria-modal="true" aria-labelledby="cat-drawer-title" aria-hidden="true" tabindex="-1">
+    <div class="cat-drawer-header">
+      <div class="cat-drawer-icon" id="cat-drawer-icon"><i class="fa-solid fa-folder-open"></i></div>
+      <div class="cat-drawer-meta">
+        <span class="cat-drawer-eyebrow" data-i18n="drawer.eyebrow">Chủ đề</span>
+        <h3 class="cat-drawer-title" id="cat-drawer-title">—</h3>
+        <p class="cat-drawer-desc" id="cat-drawer-desc">—</p>
+      </div>
+      <button class="cat-drawer-close" onclick="closeCategoryDrawer()" aria-label="Đóng">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="cat-drawer-body" id="cat-drawer-body">
+      <!-- Module list rendered here -->
+    </div>
+  </aside>
+
+  <!-- ══ FAQ MODAL ══ -->
+  <div class="modal-overlay" id="faq-modal" role="dialog" aria-modal="true" aria-labelledby="faq-title">
+    <div class="modal-box modal-box--faq">
+      <div class="modal-header">
+        <h3 class="modal-title" id="faq-title" data-i18n="faq.title">Câu hỏi thường gặp</h3>
+        <button class="modal-close" data-close="faq-modal" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="faq-body">
+
+        <details class="faq-item" open>
+          <summary><span data-i18n="faq.q1">Quy trình Quản lý Hiệu quả Công việc tại MoMo gồm mấy giai đoạn?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a1">Gồm 3 giai đoạn chính: Goal Setting (đầu chu kỳ), Mid-year Review (giữa chu kỳ) và Year-end Review (cuối chu kỳ). Xuyên suốt 3 giai đoạn là văn hóa Cho và nhận phản hồi liên tục (Continuous Feedback).</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q2">Tôi cần làm gì khi mới bắt đầu chu kỳ đánh giá?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a2">Bạn cần thiết lập mục tiêu cá nhân (cascade từ mục tiêu team), trao đổi và thống nhất với quản lý trực tiếp, sau đó nhập lên hệ thống HRM trước deadline được công bố.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q3">Self-assessment được làm khi nào?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a3">Self-assessment thực hiện ở 2 thời điểm: giữa năm (Mid-year Review) để đánh giá tiến độ và cuối năm (Year-end Review) để tổng kết kết quả. Hướng dẫn chi tiết có trong các module tương ứng.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q4">Nếu gặp lỗi đăng nhập hệ thống HRM thì liên hệ ai?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a4">Mọi vấn đề kỹ thuật về hệ thống HRM (đăng nhập, lỗi giao diện, mất quyền truy cập) hãy liên hệ bộ phận IT. Câu hỏi về quy trình hoặc cách viết mục tiêu thì liên hệ LnOD.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q5">Tôi có thể chỉnh sửa mục tiêu sau khi đã thiết lập không?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a5">Có. Mục tiêu có thể được điều chỉnh trong kỳ Mid-year Review nếu có thay đổi lớn về phạm vi công việc. Mọi điều chỉnh cần được thống nhất với quản lý trực tiếp và cập nhật trên hệ thống HRM.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q6">Phản hồi liên tục (Continuous Feedback) là gì?</span><i class="fa-solid fa-chevron-down"></i></summary>
+          <p data-i18n="faq.a6">Là văn hóa cho và nhận phản hồi xuyên suốt cả năm — không chỉ tại các kỳ đánh giá chính thức. Mục đích giúp cải thiện hiệu quả công việc nhanh hơn và xây dựng mối quan hệ tin cậy giữa nhân viên và quản lý.</p>
+        </details>
+
+      </div>
+    </div>
+  </div>
+
   <!-- PAGE: LIST -->
   <div id="page-list">
 
@@ -318,7 +380,7 @@
           <p class="journey-subtitle" data-i18n="journey.subtitle">Chọn vai trò để xem các nội dung học tập phù hợp với bạn</p>
         </div>
 
-        <div class="journey-tabs" role="tablist" aria-label="Chọn vai trò">
+        <div class="journey-tabs" role="tablist" aria-label="Chọn vai trò" data-i18n-aria-label="journey.tabsAria">
           <button class="journey-tab active" role="tab" aria-selected="true" data-role="employee">
             <i class="fa-regular fa-user"></i>
             <span data-i18n="role.employee">Nhân viên</span>
@@ -466,7 +528,7 @@
           <i class="fa-solid fa-arrow-left"></i> <span data-i18n="common.back">Quay lại</span>
         </button>
         <span class="bc-sep">/</span>
-        <span class="bc-current" id="detail-bc">Chi tiết Module</span>
+        <span class="bc-current" id="detail-bc" data-i18n="detail.bc">Chi tiết Module</span>
       </div>
 
       <div class="detail-header">
@@ -476,20 +538,20 @@
           <p class="detail-subtitle" id="detail-subtitle"></p>
           <div class="detail-info-row">
             <span><i class="fa-solid fa-user-tie"></i> <span id="detail-owner"></span></span>
-            <span><i class="fa-solid fa-calendar-days"></i> Cập nhật: <span id="detail-updated"></span></span>
+            <span><i class="fa-solid fa-calendar-days"></i> <span data-i18n="detail.updated">Cập nhật:</span> <span id="detail-updated"></span></span>
             <span><i class="fa-solid fa-clock"></i> <span id="detail-duration"></span></span>
           </div>
           <div class="detail-actions">
             <button class="btn btn-sm btn-outline" id="btn-share-module" onclick="shareModule()">
-              <i class="fa-solid fa-share-nodes"></i> Chia sẻ
+              <i class="fa-solid fa-share-nodes"></i> <span data-i18n="detail.share">Chia sẻ</span>
             </button>
             <button class="btn btn-sm btn-outline" id="btn-mark-done" onclick="markDone()">
-              <i class="fa-regular fa-circle-check"></i> Đánh dấu hoàn thành
+              <i class="fa-regular fa-circle-check"></i> <span data-i18n="detail.markDone">Đánh dấu hoàn thành</span>
             </button>
           </div>
           <div class="detail-completion-note" id="detail-completion-note">
             <i class="fa-regular fa-circle"></i>
-            <span>Chưa hoàn thành</span>
+            <span data-i18n="detail.notDone">Chưa hoàn thành</span>
           </div>
         </div>
         <div class="detail-header-thumb">
@@ -500,42 +562,42 @@
       <div class="detail-layout">
         <aside class="detail-toc" id="detail-toc" aria-label="Mục lục">
           <div class="detail-toc-sticky">
-            <div class="detail-toc-label">Mục lục</div>
+            <div class="detail-toc-label" data-i18n="detail.toc">Mục lục</div>
             <nav class="detail-toc-nav" id="detail-toc-nav"></nav>
           </div>
         </aside>
 
         <div class="detail-main">
           <section class="detail-section" id="section-content">
-            <div class="section-title"><i class="fa-solid fa-list-check"></i> Nội dung & Quy trình</div>
+            <div class="section-title"><i class="fa-solid fa-list-check"></i> <span data-i18n="detail.contentTitle">Nội dung & Quy trình</span></div>
             <div class="process-steps" id="detail-steps"></div>
           </section>
           <section class="detail-section" id="section-hotspot" style="display:none">
-            <div class="section-title"><i class="fa-solid fa-map-pin"></i> Sơ đồ tương tác</div>
+            <div class="section-title"><i class="fa-solid fa-map-pin"></i> <span data-i18n="detail.hotspot">Sơ đồ tương tác</span></div>
             <div class="hotspot-wrap" id="hotspot-wrap"></div>
           </section>
           <section class="detail-section" id="section-images">
-            <div class="section-title"><i class="fa-solid fa-layer-group"></i> Bài viết liên quan</div>
+            <div class="section-title"><i class="fa-solid fa-layer-group"></i> <span data-i18n="detail.related">Bài viết liên quan</span></div>
             <div class="image-gallery" id="detail-gallery"></div>
           </section>
           <section class="detail-section" id="section-video">
-            <div class="section-title"><i class="fa-solid fa-circle-play"></i> Video hướng dẫn</div>
+            <div class="section-title"><i class="fa-solid fa-circle-play"></i> <span data-i18n="detail.video">Video hướng dẫn</span></div>
             <div class="video-wrap" id="detail-video"></div>
           </section>
           <section class="detail-section" id="section-quiz">
-            <div class="section-title"><i class="fa-solid fa-circle-question"></i> Kiểm tra kiến thức</div>
+            <div class="section-title"><i class="fa-solid fa-circle-question"></i> <span data-i18n="detail.quiz">Kiểm tra kiến thức</span></div>
             <div class="quiz-wrap" id="quiz-wrap"></div>
           </section>
         </div>
 
         <aside class="detail-sidebar">
           <div class="sidebar-card">
-            <div class="sidebar-card-title"><i class="fa-solid fa-paperclip"></i> Tài liệu đính kèm</div>
+            <div class="sidebar-card-title"><i class="fa-solid fa-paperclip"></i> <span data-i18n="detail.attachments">Tài liệu đính kèm</span></div>
             <div id="detail-resources"></div>
           </div>
           <div class="sidebar-card">
-            <div class="sidebar-card-title"><i class="fa-solid fa-note-sticky"></i> Ghi chú cá nhân</div>
-            <textarea id="notes-textarea" class="notes-textarea" placeholder="Ghi chú của bạn về module này..."></textarea>
+            <div class="sidebar-card-title"><i class="fa-solid fa-note-sticky"></i> <span data-i18n="detail.notes">Ghi chú cá nhân</span></div>
+            <textarea id="notes-textarea" class="notes-textarea" placeholder="Ghi chú của bạn về module này..." data-i18n-placeholder="detail.notesPh"></textarea>
             <div class="notes-footer">
               <span class="notes-saved" id="notes-saved"></span>
               <button class="btn btn-ghost btn-sm" onclick="clearNotes()"><i class="fa-solid fa-trash"></i></button>
@@ -641,15 +703,15 @@
           <i class="fa-solid fa-arrow-left"></i> <span data-i18n="common.back">Quay lại</span>
         </button>
         <span class="bc-sep">/</span>
-        <span class="bc-current">Lộ trình học tập</span>
+        <span class="bc-current" data-i18n="map.bc">Lộ trình học tập</span>
       </div>
       <div class="map-header">
-        <h2>Lộ trình <span class="sig">học tập</span></h2>
-        <p class="map-subtitle">Khám phá mối liên hệ giữa các module và lộ trình học tối ưu của bạn.</p>
+        <h2 data-i18n="map.title" data-i18n-html="true">Lộ trình <span class="sig">học tập</span></h2>
+        <p class="map-subtitle" data-i18n="map.subtitle">Khám phá mối liên hệ giữa các module và lộ trình học tối ưu của bạn.</p>
         <div class="map-legend">
-          <span class="legend-item legend-done"><i class="fa-solid fa-circle-check"></i> Đã hoàn thành</span>
-          <span class="legend-item legend-available"><i class="fa-solid fa-circle-play"></i> Sẵn sàng học</span>
-          <span class="legend-item legend-locked"><i class="fa-solid fa-lock"></i> Chưa mở khóa</span>
+          <span class="legend-item legend-done"><i class="fa-solid fa-circle-check"></i> <span data-i18n="map.done">Đã hoàn thành</span></span>
+          <span class="legend-item legend-available"><i class="fa-solid fa-circle-play"></i> <span data-i18n="map.available">Sẵn sàng học</span></span>
+          <span class="legend-item legend-locked"><i class="fa-solid fa-lock"></i> <span data-i18n="map.locked">Chưa mở khóa</span></span>
         </div>
       </div>
       <div class="map-canvas-wrap">

@@ -3,6 +3,14 @@
 //  Pure static — data từ /data/modules.json
 // ══════════════════════════════════════════════════════
 
+// i18n helper — read translation if MentoraI18n loaded, else fallback
+function _t(key, fallback) {
+  if (window.MentoraI18n && typeof window.MentoraI18n.t === 'function') {
+    return window.MentoraI18n.t(key, fallback);
+  }
+  return fallback != null ? fallback : key;
+}
+
 // Fallback data — dùng khi fetch /data/modules.json lỗi
 var SAMPLE_MODULES = [
   {
@@ -360,11 +368,11 @@ function markDone() {
   if (done) {
     localStorage.removeItem(key);
     updateDoneBtn(false);
-    showToast('Đã bỏ đánh dấu hoàn thành', 'info');
+    showToast(_t('toast.unmarkedDone', 'Đã bỏ đánh dấu hoàn thành'), 'info');
   } else {
     localStorage.setItem(key, '1');
     updateDoneBtn(true);
-    showToast('Đã đánh dấu hoàn thành!', 'success');
+    showToast(_t('toast.markedDone', 'Đã đánh dấu hoàn thành!'), 'success');
   }
   filterAndRender(); // update cards
   renderAiRecommend();
@@ -381,16 +389,16 @@ function updateDoneBtn(done) {
     btn.setAttribute('aria-pressed', 'true');
     if (note) {
       note.className = 'detail-completion-note done';
-      note.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>Đã hoàn thành</span>';
+      note.innerHTML = '<i class="fa-solid fa-circle-check"></i><span>' + _t('detail.doneNote', 'Đã hoàn thành') + '</span>';
     }
-    btn.innerHTML   = '<i class="fa-solid fa-circle-check"></i> Đã hoàn thành';
+    btn.innerHTML   = '<i class="fa-solid fa-circle-check"></i> ' + _t('detail.doneNote', 'Đã hoàn thành');
   } else {
     btn.className   = 'btn btn-sm btn-outline';
     btn.setAttribute('aria-pressed', 'false');
-    btn.innerHTML   = '<i class="fa-regular fa-circle-check"></i> Đánh dấu hoàn thành';
+    btn.innerHTML   = '<i class="fa-regular fa-circle-check"></i> ' + _t('detail.markDone', 'Đánh dấu hoàn thành');
     if (note) {
       note.className = 'detail-completion-note';
-      note.innerHTML = '<i class="fa-regular fa-circle"></i><span>Chưa hoàn thành</span>';
+      note.innerHTML = '<i class="fa-regular fa-circle"></i><span>' + _t('detail.notDone', 'Chưa hoàn thành') + '</span>';
     }
   }
 }
@@ -402,12 +410,12 @@ function shareModule() {
   if (!currentModuleId) return;
   var url = window.location.origin + window.location.pathname + '?module=' + currentModuleId;
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function () { showToast('Đã copy link module!', 'success'); });
+    navigator.clipboard.writeText(url).then(function () { showToast(_t('toast.copied', 'Đã copy link module!'), 'success'); });
   } else {
     var inp = document.createElement('input');
     inp.value = url; document.body.appendChild(inp); inp.select();
     document.execCommand('copy'); inp.remove();
-    showToast('Đã copy link module!', 'success');
+    showToast(_t('toast.copied', 'Đã copy link module!'), 'success');
   }
 }
 
@@ -426,7 +434,7 @@ function saveNotes() {
   if (!ta) return;
   localStorage.setItem('lms-notes-' + currentModuleId, ta.value);
   var el = document.getElementById('notes-saved');
-  if (el) { el.textContent = 'Đã lưu ✓'; setTimeout(function () { el.textContent = ''; }, 2000); }
+  if (el) { el.textContent = _t('detail.saved', 'Đã lưu ✓'); setTimeout(function () { el.textContent = ''; }, 2000); }
 }
 function clearNotes() {
   var ta = document.getElementById('notes-textarea');
@@ -552,7 +560,7 @@ function showGuide() {
       + '</div>'
       // Footer nav
       + '<div class="guide-footer">'
-      +   '<button class="btn btn-ghost btn-sm" id="guide-prev"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>'
+      +   '<button class="btn btn-ghost btn-sm" id="guide-prev"><i class="fa-solid fa-chevron-left"></i> ' + _t('common.back', 'Quay lại') + '</button>'
       +   '<button class="btn btn-primary btn-sm" id="guide-next">Tiếp theo <i class="fa-solid fa-chevron-right"></i></button>'
       +   '<button class="btn btn-primary btn-sm" id="guide-start" style="display:none"><i class="fa-solid fa-rocket"></i> Bắt đầu học!</button>'
       + '</div>'
@@ -564,7 +572,7 @@ function showGuide() {
     overlay.querySelector('#guide-start').addEventListener('click', function () {
       overlay.classList.remove('open');
       document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
-      showToast('Chọn một module để bắt đầu! 🚀', 'success');
+      showToast(_t('toast.pickModule', 'Chọn một module để bắt đầu! 🚀'), 'success');
     });
     document.body.appendChild(overlay);
   }
@@ -635,7 +643,7 @@ function applyCertName() {
   var name = document.getElementById('cert-name-input').value.trim() || 'Học viên';
   localStorage.setItem('lms-cert-name', name);
   document.getElementById('cert-learner-name').textContent = name;
-  showToast('Đã cập nhật tên!', 'success');
+  showToast(_t('toast.nameUpdated', 'Đã cập nhật tên!'), 'success');
 }
 
 // ════════════════════════════════════════
@@ -721,7 +729,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(function () {
         var target = document.getElementById(link.dataset.scroll);
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        else showToast('Trang này đang được phát triển.', 'info');
+        else showToast(_t('toast.wip', 'Trang này đang được phát triển.'), 'info');
       }, 50);
       document.querySelectorAll('.nav-link, .menu-link').forEach(function (l) { l.classList.remove('active'); });
       document.querySelectorAll('[data-scroll="' + link.dataset.scroll + '"]').forEach(function (l) { l.classList.add('active'); });
@@ -787,33 +795,116 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ── Library card → category drill-down ──
-  // (For now, scrolls to courses; full drill-down wired in Epic 3 follow-up.)
-  window.openCategory = function (catKey) {
-    // TODO: Show modules within this category. For now show a toast.
-    var label = ({
-      'overview':     'Quy trình tổng quan',
-      'goal-setting': 'Hướng dẫn Thiết lập mục tiêu',
-      'mid-year':     'Hướng dẫn Đánh giá giữa năm',
-      'year-end':     'Hướng dẫn Đánh giá cuối năm',
-      'hrm':          'Hướng dẫn về hệ thống HRM',
-      'feedback':     'Văn hóa phản hồi hiệu quả'
-    })[catKey] || catKey;
-    if (typeof showToast === 'function') {
-      showToast('Đang mở: ' + label + ' (sẽ liên kết tới module sau)', 'info');
-    } else {
-      console.log('openCategory:', catKey, label);
-    }
+  // ── Library card → category drill-down (slide-in drawer) ──
+  var CAT_META = {
+    'overview':     { i18nTitle: 'lib.c1.title', i18nDesc: 'lib.c1.desc', icon: 'fa-diagram-project' },
+    'goal-setting': { i18nTitle: 'lib.c2.title', i18nDesc: 'lib.c2.desc', icon: 'fa-bullseye' },
+    'mid-year':     { i18nTitle: 'lib.c3.title', i18nDesc: 'lib.c3.desc', icon: 'fa-chart-line' },
+    'year-end':     { i18nTitle: 'lib.c4.title', i18nDesc: 'lib.c4.desc', icon: 'fa-medal' },
+    'hrm':          { i18nTitle: 'lib.c5.title', i18nDesc: 'lib.c5.desc', icon: 'fa-laptop' },
+    'feedback':     { i18nTitle: 'lib.c6.title', i18nDesc: 'lib.c6.desc', icon: 'fa-comments' }
   };
 
-  // ── FAQ open stub (TODO: Epic 6 follow-up — wire to real FAQ page/modal) ──
-  window.openFAQ = function () {
-    if (typeof showToast === 'function') {
-      showToast('FAQ sẽ sớm có mặt — đang xây dựng nội dung', 'info');
+  function tr(key, fallback) {
+    try {
+      var lang = (window.MentoraI18n && window.MentoraI18n.getLang()) || 'vi';
+      // Read from i18n closure via apply trick: query existing element with that key
+      var el = document.querySelector('[data-i18n="' + key + '"]');
+      if (el) return el.textContent;
+    } catch (e) {}
+    return fallback || key;
+  }
+
+  window.openCategory = function (catKey) {
+    var meta = CAT_META[catKey];
+    if (!meta) return;
+
+    var drawer  = document.getElementById('cat-drawer');
+    var overlay = document.getElementById('cat-drawer-overlay');
+    var titleEl = document.getElementById('cat-drawer-title');
+    var descEl  = document.getElementById('cat-drawer-desc');
+    var iconEl  = document.getElementById('cat-drawer-icon');
+    var bodyEl  = document.getElementById('cat-drawer-body');
+    if (!drawer || !bodyEl) return;
+
+    titleEl.textContent = tr(meta.i18nTitle, catKey);
+    descEl.textContent  = tr(meta.i18nDesc, '');
+    iconEl.innerHTML    = '<i class="fa-solid ' + meta.icon + '"></i>';
+
+    // Filter modules by topic
+    var matched = (allModules || []).filter(function (m) {
+      return Array.isArray(m.topics) && m.topics.indexOf(catKey) >= 0;
+    });
+
+    if (matched.length === 0) {
+      bodyEl.innerHTML =
+        '<div class="cat-drawer-empty">' +
+          '<i class="fa-regular fa-folder-open"></i>' +
+          '<p>' + tr('drawer.empty', 'Module cho chủ đề này đang được cập nhật. Hãy quay lại sau nhé!') + '</p>' +
+        '</div>';
     } else {
-      alert('FAQ sẽ sớm có mặt');
+      bodyEl.innerHTML = matched.map(function (m) {
+        return (
+          '<button class="cat-drawer-mod" data-id="' + m.id + '">' +
+            '<div class="cat-drawer-mod-icon"><i class="fa-solid fa-book-open"></i></div>' +
+            '<div class="cat-drawer-mod-body">' +
+              '<div class="cat-drawer-mod-title">' + (m.name || '') + '</div>' +
+              '<div class="cat-drawer-mod-meta">' +
+                '<span><i class="fa-regular fa-clock"></i> ' + (m.duration || '') + '</span>' +
+                (m.owner ? '<span><i class="fa-regular fa-user"></i> ' + m.owner + '</span>' : '') +
+              '</div>' +
+            '</div>' +
+            '<i class="fa-solid fa-arrow-right cat-drawer-mod-arrow"></i>' +
+          '</button>'
+        );
+      }).join('');
+
+      // Click → open module detail
+      bodyEl.querySelectorAll('.cat-drawer-mod').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.dataset.id;
+          closeCategoryDrawer();
+          if (typeof openDetail === 'function') openDetail(id);
+        });
+      });
     }
+
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   };
+
+  window.closeCategoryDrawer = function () {
+    var drawer  = document.getElementById('cat-drawer');
+    var overlay = document.getElementById('cat-drawer-overlay');
+    if (drawer)  { drawer.classList.remove('open');  drawer.setAttribute('aria-hidden', 'true'); }
+    if (overlay) { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); }
+    document.body.style.overflow = '';
+  };
+
+  // Click overlay or ESC closes drawer
+  var dOverlay = document.getElementById('cat-drawer-overlay');
+  if (dOverlay) dOverlay.addEventListener('click', closeCategoryDrawer);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeCategoryDrawer();
+  });
+
+  // ── FAQ modal ──
+  window.openFAQ = function () {
+    var modal = document.getElementById('faq-modal');
+    if (modal) modal.classList.add('open');
+  };
+
+  // ── Re-render dynamic strings when language changes ──
+  document.addEventListener('mentora:langchange', function () {
+    if (typeof updateHeroCount === 'function') updateHeroCount();
+    // Re-render module list to refresh badges/labels (durations stay as-is from data)
+    if (typeof filterAndRender === 'function' && document.getElementById('modules-grid')) {
+      try { filterAndRender(); } catch (e) {}
+    }
+  });
 
   // ── Role-based learning journey tabs ──
   var journeyTabs = document.querySelectorAll('.journey-tab');
@@ -895,7 +986,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(function () { tryOpen(attempts - 1); }, 300);
       } else {
         // Module not found after all retries — show helpful message
-        showToast('Không tìm thấy module "' + mid + '". Link có thể đã hết hạn.', 'error');
+        showToast(_t('toast.modNotFound', 'Không tìm thấy module "{id}". Link có thể đã hết hạn.').replace('{id}', mid), 'error');
         // Clean URL so user isn't confused on refresh
         window.history.replaceState({}, '', window.location.pathname);
       }
@@ -976,7 +1067,7 @@ function loadModules() {
 
 function updateHeroCount() {
   var el = document.getElementById('hero-module-count');
-  if (el) el.textContent = allModules.length + ' modules đang hoạt động';
+  if (el) el.textContent = allModules.length + ' ' + _t('hero.modulesActive', 'modules đang hoạt động');
   var elN = document.getElementById('hero-module-count-n');
   if (elN) elN.textContent = allModules.length;
 }
@@ -1529,7 +1620,7 @@ function openDetail(id) {
   if (safeVideo) {
     videoEl.innerHTML = '<iframe src="' + escAttr(safeVideo) + '" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>';
   } else {
-    videoEl.innerHTML = '<div class="video-placeholder"><i class="fa-solid fa-circle-play"></i><p>Video chưa được cập nhật.</p></div>';
+    videoEl.innerHTML = '<div class="video-placeholder"><i class="fa-solid fa-circle-play"></i><p>' + _t('detail.videoTbd', 'Video chưa được cập nhật.') + '</p></div>';
   }
   sectionVideo.style.display = '';
 
@@ -1911,16 +2002,16 @@ function showQuizResult() {
 
   if (pct === 100) {
     iconEl.innerHTML = '<i class="fa-solid fa-trophy" style="color:#f6c315"></i>';
-    msgEl.textContent = 'Xuất sắc! Bạn nắm vững toàn bộ nội dung module.';
+    msgEl.textContent = _t('quiz.r1', 'Xuất sắc! Bạn nắm vững toàn bộ nội dung module.');
   } else if (pct >= 75) {
     iconEl.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#5ea12a"></i>';
-    msgEl.textContent = 'Tốt lắm! Hãy xem lại phần bạn trả lời sai để củng cố thêm.';
+    msgEl.textContent = _t('quiz.r2', 'Tốt lắm! Hãy xem lại phần bạn trả lời sai để củng cố thêm.');
   } else if (pct >= 50) {
     iconEl.innerHTML = '<i class="fa-solid fa-circle-half-stroke" style="color:#f6c315"></i>';
-    msgEl.textContent = 'Khá ổn, nhưng nên đọc lại nội dung để hiểu sâu hơn.';
+    msgEl.textContent = _t('quiz.r3', 'Khá ổn, nhưng nên đọc lại nội dung để hiểu sâu hơn.');
   } else {
     iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark" style="color:#e5303f"></i>';
-    msgEl.textContent = 'Hãy đọc lại module này trước khi thử lại nhé.';
+    msgEl.textContent = _t('quiz.r4', 'Hãy đọc lại module này trước khi thử lại nhé.');
   }
 
   scoreEl.innerHTML = '<span class="quiz-score-num">' + s + '</span><span class="quiz-score-sep">/</span><span class="quiz-score-den">' + t + '</span><span class="quiz-score-pct">(' + pct + '%)</span>';
@@ -1932,7 +2023,7 @@ function showQuizResult() {
       certBtn = document.createElement('button');
       certBtn.id = 'quiz-cert-btn';
       certBtn.className = 'btn btn-primary btn-sm';
-      certBtn.innerHTML = '<i class="fa-solid fa-certificate"></i> Nhận chứng chỉ';
+      certBtn.innerHTML = '<i class="fa-solid fa-certificate"></i> ' + _t('quiz.cert', 'Nhận chứng chỉ');
       certBtn.onclick = function () { showCertificate(s, t); };
       resultEl.appendChild(certBtn);
     }

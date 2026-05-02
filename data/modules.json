@@ -149,6 +149,9 @@
         "label": "Bước 3: Tuần 1",
         "description": "Đào tạo hệ thống nội bộ, hoàn thành các module LMS bắt buộc trong 7 ngày."
       }
+    ],
+    "topics": [
+      "overview"
     ]
   },
   {
@@ -280,7 +283,10 @@
       "M001"
     ],
     "hotspotImage": "",
-    "hotspots": []
+    "hotspots": [],
+    "topics": [
+      "hrm"
+    ]
   },
   {
     "id": "M003",
@@ -430,6 +436,9 @@
         "label": "Điểm tập trung",
         "description": "Khi có báo động, tập trung tại sân trước tòa nhà. Không quay lại trong khi chưa có lệnh."
       }
+    ],
+    "topics": [
+      "overview"
     ]
   },
   {
@@ -559,7 +568,10 @@
       "M003"
     ],
     "hotspotImage": "",
-    "hotspots": []
+    "hotspots": [],
+    "topics": [
+      "hrm"
+    ]
   },
   {
     "id": "M005",
@@ -690,6 +702,9 @@
       "M002"
     ],
     "hotspotImage": "",
-    "hotspots": []
+    "hotspots": [],
+    "topics": [
+      "feedback"
+    ]
   }
 ]
