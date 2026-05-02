@@ -66,42 +66,140 @@
 
   <!-- PAGE: LIST -->
   <div id="page-list">
-    <div class="container">
 
-      <!-- HERO -->
-      <div class="hero" id="hero">
-        <div class="hero-content">
-          <p class="hero-eyebrow"><span class="promo-box">NẮM VỮNG QUY TRÌNH</span></p>
-          <h1 class="hero-h1">
-            <span class="sig hero-sig">Làm Đúng</span>
-            <span class="hero-h1-line">từ đầu</span>
-          </h1>
-          <p class="hero-desc">Tổng hợp các module đào tạo về chính sách, quy trình và tiêu chuẩn nội bộ. Học theo tiến độ của bạn, bất cứ lúc nào.</p>
-          <div class="hero-actions">
-            <button class="btn btn-primary btn-lg" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
-              <i class="fa-solid fa-book-open"></i> Xem tất cả Modules
-            </button>
-            <button class="btn btn-outline btn-lg" onclick="showGuide()">
-              <i class="fa-solid fa-circle-question"></i> Hướng dẫn sử dụng
-            </button>
+    <!-- ══ HERO (full-width dark) ══ -->
+    <section class="hero-section" id="hero">
+      <!-- Decorative canvas -->
+      <div class="hero-canvas" aria-hidden="true">
+        <div class="hero-glow hero-glow-1"></div>
+        <div class="hero-glow hero-glow-2"></div>
+        <div class="hero-glow hero-glow-3"></div>
+        <div class="hero-deco-word">MENTORA</div>
+      </div>
+
+      <div class="container">
+        <div class="hero-body">
+
+          <!-- Left: Content -->
+          <div class="hero-content">
+            <div class="hero-eyebrow">
+              <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+              <span>Hệ thống đào tạo nội bộ · MoMo</span>
+            </div>
+
+            <h1 class="hero-h1">
+              <span class="hero-h1-top">Nắm vững</span>
+              <span class="hero-h1-sig">quy trình —</span>
+              <span class="hero-h1-bottom">từ ngày đầu.</span>
+            </h1>
+
+            <p class="hero-desc">Tổng hợp toàn bộ chính sách, quy trình và tiêu chuẩn nội bộ. Học theo tiến độ của bạn — bất cứ lúc nào, bất cứ đâu.</p>
+
+            <div class="hero-actions">
+              <button class="btn-hero-primary" onclick="document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+                <i class="fa-solid fa-book-open"></i> Khám phá modules
+              </button>
+              <button class="btn-hero-ghost" onclick="showGuide()">
+                <i class="fa-solid fa-circle-play"></i> Hướng dẫn
+              </button>
+            </div>
+
+            <div class="hero-stats-row">
+              <div class="hero-stat">
+                <span class="hero-stat-num" id="hero-module-count-n">6</span>
+                <span class="hero-stat-lbl">modules</span>
+              </div>
+              <div class="hero-stat-div"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-num">100%</span>
+                <span class="hero-stat-lbl">online</span>
+              </div>
+              <div class="hero-stat-div"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-num">24/7</span>
+                <span class="hero-stat-lbl">truy cập</span>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="hero-image">
-          <div class="hero-blob-wrap">
-            <img src="/assets/images/hero/hero-01.jpg" alt="Training">
-            <div class="hero-deco hero-deco-1" aria-hidden="true"></div>
-            <div class="hero-deco hero-deco-2" aria-hidden="true"></div>
-            <div class="hero-deco hero-deco-3" aria-hidden="true"></div>
+
+          <!-- Right: Visual cards -->
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-card-stack">
+              <!-- Back card -->
+              <div class="hcard hcard--back">
+                <div class="hcard-cat-pill hcard-cat-pill--process">Process</div>
+                <div class="hcard-title">Onboarding Nhân viên Mới</div>
+                <div class="hcard-meta"><i class="fa-solid fa-clock"></i> 30 phút · 5 bước</div>
+              </div>
+              <!-- Main card -->
+              <div class="hcard hcard--main">
+                <div class="hcard-icon">
+                  <img src="/assets/icons/security.png" alt="">
+                </div>
+                <div class="hcard-info">
+                  <div class="hcard-cat-pill hcard-cat-pill--policy">Policy</div>
+                  <div class="hcard-title">Bảo mật Thông tin &amp; PDPA</div>
+                  <div class="hcard-meta"><i class="fa-solid fa-clock"></i> 45 phút · 4 bước</div>
+                </div>
+              </div>
+              <!-- Status badge -->
+              <div class="hcard hcard--badge">
+                <i class="fa-solid fa-circle-check"></i>
+                <span id="hero-module-count">6 modules đang hoạt động</span>
+              </div>
+              <!-- Decorative ring -->
+              <div class="hcard-ring" aria-hidden="true"></div>
+            </div>
           </div>
-          <div class="hero-float-card">
-            <i class="fa-solid fa-circle-check" style="color:var(--green)" aria-hidden="true"></i>
-            <span id="hero-module-count">5 modules đang hoạt động</span>
-          </div>
+
         </div>
       </div>
 
+      <!-- Gradient fade into content -->
+      <div class="hero-fade-bottom" aria-hidden="true"></div>
+    </section>
 
-      <!-- MODULES -->
+    <!-- ══ CATEGORY CARDS ══ -->
+    <section class="cat-section">
+      <div class="container">
+        <div class="cat-grid">
+
+          <button class="cat-card cat-card--policy" onclick="filterByCategory('Policy');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+            <div class="cat-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="cat-card-body">
+              <div class="cat-card-label">Policy</div>
+              <div class="cat-card-title">Chính sách & Quy định</div>
+              <div class="cat-card-desc">Bảo mật thông tin, tuân thủ pháp lý và quy định nội bộ</div>
+            </div>
+            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          </button>
+
+          <button class="cat-card cat-card--process" onclick="filterByCategory('Process');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+            <div class="cat-card-icon"><i class="fa-solid fa-arrows-spin"></i></div>
+            <div class="cat-card-body">
+              <div class="cat-card-label">Process</div>
+              <div class="cat-card-title">Quy trình vận hành</div>
+              <div class="cat-card-desc">Onboarding, workflow chuẩn và quy trình làm việc nội bộ</div>
+            </div>
+            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          </button>
+
+          <button class="cat-card cat-card--safety" onclick="filterByCategory('Safety');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
+            <div class="cat-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="cat-card-body">
+              <div class="cat-card-label">Safety</div>
+              <div class="cat-card-title">An toàn & Phòng ngừa</div>
+              <div class="cat-card-desc">Nhận diện rủi ro, phòng chống gian lận và bảo vệ tài sản</div>
+            </div>
+            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ MODULE LIST ══ -->
+    <div class="container">
       <div id="courses" class="courses-card">
         <div class="courses-header">
           <div class="courses-header-left">
@@ -138,8 +236,8 @@
 
         <div class="modules-grid" id="modules-grid" role="region" aria-live="polite" aria-label="Danh sách module"></div>
       </div>
-
     </div>
+
     <footer class="lms-footer">
       <div class="container">
         <div class="footer-brand">

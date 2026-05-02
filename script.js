@@ -897,6 +897,8 @@ function loadModules() {
 function updateHeroCount() {
   var el = document.getElementById('hero-module-count');
   if (el) el.textContent = allModules.length + ' modules đang hoạt động';
+  var elN = document.getElementById('hero-module-count-n');
+  if (elN) elN.textContent = allModules.length;
 }
 
 // ════════════════════════════════════════
