@@ -747,34 +747,81 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ── Filter tabs ──
+  // ── Filter tabs (legacy, may not exist after Epic 3 redesign) ──
   var filterTabs = document.getElementById('filter-tabs');
-  filterTabs.addEventListener('click', function (e) {
-    var tab = e.target.closest('.filter-tab');
-    if (!tab) return;
-    activateFilterTab(tab);
-  });
-  filterTabs.addEventListener('keydown', function (e) {
-    if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) < 0) return;
-    var tabs = Array.prototype.slice.call(filterTabs.querySelectorAll('.filter-tab'));
-    var current = document.activeElement.closest('.filter-tab') || filterTabs.querySelector('.filter-tab.active');
-    var idx = Math.max(0, tabs.indexOf(current));
-    if (e.key === 'ArrowRight') idx = (idx + 1) % tabs.length;
-    if (e.key === 'ArrowLeft') idx = (idx - 1 + tabs.length) % tabs.length;
-    if (e.key === 'Home') idx = 0;
-    if (e.key === 'End') idx = tabs.length - 1;
-    e.preventDefault();
-    tabs[idx].focus();
-    activateFilterTab(tabs[idx]);
-  });
-  activateFilterTab(filterTabs.querySelector('.filter-tab.active'), true);
-  window.addEventListener('resize', function () { syncFilterTabIndicator(); });
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { syncFilterTabIndicator(); }).catch(function () {});
+  if (filterTabs) {
+    filterTabs.addEventListener('click', function (e) {
+      var tab = e.target.closest('.filter-tab');
+      if (!tab) return;
+      activateFilterTab(tab);
+    });
+    filterTabs.addEventListener('keydown', function (e) {
+      if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) < 0) return;
+      var tabs = Array.prototype.slice.call(filterTabs.querySelectorAll('.filter-tab'));
+      var current = document.activeElement.closest('.filter-tab') || filterTabs.querySelector('.filter-tab.active');
+      var idx = Math.max(0, tabs.indexOf(current));
+      if (e.key === 'ArrowRight') idx = (idx + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') idx = (idx - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') idx = 0;
+      if (e.key === 'End') idx = tabs.length - 1;
+      e.preventDefault();
+      tabs[idx].focus();
+      activateFilterTab(tabs[idx]);
+    });
+    activateFilterTab(filterTabs.querySelector('.filter-tab.active'), true);
+    window.addEventListener('resize', function () { syncFilterTabIndicator(); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { syncFilterTabIndicator(); }).catch(function () {});
+    }
   }
 
-  // ── Search ──
-  document.getElementById('input-search').addEventListener('keyup', filterAndRender);
+  // ── Search (now filters library cards) ──
+  var searchInput = document.getElementById('input-search');
+  if (searchInput) {
+    searchInput.addEventListener('keyup', function () {
+      if (document.getElementById('library-grid')) {
+        filterLibrary();
+      } else {
+        filterAndRender();
+      }
+    });
+  }
+
+  // ── Library card → category drill-down ──
+  // (For now, scrolls to courses; full drill-down wired in Epic 3 follow-up.)
+  window.openCategory = function (catKey) {
+    // TODO: Show modules within this category. For now show a toast.
+    var label = ({
+      'overview':     'Quy trình tổng quan',
+      'goal-setting': 'Hướng dẫn Thiết lập mục tiêu',
+      'mid-year':     'Hướng dẫn Đánh giá giữa năm',
+      'year-end':     'Hướng dẫn Đánh giá cuối năm',
+      'hrm':          'Hướng dẫn về hệ thống HRM',
+      'feedback':     'Văn hóa phản hồi hiệu quả'
+    })[catKey] || catKey;
+    if (typeof showToast === 'function') {
+      showToast('Đang mở: ' + label + ' (sẽ liên kết tới module sau)', 'info');
+    } else {
+      console.log('openCategory:', catKey, label);
+    }
+  };
+
+  function filterLibrary() {
+    var grid = document.getElementById('library-grid');
+    var empty = document.getElementById('library-empty');
+    if (!grid) return;
+    var q = (document.getElementById('input-search').value || '').trim().toLowerCase();
+    var cards = grid.querySelectorAll('.lib-card');
+    var visible = 0;
+    cards.forEach(function (c) {
+      var title = (c.querySelector('.lib-card-title') || {}).textContent || '';
+      var desc  = (c.querySelector('.lib-card-desc')  || {}).textContent || '';
+      var match = !q || (title + ' ' + desc).toLowerCase().indexOf(q) >= 0;
+      c.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    if (empty) empty.style.display = visible === 0 ? '' : 'none';
+  }
 
   // ── Card click ──
   document.getElementById('modules-grid').addEventListener('click', function (e) {

@@ -165,45 +165,142 @@
       </div>
     </section>
 
-    <!-- ══ MODULE LIST ══ -->
-    <div class="container">
-      <div id="courses" class="courses-card">
-        <div class="courses-header">
-          <div class="courses-header-left">
-            <h3>Danh sách <span class="sig">Modules</span></h3>
-            <span class="courses-count" id="courses-count"></span>
+    <!-- ══ LEARNING LIBRARY (CATEGORY CARDS) ══ -->
+    <section class="library-section" id="courses">
+      <div class="container">
+
+        <div class="library-header">
+          <div class="library-header-text">
+            <span class="section-eyebrow">Thư viện</span>
+            <h2 class="library-title">Thư viện học tập</h2>
+            <p class="library-subtitle">Chọn một chủ đề để xem các hướng dẫn chi tiết bên trong</p>
           </div>
-          <div class="courses-header-right">
-            <div class="filter-tabs" id="filter-tabs" role="tablist" aria-label="Lọc theo danh mục">
-              <button class="filter-tab active" data-cat="all" role="tab" aria-selected="true">Tất cả</button>
-              <button class="filter-tab" data-cat="Policy" role="tab" aria-selected="false">Policy</button>
-              <button class="filter-tab" data-cat="Process" role="tab" aria-selected="false">Process</button>
-              <button class="filter-tab" data-cat="Safety" role="tab" aria-selected="false">Safety</button>
-            </div>
-            <div class="search-wrap">
-              <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="input-search" class="search-input" placeholder="Tìm module...">
-            </div>
+          <div class="search-wrap library-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="input-search" class="search-input" placeholder="Tìm chủ đề...">
           </div>
         </div>
 
+        <div class="library-grid" id="library-grid">
+
+          <button class="lib-card" data-cat="overview" onclick="openCategory('overview')">
+            <div class="lib-card-icon lib-card-icon--overview"><i class="fa-solid fa-diagram-project"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Quy trình tổng quan</div>
+              <div class="lib-card-desc">Bức tranh tổng thể về quy trình Quản lý Hiệu quả Công việc tại MoMo.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Toàn bộ nhân sự</span>
+                <span class="lib-card-count">2 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+          <button class="lib-card" data-cat="goal-setting" onclick="openCategory('goal-setting')">
+            <div class="lib-card-icon lib-card-icon--goal"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Hướng dẫn Thiết lập mục tiêu</div>
+              <div class="lib-card-desc">Cách thiết lập, cascade và viết mục tiêu hiệu quả cho cả nhân viên và quản lý.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Nhân viên · Quản lý</span>
+                <span class="lib-card-count">2 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+          <button class="lib-card" data-cat="mid-year" onclick="openCategory('mid-year')">
+            <div class="lib-card-icon lib-card-icon--mid"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Hướng dẫn Đánh giá giữa năm</div>
+              <div class="lib-card-desc">Self-assessment, đánh giá tiến độ và điều chỉnh mục tiêu giữa chu kỳ.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Nhân viên · Quản lý</span>
+                <span class="lib-card-count">2 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+          <button class="lib-card" data-cat="year-end" onclick="openCategory('year-end')">
+            <div class="lib-card-icon lib-card-icon--end"><i class="fa-solid fa-medal"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Hướng dẫn Đánh giá cuối năm</div>
+              <div class="lib-card-desc">Chuẩn bị nội dung, đánh giá hiệu quả cuối năm và phản hồi cho nhân viên.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Nhân viên · Quản lý</span>
+                <span class="lib-card-count">2 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+          <button class="lib-card" data-cat="hrm" onclick="openCategory('hrm')">
+            <div class="lib-card-icon lib-card-icon--hrm"><i class="fa-solid fa-laptop"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Hướng dẫn về hệ thống HRM</div>
+              <div class="lib-card-desc">Cách sử dụng hệ thống HRM để thực hiện các bước trong chu kỳ đánh giá.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Toàn bộ nhân sự</span>
+                <span class="lib-card-count">3 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+          <button class="lib-card" data-cat="feedback" onclick="openCategory('feedback')">
+            <div class="lib-card-icon lib-card-icon--feedback"><i class="fa-solid fa-comments"></i></div>
+            <div class="lib-card-body">
+              <div class="lib-card-title">Văn hóa phản hồi hiệu quả</div>
+              <div class="lib-card-desc">Cách cho, nhận phản hồi và vai trò của quản lý trong việc thúc đẩy văn hóa phản hồi.</div>
+              <div class="lib-card-meta">
+                <span class="lib-card-roles"><i class="fa-regular fa-user"></i> Toàn bộ nhân sự</span>
+                <span class="lib-card-count">3 module</span>
+              </div>
+            </div>
+            <div class="lib-card-cta">
+              <span>Học ngay</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- Empty state for library search -->
+        <div id="library-empty" class="empty-state" style="display:none">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <p>Không tìm thấy chủ đề nào.</p>
+        </div>
+
+        <!-- Hidden but kept for backward compat with script.js -->
         <div id="skeleton-loader" class="skeleton-wrap" style="display:none">
-          <div class="skeleton-row" style="animation-delay:.0s"></div>
-          <div class="skeleton-row" style="animation-delay:.1s"></div>
-          <div class="skeleton-row" style="animation-delay:.2s"></div>
+          <div class="skeleton-row"></div>
         </div>
-
         <div id="empty-state" class="empty-state" style="display:none">
           <i class="fa-solid fa-magnifying-glass"></i>
           <p>Không tìm thấy module nào.</p>
         </div>
+        <div id="ai-recommend-banner" class="ai-recommend-banner" style="display:none"></div>
+        <div class="modules-grid" id="modules-grid" style="display:none"></div>
+        <span id="courses-count" style="display:none"></span>
 
-        <!-- AI RECOMMENDATION BANNER -->
-        <div id="ai-recommend-banner" class="ai-recommend-banner" style="display:none" role="region" aria-label="Gợi ý module tiếp theo"></div>
-
-        <div class="modules-grid" id="modules-grid" role="region" aria-live="polite" aria-label="Danh sách module"></div>
       </div>
-    </div>
+    </section>
 
     <footer class="lms-footer">
       <div class="container">
