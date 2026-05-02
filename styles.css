@@ -451,6 +451,49 @@ h1, h2, h3, h4,
 }
 .hero-img-placeholder i { font-size: 32px; }
 
+/* "KHÁM PHÁ NGAY" explore pill */
+.hero-explore-pill {
+  display: inline-flex;
+  margin-bottom: 24px;
+}
+.hero-explore-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(165, 0, 100, 0.28);
+  transition: background var(--dur-fast) ease, transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  position: relative;
+  overflow: hidden;
+}
+.hero-explore-btn::after {
+  content: '→';
+  font-size: 14px;
+  font-weight: 400;
+  transition: transform var(--dur-fast) ease;
+}
+.hero-explore-btn:hover {
+  background: var(--accent-hover, #8a0054);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(165, 0, 100, 0.38);
+}
+.hero-explore-btn:hover::after {
+  transform: translateX(4px);
+}
+.hero-explore-btn:active {
+  transform: translateY(0);
+}
+
 /* Description */
 .hero-desc {
   font-size: 16px;

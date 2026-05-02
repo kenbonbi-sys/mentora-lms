@@ -22,6 +22,7 @@
 
       'hero.title':       'Quy trình Quản lý<br>Hiệu quả Công việc<br><span class="hero-h1-sig">tại MoMo</span>',
       'hero.desc':        'Nơi tổng hợp hướng dẫn về quy trình, vai trò và cách thực hiện Quản lý Hiệu quả Công việc tại MoMo.',
+      'hero.exploreCta':  'KHÁM PHÁ NGAY',
       'hero.imgPlaceholder': 'Hình ảnh sẽ được cập nhật',
 
       'pm.eyebrow':       'Performance Management',
@@ -211,6 +212,7 @@
 
       'hero.title':       'Performance<br>Management Process<br><span class="hero-h1-sig">at MoMo</span>',
       'hero.desc':        'A central hub for guidance on the process, roles and how to do Performance Management at MoMo.',
+      'hero.exploreCta':  'EXPLORE NOW',
       'hero.imgPlaceholder': 'Image to be added',
 
       'pm.eyebrow':       'Performance Management',
