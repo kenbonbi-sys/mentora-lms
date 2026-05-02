@@ -1131,6 +1131,136 @@ h1, h2, h3, h4,
   .journey-panel { padding: 22px; }
 }
 
+/* ══════════════════════════════════════════════════════
+   SUPPORT RESOURCES SECTION
+   ══════════════════════════════════════════════════════ */
+.support-section {
+  padding: 56px 0 72px;
+  background: var(--bg-app);
+  border-top: 1px solid var(--border-light);
+}
+
+.support-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.support-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -.8px;
+  line-height: 1.2;
+  margin: 8px 0 8px;
+}
+.support-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.support-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out), border-color var(--dur-normal) var(--ease-out);
+  text-decoration: none;
+  position: relative;
+  animation: fadeSlideIn var(--dur-slow) var(--ease-out) both;
+}
+.support-card:nth-child(1) { animation-delay: .05s; }
+.support-card:nth-child(2) { animation-delay: .12s; }
+.support-card:nth-child(3) { animation-delay: .19s; }
+.support-card--faq { cursor: pointer; }
+.support-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.support-card--faq:hover { border-color: var(--accent); }
+
+.support-card-icon {
+  width: 48px; height: 48px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  transition: transform var(--dur-normal) var(--ease-spring);
+}
+.support-card:hover .support-card-icon { transform: scale(1.08) rotate(-4deg); }
+.support-card-icon--it   { background: rgba(59,130,246,.12); color: #3b82f6; }
+.support-card-icon--lnod { background: rgba(94,161,42,.12); color: var(--green); }
+
+.support-card-body { flex: 1; min-width: 0; }
+.support-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+.support-card-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -.3px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.support-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.support-card-arrow {
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg-inset);
+  color: var(--text-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  align-self: center;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.support-card--faq:hover .support-card-arrow {
+  background: var(--accent);
+  color: var(--primary-foreground);
+  transform: translateX(3px);
+}
+
+.support-card-tag {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  color: var(--text-tertiary);
+  background: var(--bg-inset);
+  padding: 5px 10px;
+  border-radius: 100px;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .support-grid { grid-template-columns: 1fr; gap: 14px; }
+  .support-card { padding: 20px; }
+}
+
 /* ══════════════════════════════ COURSES CARD */
 .courses-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); margin-bottom: 56px; overflow: hidden; animation: fadeSlideIn var(--dur-slow) var(--ease-out) both; animation-delay: .15s; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
 .courses-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 28px 32px; border-bottom: 1px solid var(--border-light); background: transparent; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }

@@ -806,6 +806,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  // ── FAQ open stub (TODO: Epic 6 follow-up — wire to real FAQ page/modal) ──
+  window.openFAQ = function () {
+    if (typeof showToast === 'function') {
+      showToast('FAQ sẽ sớm có mặt — đang xây dựng nội dung', 'info');
+    } else {
+      alert('FAQ sẽ sớm có mặt');
+    }
+  };
+
   // ── Role-based learning journey tabs ──
   var journeyTabs = document.querySelectorAll('.journey-tab');
   if (journeyTabs.length) {
