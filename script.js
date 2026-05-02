@@ -661,27 +661,27 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── Streak — counted on every daily visit ──
   updateStreak();
 
-  // ── Mobile drawer ──
+  // ── Full-screen menu overlay (brandbook style) ──
   var lastDrawerTrigger = null;
   function openDrawer() {
-    var drawer = document.getElementById('mobile-drawer');
-    var overlay = document.getElementById('drawer-overlay');
+    var menu = document.getElementById('menu-overlay');
     var toggle = document.getElementById('nav-toggle');
+    if (!menu) return;
     lastDrawerTrigger = document.activeElement;
-    drawer.classList.add('open');
-    overlay.classList.add('active');
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
     document.body.classList.add('drawer-open');
     toggle.setAttribute('aria-label', 'Đóng menu');
     toggle.setAttribute('aria-expanded', 'true');
-    drawer.focus({ preventScroll: true });
+    menu.focus({ preventScroll: true });
   }
   function closeDrawer() {
-    var drawer = document.getElementById('mobile-drawer');
-    var overlay = document.getElementById('drawer-overlay');
+    var menu = document.getElementById('menu-overlay');
     var toggle = document.getElementById('nav-toggle');
-    var wasOpen = drawer.classList.contains('open');
-    drawer.classList.remove('open');
-    overlay.classList.remove('active');
+    if (!menu) return;
+    var wasOpen = menu.classList.contains('open');
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('drawer-open');
     toggle.setAttribute('aria-label', 'Mở menu');
     toggle.setAttribute('aria-expanded', 'false');
@@ -692,8 +692,19 @@ document.addEventListener('DOMContentLoaded', function () {
   window.openDrawer = openDrawer;
   window.closeDrawer = closeDrawer;
 
+  // Filter modules by category from menu overlay
+  window.filterByCategory = function (cat) {
+    showPage('list');
+    setTimeout(function () {
+      var btn = document.querySelector('.filter-tab[data-cat="' + cat + '"]');
+      if (btn) btn.click();
+      var courses = document.getElementById('courses');
+      if (courses) courses.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
   document.getElementById('nav-toggle').addEventListener('click', function () {
-    var isOpen = document.getElementById('mobile-drawer').classList.contains('open');
+    var isOpen = document.getElementById('menu-overlay').classList.contains('open');
     isOpen ? closeDrawer() : openDrawer();
   });
 
@@ -709,7 +720,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         else showToast('Trang này đang được phát triển.', 'info');
       }, 50);
-      document.querySelectorAll('.nav-link, .drawer-link').forEach(function (l) { l.classList.remove('active'); });
+      document.querySelectorAll('.nav-link, .menu-link').forEach(function (l) { l.classList.remove('active'); });
       document.querySelectorAll('[data-scroll="' + link.dataset.scroll + '"]').forEach(function (l) { l.classList.add('active'); });
     });
   });
@@ -1119,7 +1130,7 @@ function showPage(page) {
 
 function updateNavActive(page) {
   var route = page === 'map' ? 'map' : 'list';
-  document.querySelectorAll('.nav-link, .drawer-link').forEach(function (link) {
+  document.querySelectorAll('.nav-link, .menu-link').forEach(function (link) {
     var isMap = link.dataset.route === 'map';
     var isHome = link.dataset.scroll === 'hero';
     link.classList.toggle('active', (route === 'map' && isMap) || (route === 'list' && isHome));
@@ -1454,9 +1465,74 @@ function openDetail(id) {
 
   showPage('detail');
 
-  // Start scroll observer
-  setTimeout(function () { setupScrollProgress(stepsForTracker.length); }, 120);
+  // Start scroll observer + build TOC sidebar
+  setTimeout(function () {
+    setupScrollProgress(stepsForTracker.length);
+    buildDetailTOC();
+  }, 120);
 }
+
+// ════════════════════════════════════════
+//  DETAIL TOC SIDEBAR (brandbook-style scroll-spy)
+// ════════════════════════════════════════
+var _tocObserver = null;
+function buildDetailTOC() {
+  var nav = document.getElementById('detail-toc-nav');
+  if (!nav) return;
+  // Disconnect previous observer
+  if (_tocObserver) { _tocObserver.disconnect(); _tocObserver = null; }
+
+  // Collect visible sections with their .section-title text
+  var sections = Array.prototype.slice.call(document.querySelectorAll('#tab-detail .detail-section, .detail-main .detail-section'));
+  var items = [];
+  sections.forEach(function (sec) {
+    if (sec.style.display === 'none') return;
+    var titleEl = sec.querySelector('.section-title');
+    if (!titleEl) return;
+    // Ensure section has an id
+    if (!sec.id) sec.id = 'sec-' + Math.random().toString(36).slice(2, 8);
+    // Get title text (strip icon node)
+    var clone = titleEl.cloneNode(true);
+    var icons = clone.querySelectorAll('i');
+    icons.forEach(function (i) { i.remove(); });
+    var label = (clone.textContent || '').trim();
+    items.push({ id: sec.id, label: label, el: sec });
+  });
+
+  if (!items.length) { nav.innerHTML = ''; return; }
+
+  nav.innerHTML = items.map(function (it) {
+    return '<a class="detail-toc-link" href="#' + it.id + '" data-target="' + it.id + '">' + esc(it.label) + '</a>';
+  }).join('');
+
+  // Click → smooth scroll
+  nav.querySelectorAll('.detail-toc-link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var target = document.getElementById(link.dataset.target);
+      if (!target) return;
+      var navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 60;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+
+  // Scroll-spy via IntersectionObserver
+  if ('IntersectionObserver' in window) {
+    _tocObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          nav.querySelectorAll('.detail-toc-link').forEach(function (l) {
+            l.classList.toggle('active', l.dataset.target === id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+    items.forEach(function (it) { _tocObserver.observe(it.el); });
+  }
+}
+window.buildDetailTOC = buildDetailTOC;
 
 // ════════════════════════════════════════
 //  CONTENT BLOCKS — Learner Renderer

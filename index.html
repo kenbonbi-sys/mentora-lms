@@ -34,36 +34,42 @@
         <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
       </ul>
       <div class="nav-actions" id="nav-actions"></div>
-      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu" aria-controls="mobile-drawer" aria-expanded="false">
+      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu" aria-controls="menu-overlay" aria-expanded="false">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
   </nav>
 
-  <!-- Mobile drawer -->
-  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()" aria-hidden="true"></div>
-  <aside class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu điều hướng" tabindex="-1">
-    <div class="drawer-header">
-      <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo drawer-logo">
-      <button class="btn btn-ghost btn-icon drawer-close" onclick="closeDrawer()" aria-label="Đóng menu">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+  <!-- Full-screen menu overlay (brandbook style) -->
+  <div class="menu-overlay" id="menu-overlay" role="dialog" aria-modal="true" aria-label="Menu điều hướng" aria-hidden="true" tabindex="-1">
+    <button class="menu-close" onclick="closeDrawer()" aria-label="Đóng menu">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="menu-grid">
+      <div class="menu-col">
+        <h3 class="menu-col-title">Tổng Quan</h3>
+        <a class="menu-link" href="javascript:void(0)" data-scroll="hero" onclick="closeDrawer()">Trang chủ</a>
+        <a class="menu-link" href="javascript:void(0)" data-route="map" onclick="showPage('map');closeDrawer()">Lộ trình học</a>
+        <a class="menu-link" href="javascript:void(0)" data-scroll="instructors" onclick="closeDrawer()">Về chúng tôi</a>
+      </div>
+      <div class="menu-col">
+        <h3 class="menu-col-title">Modules</h3>
+        <a class="menu-link" href="javascript:void(0)" data-scroll="courses" onclick="closeDrawer()">Tất cả modules</a>
+        <a class="menu-link" href="javascript:void(0)" data-cat="Policy" onclick="filterByCategory('Policy');closeDrawer()">Policy</a>
+        <a class="menu-link" href="javascript:void(0)" data-cat="Process" onclick="filterByCategory('Process');closeDrawer()">Process</a>
+        <a class="menu-link" href="javascript:void(0)" data-cat="Safety" onclick="filterByCategory('Safety');closeDrawer()">Safety</a>
+      </div>
+      <div class="menu-col">
+        <h3 class="menu-col-title">Tài Nguyên</h3>
+        <a class="menu-link" href="javascript:void(0)" onclick="showGuide();closeDrawer()">Hướng dẫn sử dụng</a>
+        <a class="menu-link" href="https://momo.m-n.associates/" target="_blank" rel="noopener">MoMo Brandbook ↗</a>
+      </div>
     </div>
-    <nav class="drawer-nav">
-      <a class="drawer-link" href="javascript:void(0)" data-scroll="hero" onclick="closeDrawer()">
-        <i class="fa-solid fa-house"></i> Trang chủ
-      </a>
-      <a class="drawer-link" href="javascript:void(0)" data-scroll="courses" onclick="closeDrawer()">
-        <i class="fa-solid fa-book-open"></i> Modules
-      </a>
-      <a class="drawer-link" href="javascript:void(0)" data-route="map" onclick="showPage('map');closeDrawer()">
-        <i class="fa-solid fa-diagram-project"></i> Lộ trình
-      </a>
-      <a class="drawer-link" href="javascript:void(0)" data-scroll="instructors" onclick="closeDrawer()">
-        <i class="fa-solid fa-circle-info"></i> Về chúng tôi
-      </a>
-    </nav>
-  </aside>
+    <div class="menu-footer">
+      <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo">
+      <span>Mentora LMS · Compliance Training</span>
+    </div>
+  </div>
 
   <!-- PAGE: LIST -->
   <div id="page-list">
@@ -192,8 +198,15 @@
       </div>
 
       <div class="detail-layout">
+        <aside class="detail-toc" id="detail-toc" aria-label="Mục lục">
+          <div class="detail-toc-sticky">
+            <div class="detail-toc-label">Mục lục</div>
+            <nav class="detail-toc-nav" id="detail-toc-nav"></nav>
+          </div>
+        </aside>
+
         <div class="detail-main">
-          <section class="detail-section">
+          <section class="detail-section" id="section-content">
             <div class="section-title"><i class="fa-solid fa-list-check"></i> Nội dung & Quy trình</div>
             <div class="process-steps" id="detail-steps"></div>
           </section>
