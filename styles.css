@@ -352,23 +352,27 @@ h1, h2, h3, h4,
 
 /* Eyebrow */
 .hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255,255,255,.45);
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
+  display: block;
   margin-bottom: 28px;
 }
-.hero-eyebrow-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  box-shadow: 0 0 10px rgba(249,83,150,.8);
-  animation: heroDotPulse 2s var(--ease-in-out) infinite;
-  flex-shrink: 0;
+.hero-promo-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary-foreground);
+  letter-spacing: .2px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  background-color: var(--pink-400);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 9px,
+    rgba(165,0,100,.28) 9px, rgba(165,0,100,.28) 18px
+  );
+  box-shadow: 0 4px 16px rgba(165,0,100,.35);
+  white-space: nowrap;
 }
 @keyframes heroDotPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -602,41 +606,6 @@ h1, h2, h3, h4,
   pointer-events: none;
 }
 
-/* ── Hero announcement pill ── */
-.hero-ann-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 22px;
-  cursor: default;
-  user-select: none;
-}
-.hero-ann-label {
-  display: inline-flex;
-  align-items: center;
-  font-family: 'MoMo Trust Display', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--primary-foreground);
-  letter-spacing: .2px;
-  padding: 6px 14px;
-  border-radius: var(--radius-md);
-  background-color: var(--pink-400);
-  background-image: repeating-linear-gradient(
-    -45deg,
-    transparent 0px, transparent 9px,
-    rgba(165,0,100,.28) 9px, rgba(165,0,100,.28) 18px
-  );
-  box-shadow: 0 4px 16px rgba(165,0,100,.35);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.hero-ann-text {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,.7);
-  line-height: 1.45;
-}
 
 /* ══════════════════════════════════════════════════════
    CATEGORY CARDS SECTION
