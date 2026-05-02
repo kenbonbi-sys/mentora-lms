@@ -3,7 +3,12 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__computer",
+      "Bash(awk 'NR>=1324 && /^function /{print NR\": \"$0; if \\(NR>1324\\) exit}' script.js)"
     ]
   }
 }

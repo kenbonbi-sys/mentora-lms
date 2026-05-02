@@ -21,22 +21,20 @@
     </div>
   </div>
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (brandbook style: hamburger left, logo center/left) -->
   <nav class="lms-nav">
     <div class="container">
+      <button class="nav-toggle-pill" id="nav-toggle" aria-label="Mở menu" aria-controls="menu-overlay" aria-expanded="false">
+        <span class="nav-toggle-bars">
+          <span></span><span></span>
+        </span>
+        <span class="nav-toggle-label">Menu</span>
+      </button>
       <a class="nav-brand" href="javascript:void(0)" onclick="showPage('list')">
         <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo">
       </a>
-      <ul class="nav-links" id="nav-links">
-        <li><a class="nav-link active" href="javascript:void(0)" data-scroll="hero">Trang chủ</a></li>
-        <li><a class="nav-link" href="javascript:void(0)" data-scroll="courses">Modules</a></li>
-        <li><a class="nav-link" href="javascript:void(0)" data-route="map" onclick="showPage('map')"><i class="fa-solid fa-diagram-project" style="margin-right:5px"></i>Lộ trình</a></li>
-        <li><a class="nav-link" href="javascript:void(0)" data-scroll="instructors">Về chúng tôi</a></li>
-      </ul>
+      <div class="nav-spacer"></div>
       <div class="nav-actions" id="nav-actions"></div>
-      <button class="btn nav-toggle btn-ghost btn-icon" id="nav-toggle" aria-label="Mở menu" aria-controls="menu-overlay" aria-expanded="false">
-        <i class="fa-solid fa-bars"></i>
-      </button>
     </div>
   </nav>
 

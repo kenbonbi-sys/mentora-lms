@@ -60,7 +60,7 @@
   --teal:   #19ac9a;
   --blue:   #1c66bb;
 
-  --bg-app:    #f4f6fb;
+  --bg-app:    #fdfafc;
   --bg-card:   #ffffff;
   --bg-inset:  #f1f5f9;
   --bg-hover:  #f8fafc;
@@ -153,6 +153,10 @@ body {
   transition: background var(--dur-slow) var(--ease-out), color var(--dur-slow) var(--ease-out);
   -webkit-font-smoothing: antialiased;
   letter-spacing: 0;
+  background-image:
+    radial-gradient(ellipse 1200px 600px at 0% -10%, rgba(249,83,150,.10), transparent 55%),
+    radial-gradient(ellipse 900px 500px at 100% 30%, rgba(165,0,100,.06), transparent 60%);
+  background-attachment: fixed;
 }
 
 /* ── MoMo Brand: Trust Display cho headings ── */
@@ -174,20 +178,61 @@ h1, h2, h3, h4,
 }
 .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-/* ══════════════════════════════ NAVBAR */
+/* ══════════════════════════════ NAVBAR (brandbook: hamburger-left, minimal) */
 .lms-nav {
-  position: sticky; top: 0; z-index: 50; height: 58px;
-  background: var(--bg-header); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50; height: 68px;
+  background: rgba(255,255,255,.82); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(165,0,100,.08);
   transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out);
 }
-.lms-nav .container { height: 100%; display: flex; align-items: center; gap: 24px; }
-.nav-brand { font-size: 18px; font-weight: 800; letter-spacing: -.4px; color: var(--text-primary); flex-shrink: 0; display: flex; align-items: center; }
+.lms-nav .container { height: 100%; display: flex; align-items: center; gap: 20px; max-width: 1280px; padding: 0 32px; }
+
+/* Brandbook-style pill hamburger trigger */
+.nav-toggle-pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 40px; padding: 0 16px 0 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none; border-radius: 999px;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 13px; font-weight: 800;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: background .18s ease, transform .18s var(--ease-spring), box-shadow .18s ease;
+  box-shadow: 0 4px 14px rgba(165,0,100,.28);
+  flex-shrink: 0;
+}
+.nav-toggle-pill:hover {
+  background: #8a0054;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(165,0,100,.35);
+}
+.nav-toggle-pill:active { transform: translateY(0) scale(.97); }
+.nav-toggle-pill:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-ring), 0 4px 14px rgba(165,0,100,.28); }
+.nav-toggle-bars {
+  display: inline-flex; flex-direction: column; gap: 4px;
+  width: 16px;
+}
+.nav-toggle-bars span {
+  display: block; width: 100%; height: 2px;
+  background: #fff; border-radius: 2px;
+  transition: transform .2s var(--ease-out);
+}
+.nav-toggle-pill:hover .nav-toggle-bars span:first-child { transform: translateX(2px); }
+.nav-toggle-pill:hover .nav-toggle-bars span:last-child  { transform: translateX(-2px); }
+.nav-toggle-label { line-height: 1; text-transform: uppercase; }
+
+.nav-brand {
+  font-size: 18px; font-weight: 800;
+  letter-spacing: -.4px; color: var(--text-primary);
+  flex-shrink: 0;
+  display: flex; align-items: center;
+  transition: opacity .18s ease, transform .18s var(--ease-spring);
+}
+.nav-brand:hover { opacity: .8; transform: scale(1.02); }
 .brand-logo { height: 32px; width: auto; object-fit: contain; display: block; }
-.nav-links  { display: flex; align-items: center; gap: 2px; flex: 1; }
-.nav-link   { padding: 11px 12px; font-size: 13px; font-weight: 600; color: var(--text-secondary); border-radius: var(--radius-sm); transition: color var(--dur-fast) ease, background var(--dur-fast) ease; }
-.nav-link:hover, .nav-link.active { color: var(--text-primary); background: var(--bg-hover); }
-.nav-link.active { color: var(--accent); }
+
+.nav-spacer { flex: 1; }
 .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .nav-toggle  { display: flex; }
 
@@ -220,12 +265,13 @@ h1, h2, h3, h4,
 /* ══════════════════════════════ HERO */
 .hero {
   background: url('/hero-bg.png') center center / cover no-repeat, linear-gradient(135deg, var(--accent-subtle) 0%, rgba(124,58,237,.05) 100%);
-  border: 1px solid var(--border-light); border-radius: var(--radius-xl);
-  padding: 64px 56px; margin-top: 40px; margin-bottom: 48px;
+  border: 1px solid var(--border-light); border-radius: 28px;
+  padding: 80px 64px; margin-top: 48px; margin-bottom: 56px;
   display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 56px;
   transition: border-color var(--dur-slow) var(--ease-out);
   animation: fadeSlideIn var(--dur-slow) var(--ease-out) both;
   overflow: visible;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 24px 60px -20px rgba(165,0,100,.18);
 }
 
 /* Eyebrow — MOMO Box Promotion badge */
@@ -261,15 +307,16 @@ h1, h2, h3, h4,
   line-height: 1.1;
 }
 .hero-sig {
-  font-size: 52px;
-  line-height: 1.1;
+  font-size: 72px;
+  line-height: 1.05;
   display: block;
 }
 .hero-h1-line {
   font-family: 'MoMo Trust Display', sans-serif;
-  font-size: 52px; font-weight: 800;
+  font-size: 64px; font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.1;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
   display: block;
 }
 
@@ -324,11 +371,11 @@ h1, h2, h3, h4,
 }
 
 /* ══════════════════════════════ COURSES CARD */
-.courses-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 56px; overflow: hidden; animation: fadeSlideIn var(--dur-slow) var(--ease-out) both; animation-delay: .15s; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
-.courses-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 18px 24px; border-bottom: 1px solid var(--border-light); background: transparent; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
-.courses-header-left  { display: flex; align-items: center; gap: 10px; }
+.courses-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); margin-bottom: 56px; overflow: hidden; animation: fadeSlideIn var(--dur-slow) var(--ease-out) both; animation-delay: .15s; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
+.courses-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 28px 32px; border-bottom: 1px solid var(--border-light); background: transparent; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
+.courses-header-left  { display: flex; align-items: baseline; gap: 14px; }
 .courses-header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.courses-header h3 { font-size: 18px; font-weight: 800; color: var(--text-primary); letter-spacing: -.3px; }
+.courses-header h3 { font-size: 28px; font-weight: 800; color: var(--text-primary); letter-spacing: -.6px; line-height: 1.1; }
 .courses-count { font-size: 11px; font-weight: 700; color: var(--text-tertiary); background: var(--bg-inset); border-radius: 10px; padding: 3px 10px; }
 .filter-tabs {
   --tab-indicator-x: 4px;
@@ -578,11 +625,12 @@ h1, h2, h3, h4,
   gap: var(--space-2);
 }
 .card-title {
-  font-size: 16px;
-  font-weight: 700;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
   color: var(--foreground);
-  letter-spacing: -.2px;
-  line-height: 1.4;
+  letter-spacing: -.4px;
+  line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -663,7 +711,7 @@ h1, h2, h3, h4,
   transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out);
 }
 .detail-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.detail-title  { font-size: 28px; font-weight: 800; letter-spacing: -.5px; color: var(--text-primary); line-height: 1.2; margin-bottom: 12px; }
+.detail-title  { font-size: 40px; font-weight: 800; letter-spacing: -1px; color: var(--text-primary); line-height: 1.1; margin-bottom: 14px; }
 .detail-subtitle { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px; }
 .detail-info-row { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); }
 .detail-info-row span { display: flex; align-items: center; gap: 6px; }
@@ -693,10 +741,10 @@ h1, h2, h3, h4,
 
 .detail-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow-sm); transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
 .section-title  {
-  display: flex; align-items: center; gap: var(--space-2);
-  font-size: 16px; font-weight: 800;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 20px; font-weight: 800;
   color: var(--foreground);
-  letter-spacing: -.2px;
+  letter-spacing: -.4px;
   margin-bottom: var(--space-5);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--border-light);
@@ -1351,13 +1399,17 @@ h1, h2, h3, h4,
   .sidebar-card   { flex: 1; min-width: 240px; }
 }
 @media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; padding: 36px 24px; margin-top: 20px; }
+  .hero { grid-template-columns: 1fr; padding: 40px 24px; margin-top: 24px; border-radius: 22px; }
   .hero-image { display: none; }
   .hero-eyebrow { font-size: 16px; }
-  .hero-sig, .hero-h1-line { font-size: 36px; }
+  .hero-sig { font-size: 44px; }
+  .hero-h1-line { font-size: 40px; letter-spacing: -.8px; }
 
   .hero-actions { flex-direction: column; }
   .hero-actions .btn { width: 100%; justify-content: center; }
+  .courses-header { padding: 20px 20px; }
+  .courses-header h3 { font-size: 22px; }
+  .detail-title { font-size: 30px; }
 }
 /* ══════════════════════════════ MENU OVERLAY (full-screen brandbook style) */
 .menu-overlay {
@@ -1389,9 +1441,10 @@ h1, h2, h3, h4,
 
 .menu-grid {
   flex: 1;
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px;
-  max-width: 1200px; width: 100%; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, minmax(280px, 380px)); gap: 80px;
+  max-width: 1000px; width: 100%; margin: 0 auto;
   align-content: center;
+  justify-content: start;
   padding: 24px 0;
 }
 .menu-col { display: flex; flex-direction: column; gap: 12px; }
@@ -1481,8 +1534,11 @@ body.drawer-open { overflow: hidden; }
 }
 
 @media (max-width: 640px) {
-  .nav-links, .nav-actions { display: none; }
+  .nav-actions { display: none; }
   .nav-toggle { display: flex; }
+  .lms-nav .container { padding: 0 16px; gap: 12px; }
+  .nav-toggle-pill { padding: 0 12px; height: 36px; }
+  .nav-toggle-label { display: none; }
   .courses-header { flex-direction: column; align-items: flex-start; }
   /* Mobile filter — scroll-snap progressive disclosure */
   .filter-tabs {
