@@ -976,6 +976,161 @@ h1, h2, h3, h4,
   .library-search { width: 100%; min-width: 0; }
 }
 
+/* ══════════════════════════════════════════════════════
+   ROLE-BASED LEARNING JOURNEY
+   ══════════════════════════════════════════════════════ */
+.journey-section {
+  padding: 64px 0 88px;
+  background: linear-gradient(180deg, var(--bg-app) 0%, var(--bg-inset) 100%);
+}
+
+.journey-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.journey-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin: 8px 0 10px;
+}
+.journey-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Tabs */
+.journey-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  padding: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 100px;
+  max-width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+.journey-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.journey-tab i { font-size: 13px; }
+.journey-tab:hover { color: var(--text-primary); background: var(--bg-inset); }
+.journey-tab.active {
+  background: var(--accent);
+  color: var(--primary-foreground);
+  box-shadow: 0 4px 12px rgba(165,0,100,.25);
+}
+
+/* Panels */
+.journey-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeSlideIn var(--dur-normal) var(--ease-out) both;
+}
+.journey-panel[hidden] { display: none; }
+
+.journey-intro h3 {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -.5px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+.journey-intro p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.journey-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.journey-mod {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-inset);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  transition: background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.journey-mod:hover {
+  background: var(--bg-card);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+.journey-mod-num {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.journey-mod-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+.journey-mod-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .journey-panel { grid-template-columns: 1fr; gap: 24px; padding: 28px; }
+}
+@media (max-width: 540px) {
+  .journey-section { padding: 48px 0 64px; }
+  .journey-tabs { gap: 4px; padding: 4px; }
+  .journey-tab { padding: 8px 14px; font-size: 12px; }
+  .journey-tab span { display: none; }
+  .journey-tab i { font-size: 14px; }
+  .journey-panel { padding: 22px; }
+}
+
 /* ══════════════════════════════ COURSES CARD */
 .courses-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); margin-bottom: 56px; overflow: hidden; animation: fadeSlideIn var(--dur-slow) var(--ease-out) both; animation-delay: .15s; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
 .courses-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding: 28px 32px; border-bottom: 1px solid var(--border-light); background: transparent; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }

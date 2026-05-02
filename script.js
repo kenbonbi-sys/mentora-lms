@@ -806,6 +806,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 
+  // ── Role-based learning journey tabs ──
+  var journeyTabs = document.querySelectorAll('.journey-tab');
+  if (journeyTabs.length) {
+    journeyTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var role = tab.dataset.role;
+        journeyTabs.forEach(function (t) {
+          var active = t === tab;
+          t.classList.toggle('active', active);
+          t.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        document.querySelectorAll('.journey-panel').forEach(function (p) {
+          var active = p.dataset.role === role;
+          p.classList.toggle('active', active);
+          if (active) p.removeAttribute('hidden');
+          else p.setAttribute('hidden', '');
+        });
+      });
+    });
+  }
+
   function filterLibrary() {
     var grid = document.getElementById('library-grid');
     var empty = document.getElementById('library-empty');
