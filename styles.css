@@ -733,9 +733,9 @@ h1, h2, h3, h4,
 }
 .detail-completion-note.done { background: #f0fdf4; color: #166534; }
 
-.detail-layout { display: grid; grid-template-columns: 200px 1fr 280px; gap: 24px; margin-bottom: 48px; }
+.detail-layout { display: grid; grid-template-columns: 240px 1fr 280px; gap: 24px; margin-bottom: 48px; }
 @media (max-width: 1024px) {
-  .detail-layout { grid-template-columns: 180px 1fr; }
+  .detail-layout { grid-template-columns: 220px 1fr; }
   .detail-layout .detail-sidebar { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; position: static; max-height: none; }
 }
 
@@ -1531,6 +1531,56 @@ body.drawer-open { overflow: hidden; }
   border-left-color: var(--accent);
   background: var(--accent-subtle);
   font-weight: 700;
+}
+
+/* ── Nested step checkpoints under "Nội dung & Quy trình" ── */
+.detail-toc-substeps {
+  display: flex; flex-direction: column;
+  gap: 0;
+  margin: 4px 0 8px 18px;
+  padding: 6px 0 4px 14px;
+  border-left: 1px dashed rgba(165,0,100,.22);
+  position: relative;
+}
+.detail-toc-substep {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 6px 8px 6px 4px;
+  cursor: pointer;
+  border-radius: 6px;
+  position: relative;
+  transition: background .15s;
+}
+.detail-toc-substep::after { display: none; }
+.detail-toc-substep:hover { background: var(--bg-hover); }
+.detail-toc-substep .step-dot {
+  width: 9px; height: 9px;
+  margin-top: 5px;
+  flex-shrink: 0;
+  background: var(--border);
+  border-radius: 50%;
+  transition: all .2s var(--ease-out);
+}
+.detail-toc-substep .step-dot-label {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-tertiary);
+  transition: color .15s, font-weight .15s;
+}
+.detail-toc-substep:hover .step-dot       { background: var(--text-tertiary); }
+.detail-toc-substep:hover .step-dot-label { color: var(--text-primary); }
+.detail-toc-substep.active .step-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+  transform: scale(1.2);
+}
+.detail-toc-substep.active .step-dot-label {
+  color: var(--accent);
+  font-weight: 700;
+}
+.detail-toc-substep:focus-visible {
+  outline: none;
+  background: var(--accent-subtle);
+  box-shadow: 0 0 0 2px var(--accent-ring);
 }
 
 @media (max-width: 640px) {

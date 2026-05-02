@@ -1449,19 +1449,9 @@ function openDetail(id) {
   updateDoneBtn(isDone(id));
   loadNotes(id);
 
-  // Build step tracker from stepsForTracker (populated above)
-  var trackerEl = document.getElementById('step-tracker');
-  trackerEl.innerHTML = stepsForTracker.map(function (s, i) {
-    var stepTitle = esc(s.title || '');
-    return '<div class="step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '"'
-      + ' role="listitem" tabindex="0"'
-      + ' aria-label="Bước ' + (i + 1) + ': ' + stepTitle + '"'
-      + ' onclick="scrollToStep(' + i + ')"'
-      + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){scrollToStep(' + i + ');event.preventDefault();}">'
-      + '<div class="step-dot"></div>'
-      + '<div class="step-dot-label">' + stepTitle + '</div>'
-      + '</div>';
-  }).join('');
+  // Step tracker is now nested inside the left TOC sidebar (see buildDetailTOC).
+  // We just stash the steps for buildDetailTOC + setupScrollProgress to consume.
+  _currentSteps = stepsForTracker;
 
   showPage('detail');
 
@@ -1473,9 +1463,10 @@ function openDetail(id) {
 }
 
 // ════════════════════════════════════════
-//  DETAIL TOC SIDEBAR (brandbook-style scroll-spy)
+//  DETAIL TOC SIDEBAR (brandbook-style scroll-spy + nested step tracker)
 // ════════════════════════════════════════
 var _tocObserver = null;
+var _currentSteps = [];
 function buildDetailTOC() {
   var nav = document.getElementById('detail-toc-nav');
   if (!nav) return;
@@ -1485,6 +1476,7 @@ function buildDetailTOC() {
   // Collect visible sections with their .section-title text
   var sections = Array.prototype.slice.call(document.querySelectorAll('#tab-detail .detail-section, .detail-main .detail-section'));
   var items = [];
+  var html = '';
   sections.forEach(function (sec) {
     if (sec.style.display === 'none') return;
     var titleEl = sec.querySelector('.section-title');
@@ -1497,15 +1489,31 @@ function buildDetailTOC() {
     icons.forEach(function (i) { i.remove(); });
     var label = (clone.textContent || '').trim();
     items.push({ id: sec.id, label: label, el: sec });
+
+    html += '<a class="detail-toc-link" href="#' + sec.id + '" data-target="' + sec.id + '">' + esc(label) + '</a>';
+
+    // ── Nested step checkpoints under "Nội dung & Quy trình" ──
+    if (sec.id === 'section-content' && _currentSteps && _currentSteps.length) {
+      html += '<div class="detail-toc-substeps" role="list">';
+      _currentSteps.forEach(function (s, i) {
+        var stepTitle = esc(s.title || ('Bước ' + (i + 1)));
+        html += '<div class="detail-toc-substep step-dot-item" id="tracker-step-' + i + '" data-step="' + i + '"'
+          + ' role="listitem" tabindex="0"'
+          + ' aria-label="Bước ' + (i + 1) + ': ' + stepTitle + '"'
+          + ' onclick="scrollToStep(' + i + ')"'
+          + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){scrollToStep(' + i + ');event.preventDefault();}">'
+          + '<div class="step-dot"></div>'
+          + '<div class="step-dot-label">' + stepTitle + '</div>'
+          + '</div>';
+      });
+      html += '</div>';
+    }
   });
 
   if (!items.length) { nav.innerHTML = ''; return; }
+  nav.innerHTML = html;
 
-  nav.innerHTML = items.map(function (it) {
-    return '<a class="detail-toc-link" href="#' + it.id + '" data-target="' + it.id + '">' + esc(it.label) + '</a>';
-  }).join('');
-
-  // Click → smooth scroll
+  // Click → smooth scroll (only top-level section links)
   nav.querySelectorAll('.detail-toc-link').forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
