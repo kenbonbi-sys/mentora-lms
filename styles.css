@@ -611,80 +611,198 @@ h1, h2, h3, h4,
 
 
 /* ══════════════════════════════════════════════════════
-   CATEGORY CARDS SECTION
+   PM PROCESS OVERVIEW SECTION
    ══════════════════════════════════════════════════════ */
-.cat-section {
-  padding: 48px 0 56px;
+.pm-process-section {
+  padding: 64px 0 72px;
   background: var(--bg-app);
 }
 
-.cat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+.pm-process-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.pm-process-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.pm-process-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
-.cat-card {
+/* Milestones row */
+.pm-milestones-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.pm-milestones {
   display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 0;
+}
+
+.pm-milestone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 18px;
-  padding: 22px 24px;
+  text-align: center;
+  padding: 32px 24px;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
-  cursor: pointer;
-  text-align: left;
-  font-family: inherit;
-  transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out), border-color var(--dur-normal) var(--ease-out);
   box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: transform var(--dur-normal) var(--ease-out), box-shadow var(--dur-normal) var(--ease-out);
   animation: fadeSlideIn var(--dur-slow) var(--ease-out) both;
 }
-.cat-card--policy  { animation-delay: .05s; }
-.cat-card--process { animation-delay: .12s; }
-.cat-card--safety  { animation-delay: .19s; }
+.pm-milestone:nth-child(1) { animation-delay: .05s; }
+.pm-milestone:nth-child(3) { animation-delay: .15s; }
+.pm-milestone:nth-child(5) { animation-delay: .25s; }
+.pm-milestone:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
-.cat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-.cat-card--policy:hover  { border-color: var(--accent); }
-.cat-card--process:hover { border-color: var(--green); }
-.cat-card--safety:hover  { border-color: var(--amber); }
-
-.cat-card-icon {
-  width: 50px; height: 50px; flex-shrink: 0;
-  border-radius: var(--radius-md);
+.pm-milestone-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-tertiary);
+  margin-bottom: 14px;
+}
+.pm-milestone-icon {
+  width: 56px; height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--accent-subtle);
+  color: var(--accent);
   display: flex; align-items: center; justify-content: center;
   font-size: 22px;
+  margin-bottom: 16px;
   transition: transform var(--dur-normal) var(--ease-spring);
 }
-.cat-card:hover .cat-card-icon { transform: scale(1.1) rotate(-3deg); }
+.pm-milestone:hover .pm-milestone-icon { transform: scale(1.08) rotate(-4deg); }
 
-.cat-card--policy  .cat-card-icon { background: var(--accent-subtle); color: var(--accent); }
-.cat-card--process .cat-card-icon { background: rgba(94,161,42,.12); color: var(--green); }
-.cat-card--safety  .cat-card-icon { background: var(--warning-bg); color: #ca8a04; }
-
-.cat-card-body { flex: 1; min-width: 0; }
-.cat-card-label {
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 1.2px;
-  margin-bottom: 3px;
+.pm-milestone-title {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -.3px;
 }
-.cat-card--policy  .cat-card-label { color: var(--accent); }
-.cat-card--process .cat-card-label { color: var(--green); }
-.cat-card--safety  .cat-card-label { color: #ca8a04; }
-
-.cat-card-title { font-size: 15px; font-weight: 800; color: var(--text-primary); line-height: 1.3; margin-bottom: 4px; font-family: 'MoMo Trust Display', sans-serif; }
-.cat-card-desc  { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
-
-.cat-card-arrow {
-  width: 34px; height: 34px; flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--bg-inset);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; color: var(--text-tertiary);
-  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+.pm-milestone-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
 }
-.cat-card--policy:hover  .cat-card-arrow { background: var(--accent); color: var(--primary-foreground); transform: translateX(3px); }
-.cat-card--process:hover .cat-card-arrow { background: var(--green); color: var(--primary-foreground); transform: translateX(3px); }
-.cat-card--safety:hover  .cat-card-arrow { background: #ca8a04; color: var(--primary-foreground); transform: translateX(3px); }
+
+/* Arrow connector between milestones */
+.pm-milestone-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  flex-shrink: 0;
+  position: relative;
+  padding-top: 32px; /* align with icon area */
+}
+.pm-connector-line {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--border-light) 0%, var(--accent-light) 50%, var(--border-light) 100%);
+  display: none;
+}
+.pm-connector-arrow {
+  font-size: 16px;
+  color: var(--text-tertiary);
+}
+
+/* Continuous Feedback bar */
+.pm-cf-bar {
+  margin-top: 16px;
+  background: linear-gradient(135deg, var(--accent-subtle) 0%, rgba(249,83,150,.06) 100%);
+  border: 1px solid rgba(165,0,100,.15);
+  border-radius: var(--radius-xl);
+  padding: 16px 28px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlideIn var(--dur-slow) var(--ease-out) .35s both;
+}
+.pm-cf-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -55deg,
+    transparent 0px, transparent 16px,
+    rgba(165,0,100,.04) 16px, rgba(165,0,100,.04) 32px
+  );
+  pointer-events: none;
+}
+.pm-cf-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+.pm-cf-inner > i {
+  font-size: 18px;
+  color: var(--accent);
+  animation: spinSlow 4s linear infinite;
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+
+.pm-cf-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -.2px;
+}
+.pm-cf-en {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  padding: 3px 10px;
+  background: var(--bg-card);
+  border-radius: 100px;
+  border: 1px solid var(--border-light);
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .pm-milestones { gap: 14px; flex-direction: column; }
+  .pm-milestone-connector { width: 100%; height: 24px; flex-direction: row; padding-top: 0; }
+  .pm-connector-arrow { transform: rotate(90deg); }
+  .pm-cf-inner { flex-wrap: wrap; gap: 8px; }
+}
+@media (max-width: 540px) {
+  .pm-process-section { padding: 48px 0 56px; }
+  .pm-process-header { margin-bottom: 32px; }
+  .pm-milestone { padding: 24px 20px; }
+  .pm-cf-bar { padding: 14px 20px; }
+  .pm-cf-text { font-size: 13px; }
+}
 
 /* ══════════════════════════════ COURSES CARD */
 .courses-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); margin-bottom: 56px; overflow: hidden; animation: fadeSlideIn var(--dur-slow) var(--ease-out) both; animation-delay: .15s; transition: background var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out); }
@@ -1740,17 +1858,12 @@ h1, h2, h3, h4,
   .hero-desc { max-width: 100%; }
   .hero-h1-top, .hero-h1-bottom { font-size: clamp(44px, 8vw, 64px); }
   .hero-h1-sig { font-size: clamp(52px, 9vw, 78px); }
-  .cat-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
   .hero-body { padding: 56px 0 48px; }
   .hero-actions { flex-direction: column; align-items: flex-start; }
   .hero-actions .btn-hero-primary,
   .hero-actions .btn-hero-ghost { width: 100%; justify-content: center; }
-  .cat-grid { grid-template-columns: 1fr; gap: 12px; }
-  .cat-card { padding: 20px 20px; gap: 14px; }
-  .cat-card-icon { width: 44px; height: 44px; font-size: 20px; }
-  .cat-card-title { font-size: 15px; }
   .courses-header { padding: 20px 20px; }
   .courses-header h3 { font-size: 22px; }
   .detail-title { font-size: 30px; }

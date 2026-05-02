@@ -106,42 +106,62 @@
       <div class="hero-fade-bottom" aria-hidden="true"></div>
     </section>
 
-    <!-- ══ CATEGORY CARDS ══ -->
-    <section class="cat-section">
+    <!-- ══ PM PROCESS OVERVIEW ══ -->
+    <section class="pm-process-section" id="pm-overview">
       <div class="container">
-        <div class="cat-grid">
 
-          <button class="cat-card cat-card--policy" onclick="filterByCategory('Policy');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
-            <div class="cat-card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="cat-card-body">
-              <div class="cat-card-label">Policy</div>
-              <div class="cat-card-title">Chính sách & Quy định</div>
-              <div class="cat-card-desc">Bảo mật thông tin, tuân thủ pháp lý và quy định nội bộ</div>
-            </div>
-            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-          </button>
-
-          <button class="cat-card cat-card--process" onclick="filterByCategory('Process');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
-            <div class="cat-card-icon"><i class="fa-solid fa-arrows-spin"></i></div>
-            <div class="cat-card-body">
-              <div class="cat-card-label">Process</div>
-              <div class="cat-card-title">Quy trình vận hành</div>
-              <div class="cat-card-desc">Onboarding, workflow chuẩn và quy trình làm việc nội bộ</div>
-            </div>
-            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-          </button>
-
-          <button class="cat-card cat-card--safety" onclick="filterByCategory('Safety');document.getElementById('courses').scrollIntoView({behavior:'smooth'})">
-            <div class="cat-card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="cat-card-body">
-              <div class="cat-card-label">Safety</div>
-              <div class="cat-card-title">An toàn & Phòng ngừa</div>
-              <div class="cat-card-desc">Nhận diện rủi ro, phòng chống gian lận và bảo vệ tài sản</div>
-            </div>
-            <div class="cat-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-          </button>
-
+        <div class="pm-process-header">
+          <span class="section-eyebrow">Performance Management</span>
+          <h2 class="pm-process-title">Quy trình tổng quan</h2>
+          <p class="pm-process-subtitle">Ba giai đoạn chính trong chu kỳ Quản lý Hiệu quả Công việc tại MoMo</p>
         </div>
+
+        <div class="pm-milestones-wrap">
+          <div class="pm-milestones">
+
+            <div class="pm-milestone">
+              <div class="pm-milestone-num">01</div>
+              <div class="pm-milestone-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="pm-milestone-title">Goal Setting</div>
+              <div class="pm-milestone-desc">Thiết lập mục tiêu và kế hoạch làm việc cho chu kỳ đánh giá</div>
+            </div>
+
+            <div class="pm-milestone-connector" aria-hidden="true">
+              <div class="pm-connector-line"></div>
+              <i class="fa-solid fa-chevron-right pm-connector-arrow"></i>
+            </div>
+
+            <div class="pm-milestone">
+              <div class="pm-milestone-num">02</div>
+              <div class="pm-milestone-icon"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="pm-milestone-title">Mid-year Review</div>
+              <div class="pm-milestone-desc">Đánh giá tiến độ và điều chỉnh mục tiêu giữa chu kỳ</div>
+            </div>
+
+            <div class="pm-milestone-connector" aria-hidden="true">
+              <div class="pm-connector-line"></div>
+              <i class="fa-solid fa-chevron-right pm-connector-arrow"></i>
+            </div>
+
+            <div class="pm-milestone">
+              <div class="pm-milestone-num">03</div>
+              <div class="pm-milestone-icon"><i class="fa-solid fa-medal"></i></div>
+              <div class="pm-milestone-title">Year-end Review</div>
+              <div class="pm-milestone-desc">Đánh giá hiệu quả cuối năm và lập kế hoạch chu kỳ tiếp theo</div>
+            </div>
+
+          </div>
+
+          <!-- Continuous Feedback layer -->
+          <div class="pm-cf-bar">
+            <div class="pm-cf-inner">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span class="pm-cf-text">Cho và nhận phản hồi liên tục</span>
+              <span class="pm-cf-en">Continuous Feedback</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
