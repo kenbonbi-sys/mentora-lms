@@ -1389,7 +1389,7 @@ h1, h2, h3, h4,
 
 .menu-grid {
   flex: 1;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px;
   max-width: 1200px; width: 100%; margin: 0 auto;
   align-content: center;
   padding: 24px 0;
