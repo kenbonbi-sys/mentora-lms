@@ -346,7 +346,7 @@ h1, h2, h3, h4,
   grid-template-columns: 1fr 420px;
   align-items: center;
   gap: 64px;
-  padding: 96px 0 80px;
+  padding: 64px 0 56px;
   position: relative;
   z-index: 1;
 }
@@ -382,36 +382,39 @@ h1, h2, h3, h4,
 
 /* Heading */
 .hero-h1 {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin-bottom: 24px;
-  line-height: 1.0;
-}
-.hero-h1-top {
   font-family: 'MoMo Trust Display', sans-serif;
-  font-size: clamp(52px, 5.5vw, 80px);
+  font-size: clamp(40px, 4.5vw, 64px);
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -2px;
-  display: block;
+  line-height: 1.15;
+  margin-bottom: 20px;
 }
 .hero-h1-sig {
   font-family: 'MoMo Signature', sans-serif;
-  font-size: clamp(60px, 7vw, 100px);
+  font-size: clamp(48px, 5.5vw, 76px);
   font-weight: 400;
   color: var(--accent);
   line-height: 1.05;
-  display: block;
+  letter-spacing: 0;
 }
-.hero-h1-bottom {
-  font-family: 'MoMo Trust Display', sans-serif;
-  font-size: clamp(52px, 5.5vw, 80px);
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -2px;
-  display: block;
+
+/* Image placeholder (until real image is provided) */
+.hero-img-placeholder {
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border);
+  background: var(--bg-inset);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-tertiary);
+  font-size: 13px;
 }
+.hero-img-placeholder i { font-size: 32px; }
 
 /* Description */
 .hero-desc {
