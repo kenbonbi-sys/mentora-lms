@@ -313,6 +313,8 @@
 - ✅ CF bar (Continuous Feedback): cân bằng layout bằng cách giảm `padding-right` từ 28px → 16px, đẩy text block sát lề phải hơn
 - ✅ Menu overlay cột "Tổng Quan": thêm 3 link còn thiếu — **Quy trình tổng quan** (`#pm-overview`), **Thư viện học tập** (`#courses`), **Lộ trình học tập** (`#journey`)
 - ✅ Cập nhật i18n keys (VI + EN) cho 3 link mới trong menu
+- ✅ Journey page: chỉ hiển thị tab của role đã chọn (ẩn 3 tab còn lại) — áp dụng cho mọi role
+- ✅ Journey page: nút "Quay lại" scroll về đúng `#journey` section thay vì bay lên đầu trang — `showPage('list', 'journey')`
 
 ### 02/05/2026
 - ✅ Merge "Nội dung bài" step tracker vào TOC sidebar (nested under "Nội dung & Quy trình")
