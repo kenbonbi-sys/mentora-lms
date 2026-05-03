@@ -1313,8 +1313,16 @@ function _getPageEl(page) {
 function _activatePage(page, el) {
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.scrollTo({ top: 0, behavior: 'instant' });
-  if (page === 'list')   updateReadingProgress();
-  if (page === 'map')    renderKnowledgeMap();
+  if (page === 'list')    updateReadingProgress();
+  if (page === 'map')     renderKnowledgeMap();
+  if (page === 'journey') {
+    /* init render if container is empty (first load) */
+    var jrc = document.getElementById('journey-role-content');
+    if (jrc && !jrc.firstChild) {
+      var activeTab = document.querySelector('#journey-page-tabs .journey-tab.active');
+      switchJourneyTab(activeTab ? (activeTab.dataset.role || 'employee') : 'employee');
+    }
+  }
   if (reduceMotion) { el.style.display = ''; return; }
   el.style.display = '';
   el.classList.remove('page-exit', 'page-enter');
@@ -1324,6 +1332,85 @@ function _activatePage(page, el) {
   });
 }
 
+/* ── Journey: category & role config ── */
+var JOURNEY_CATS = {
+  'overview': {
+    title: 'Quy trình tổng quan', titleKey: 'lib.c1.title',
+    desc: 'Bức tranh tổng thể về quy trình Quản lý Hiệu quả Công việc tại MoMo.', descKey: 'lib.c1.desc',
+    icon: '/assets/images/icons/icon-overview.png', iconClass: 'lib-card-icon--overview',
+    rolesLabel: 'Toàn bộ nhân sự', rolesLabelKey: 'lib.c1.roles',
+    count: '2 module', countKey: 'lib.c1.count',
+    roles: ['employee', 'manager', 'senior', 'hod']
+  },
+  'goal-setting': {
+    title: 'Hướng dẫn Thiết lập mục tiêu', titleKey: 'lib.c2.title',
+    desc: 'Cách thiết lập, cascade và viết mục tiêu hiệu quả cho cả nhân viên và quản lý.', descKey: 'lib.c2.desc',
+    icon: '/assets/images/icons/icon-goal.png', iconClass: 'lib-card-icon--goal',
+    rolesLabel: 'Nhân viên · Quản lý', rolesLabelKey: 'lib.rolesEmpMgr',
+    count: '2 module', countKey: 'lib.count2',
+    roles: ['employee', 'manager', 'senior']
+  },
+  'mid-year': {
+    title: 'Hướng dẫn Đánh giá giữa năm', titleKey: 'lib.c3.title',
+    desc: 'Self-assessment, đánh giá tiến độ và điều chỉnh mục tiêu giữa chu kỳ.', descKey: 'lib.c3.desc',
+    icon: '/assets/images/icons/icon-mid.png', iconClass: 'lib-card-icon--mid',
+    rolesLabel: 'Nhân viên · Quản lý', rolesLabelKey: 'lib.rolesEmpMgr',
+    count: '2 module', countKey: 'lib.count2',
+    roles: ['employee', 'manager', 'senior']
+  },
+  'year-end': {
+    title: 'Hướng dẫn Đánh giá cuối năm', titleKey: 'lib.c4.title',
+    desc: 'Chuẩn bị nội dung, đánh giá hiệu quả cuối năm và phản hồi cho nhân viên.', descKey: 'lib.c4.desc',
+    icon: '/assets/images/icons/icon-end.png', iconClass: 'lib-card-icon--end',
+    rolesLabel: 'Nhân viên · Quản lý', rolesLabelKey: 'lib.rolesEmpMgr',
+    count: '2 module', countKey: 'lib.count2',
+    roles: ['employee', 'manager', 'senior', 'hod']
+  },
+  'hrm': {
+    title: 'Hướng dẫn về hệ thống HRM', titleKey: 'lib.c5.title',
+    desc: 'Cách sử dụng hệ thống HRM để thực hiện các bước trong chu kỳ đánh giá.', descKey: 'lib.c5.desc',
+    icon: '/assets/images/icons/icon-hrm.png', iconClass: 'lib-card-icon--hrm',
+    rolesLabel: 'Toàn bộ nhân sự', rolesLabelKey: 'lib.rolesAll',
+    count: '3 module', countKey: 'lib.count3',
+    roles: ['employee', 'manager', 'senior', 'hod']
+  },
+  'feedback': {
+    title: 'Văn hóa phản hồi hiệu quả', titleKey: 'lib.c6.title',
+    desc: 'Cách cho, nhận phản hồi và vai trò của quản lý trong việc thúc đẩy văn hóa phản hồi.', descKey: 'lib.c6.desc',
+    icon: '/assets/images/icons/icon-feedback.png', iconClass: 'lib-card-icon--feedback',
+    rolesLabel: 'Toàn bộ nhân sự', rolesLabelKey: 'lib.rolesAll',
+    count: '3 module', countKey: 'lib.count3',
+    roles: ['employee', 'manager', 'senior', 'hod']
+  }
+};
+
+var JOURNEY_ROLES = {
+  employee: {
+    label: 'Nhân viên', labelKey: 'role.employee',
+    icon: 'fa-regular fa-user',
+    intro: 'Tham gia đầy đủ chu kỳ Quản lý Hiệu quả Công việc — từ thiết lập mục tiêu đến đánh giá cuối năm — và xây dựng thói quen phản hồi liên tục.',
+    introKey: 'j.emp.intro.p'
+  },
+  manager: {
+    label: 'Quản lý trực tiếp', labelKey: 'role.manager',
+    icon: 'fa-solid fa-user-tie',
+    intro: 'Định hướng team, cascade mục tiêu, đánh giá nhân viên và xây dựng văn hóa phản hồi trong nhóm.',
+    introKey: 'j.mgr.intro.p'
+  },
+  senior: {
+    label: 'Quản lý cấp 2', labelKey: 'role.senior',
+    icon: 'fa-solid fa-users-line',
+    intro: 'Đảm bảo chất lượng mục tiêu, calibration công bằng và theo dõi performance của nhiều team.',
+    introKey: 'j.sen.intro.p'
+  },
+  hod: {
+    label: 'Trưởng đơn vị / HOD', labelKey: 'role.hod',
+    icon: 'fa-solid fa-crown',
+    intro: 'Governance toàn bộ chu kỳ, phê duyệt calibration và xây dựng văn hóa Performance trong đơn vị.',
+    introKey: 'j.hod.intro.p'
+  }
+};
+
 /* ── Journey role page navigation ── */
 window.showJourneyRole = function (role) {
   switchJourneyTab(role);
@@ -1331,18 +1418,52 @@ window.showJourneyRole = function (role) {
 };
 
 window.switchJourneyTab = function (role) {
-  var tabs    = document.querySelectorAll('#journey-page-tabs .journey-tab');
-  var panels  = document.querySelectorAll('#journey-page-panels .journey-panel');
+  /* update tab active states */
+  var tabs = document.querySelectorAll('#journey-page-tabs .journey-tab');
   tabs.forEach(function (t) {
     var active = t.dataset.role === role;
     t.classList.toggle('active', active);
     t.setAttribute('aria-selected', active ? 'true' : 'false');
   });
-  panels.forEach(function (p) {
-    var active = p.dataset.role === role;
-    p.classList.toggle('active', active);
-    if (active) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+
+  /* render category cards for this role */
+  var container = document.getElementById('journey-role-content');
+  if (!container) return;
+
+  var roleData = JOURNEY_ROLES[role] || JOURNEY_ROLES['employee'];
+  var catIds   = Object.keys(JOURNEY_CATS).filter(function (k) {
+    return JOURNEY_CATS[k].roles.indexOf(role) !== -1;
   });
+
+  /* role intro banner */
+  var html = '<div class="journey-role-header">'
+    + '<div class="journey-role-header-icon"><i class="' + roleData.icon + '"></i></div>'
+    + '<div>'
+    + '<h3 class="journey-role-header-title">' + _t(roleData.labelKey, roleData.label) + '</h3>'
+    + '<p class="journey-role-header-intro">' + _t(roleData.introKey, roleData.intro) + '</p>'
+    + '</div>'
+    + '</div>';
+
+  /* category cards — same lib-card style */
+  html += '<div class="library-grid">';
+  catIds.forEach(function (catId) {
+    var cat = JOURNEY_CATS[catId];
+    html += '<button class="lib-card" data-cat="' + catId + '" onclick="openCategory(\'' + catId + '\')">'
+      + '<div class="lib-card-icon ' + cat.iconClass + '"><img src="' + cat.icon + '" alt="" class="lib-card-icon-img"></div>'
+      + '<div class="lib-card-body">'
+      +   '<div class="lib-card-title">' + _t(cat.titleKey, cat.title) + '</div>'
+      +   '<div class="lib-card-desc">'  + _t(cat.descKey,  cat.desc)  + '</div>'
+      +   '<div class="lib-card-meta">'
+      +     '<span class="lib-card-roles"><i class="fa-regular fa-user"></i> ' + _t(cat.rolesLabelKey, cat.rolesLabel) + '</span>'
+      +     '<span class="lib-card-count">' + _t(cat.countKey, cat.count) + '</span>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="lib-card-cta"><span>' + _t('cta.learn', 'Học ngay') + '</span><i class="fa-solid fa-arrow-right"></i></div>'
+      + '</button>';
+  });
+  html += '</div>';
+
+  container.innerHTML = html;
 };
 
 function showPage(page) {

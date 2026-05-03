@@ -686,12 +686,12 @@
           <i class="fa-solid fa-arrow-left"></i> <span data-i18n="common.back">Quay lại</span>
         </button>
         <span class="bc-sep">/</span>
-        <span class="bc-current" data-i18n="journey.title">Lộ trình học tập theo vai trò</span>
+        <span class="bc-current" data-i18n="journey.title">Lộ trình học tập</span>
       </div>
 
       <div class="journey-page-inner">
 
-        <!-- Role tabs inside journey page -->
+        <!-- Role switcher tabs -->
         <div class="journey-tabs journey-tabs--page" id="journey-page-tabs" role="tablist" aria-label="Chọn vai trò">
           <button class="journey-tab active" role="tab" aria-selected="true" data-role="employee" onclick="switchJourneyTab('employee')">
             <i class="fa-regular fa-user"></i>
@@ -711,68 +711,20 @@
           </button>
         </div>
 
-        <!-- Panels -->
-        <div class="journey-panels" id="journey-page-panels">
+        <!-- Dynamic content: role intro + category cards rendered by JS -->
+        <div id="journey-role-content"></div>
 
-          <!-- EMPLOYEE -->
-          <div class="journey-panel active" data-role="employee" role="tabpanel">
-            <div class="journey-intro">
-              <h3 data-i18n="j.emp.intro.h">Vai trò Nhân viên</h3>
-              <p data-i18n="j.emp.intro.p">Tham gia đầy đủ chu kỳ Quản lý Hiệu quả Công việc — từ thiết lập mục tiêu đến đánh giá cuối năm — và xây dựng thói quen phản hồi liên tục.</p>
-            </div>
-            <div class="journey-modules">
-              <div class="journey-mod"><span class="journey-mod-num">01</span><div><div class="journey-mod-title" data-i18n="j.emp.m1.t">Thiết lập mục tiêu hiệu quả</div><div class="journey-mod-desc" data-i18n="j.emp.m1.d">Cách viết và đặt mục tiêu cá nhân SMART, gắn với mục tiêu team.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">02</span><div><div class="journey-mod-title" data-i18n="j.emp.m2.t">Self-assessment giữa năm</div><div class="journey-mod-desc" data-i18n="j.emp.m2.d">Cách tự đánh giá tiến độ và đề xuất điều chỉnh mục tiêu.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">03</span><div><div class="journey-mod-title" data-i18n="j.emp.m3.t">Đánh giá cuối năm</div><div class="journey-mod-desc" data-i18n="j.emp.m3.d">Chuẩn bị nội dung tự đánh giá và minh chứng cho chu kỳ kết thúc.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">04</span><div><div class="journey-mod-title" data-i18n="j.emp.m4.t">Cho và nhận phản hồi</div><div class="journey-mod-desc" data-i18n="j.emp.m4.d">Kỹ năng nhận phản hồi và hành động sau phản hồi.</div></div></div>
-            </div>
-          </div>
-
-          <!-- MANAGER -->
-          <div class="journey-panel" data-role="manager" role="tabpanel" hidden>
-            <div class="journey-intro">
-              <h3 data-i18n="j.mgr.intro.h">Vai trò Quản lý trực tiếp</h3>
-              <p data-i18n="j.mgr.intro.p">Định hướng team, cascade mục tiêu, đánh giá nhân viên và xây dựng văn hóa phản hồi trong nhóm.</p>
-            </div>
-            <div class="journey-modules">
-              <div class="journey-mod"><span class="journey-mod-num">01</span><div><div class="journey-mod-title" data-i18n="j.mgr.m1.t">Cascade mục tiêu cho team</div><div class="journey-mod-desc" data-i18n="j.mgr.m1.d">Cách kéo mục tiêu công ty xuống thành mục tiêu cá nhân.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">02</span><div><div class="journey-mod-title" data-i18n="j.mgr.m2.t">Hướng dẫn nhân viên thiết lập mục tiêu</div><div class="journey-mod-desc" data-i18n="j.mgr.m2.d">Coach nhân viên để mục tiêu rõ ràng, đo lường được.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">03</span><div><div class="journey-mod-title" data-i18n="j.mgr.m3.t">Đánh giá giữa năm & cuối năm</div><div class="journey-mod-desc" data-i18n="j.mgr.m3.d">Quy trình đánh giá nhân viên, calibration với cấp trên.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">04</span><div><div class="journey-mod-title" data-i18n="j.mgr.m4.t">Cho phản hồi hiệu quả</div><div class="journey-mod-desc" data-i18n="j.mgr.m4.d">Kỹ năng giao phản hồi mang tính xây dựng và thúc đẩy.</div></div></div>
-            </div>
-          </div>
-
-          <!-- SENIOR MANAGER -->
-          <div class="journey-panel" data-role="senior" role="tabpanel" hidden>
-            <div class="journey-intro">
-              <h3 data-i18n="j.sen.intro.h">Vai trò Quản lý cấp 2</h3>
-              <p data-i18n="j.sen.intro.p">Đảm bảo chất lượng mục tiêu, calibration công bằng và theo dõi performance của nhiều team.</p>
-            </div>
-            <div class="journey-modules">
-              <div class="journey-mod"><span class="journey-mod-num">01</span><div><div class="journey-mod-title" data-i18n="j.sen.m1.t">Review chất lượng mục tiêu</div><div class="journey-mod-desc" data-i18n="j.sen.m1.d">Đảm bảo mục tiêu của các team align với chiến lược chung.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">02</span><div><div class="journey-mod-title" data-i18n="j.sen.m2.t">Calibration session</div><div class="journey-mod-desc" data-i18n="j.sen.m2.d">Quy trình hiệu chuẩn kết quả đánh giá giữa các quản lý.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">03</span><div><div class="journey-mod-title" data-i18n="j.sen.m3.t">Theo dõi team performance</div><div class="journey-mod-desc" data-i18n="j.sen.m3.d">Nhận diện rủi ro performance và can thiệp kịp thời.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">04</span><div><div class="journey-mod-title" data-i18n="j.sen.m4.t">Coaching cho quản lý cấp 1</div><div class="journey-mod-desc" data-i18n="j.sen.m4.d">Hỗ trợ quản lý trực tiếp trong việc đánh giá và phản hồi.</div></div></div>
-            </div>
-          </div>
-
-          <!-- HOD -->
-          <div class="journey-panel" data-role="hod" role="tabpanel" hidden>
-            <div class="journey-intro">
-              <h3 data-i18n="j.hod.intro.h">Vai trò Trưởng đơn vị / HOD</h3>
-              <p data-i18n="j.hod.intro.p">Governance toàn bộ chu kỳ và xây dựng văn hóa Performance trong đơn vị.</p>
-            </div>
-            <div class="journey-modules">
-              <div class="journey-mod"><span class="journey-mod-num">01</span><div><div class="journey-mod-title" data-i18n="j.hod.m1.t">Tổng quan quy trình PM</div><div class="journey-mod-desc" data-i18n="j.hod.m1.d">Bức tranh tổng thể về Performance Management tại MoMo.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">02</span><div><div class="journey-mod-title" data-i18n="j.hod.m2.t">Governance & policy</div><div class="journey-mod-desc" data-i18n="j.hod.m2.d">Trách nhiệm của HOD trong việc đảm bảo tính nhất quán và công bằng.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">03</span><div><div class="journey-mod-title" data-i18n="j.hod.m3.t">Vai trò trong văn hóa Performance</div><div class="journey-mod-desc" data-i18n="j.hod.m3.d">Dẫn dắt và lan tỏa văn hóa phản hồi liên tục trong đơn vị.</div></div></div>
-              <div class="journey-mod"><span class="journey-mod-num">04</span><div><div class="journey-mod-title" data-i18n="j.hod.m4.t">Talent review & succession</div><div class="journey-mod-desc" data-i18n="j.hod.m4.d">Sử dụng kết quả đánh giá để phát triển và kế hoạch hóa nhân sự.</div></div></div>
-            </div>
-          </div>
-
-        </div><!-- /journey-page-panels -->
       </div><!-- /journey-page-inner -->
     </div><!-- /container -->
+
+    <footer class="lms-footer">
+      <div class="container">
+        <div class="footer-brand">
+          <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="brand-logo" style="height:24px;">
+        </div>
+        <p data-i18n="footer.copy">&copy; 2026 Mentora LMS — Compliance Training Portal</p>
+      </div>
+    </footer>
   </div><!-- /#page-journey -->
 
   <div class="toast-wrap" id="toast-wrap" role="status" aria-live="polite" aria-atomic="true"></div>
