@@ -897,6 +897,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (modal) modal.classList.add('open');
   };
 
+  window.toggleFaq = function (btn) {
+    var item = btn.closest('.faq-item');
+    if (!item) return;
+    var isOpen = item.classList.contains('faq-item--open');
+    item.classList.toggle('faq-item--open', !isOpen);
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  };
+
   // ── Re-render dynamic strings when language changes ──
   document.addEventListener('mentora:langchange', function () {
     if (typeof updateHeroCount === 'function') updateHeroCount();

@@ -1717,12 +1717,11 @@ h1, h2, h3, h4,
   background: var(--bg-app);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  overflow: hidden;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
-.faq-item[open] { border-color: var(--accent); }
-.faq-item summary {
-  list-style: none;
+.faq-item--open { border-color: var(--accent); }
+.faq-summary {
+  width: 100%;
   cursor: pointer;
   padding: 14px 18px;
   font-size: 14px;
@@ -1733,22 +1732,39 @@ h1, h2, h3, h4,
   justify-content: space-between;
   gap: 12px;
   font-family: 'MoMo Trust Display', sans-serif;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg);
   transition: background var(--dur-fast) var(--ease-out);
 }
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary:hover { background: var(--accent-subtle); }
-.faq-item summary i {
+.faq-summary:hover { background: var(--accent-subtle); }
+.faq-summary i {
   font-size: 12px;
   color: var(--text-tertiary);
   transition: transform var(--dur-fast) var(--ease-out);
   flex-shrink: 0;
 }
-.faq-item[open] summary i { transform: rotate(180deg); color: var(--accent); }
-.faq-item p {
+.faq-item--open .faq-summary i { transform: rotate(180deg); color: var(--accent); }
+
+/* Smooth accordion using grid trick — no overflow:hidden needed */
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-normal) var(--ease-out);
+}
+.faq-item--open .faq-answer {
+  grid-template-rows: 1fr;
+}
+.faq-answer-inner {
+  overflow: hidden;
+}
+.faq-answer-inner p {
   padding: 0 18px 16px;
   font-size: 13.5px;
   color: var(--text-secondary);
   line-height: 1.65;
+  margin: 0;
 }
 
 /* ══════════════════════════════ COURSES CARD */
