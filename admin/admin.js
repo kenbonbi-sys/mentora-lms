@@ -1474,6 +1474,11 @@ async function loadSiteSettingsAdmin() {
       chk.checked = on;
       if (status) status.textContent = on ? 'Đang hiển thị' : 'Đang ẩn';
     }
+
+    // PM phase radio
+    const phase = map['current_pm_phase'] || '';
+    const radios = document.querySelectorAll('input[name="pm_phase"]');
+    radios.forEach(r => { r.checked = (r.value === phase); });
   } catch (e) {
     const status = document.getElementById('status-modules-visible');
     if (status) status.textContent = 'Lỗi kết nối';

@@ -176,6 +176,10 @@ INSERT INTO public.site_settings (key, value)
 VALUES ('modules_section_visible', 'false')
 ON CONFLICT (key) DO NOTHING;
 
+INSERT INTO public.site_settings (key, value)
+VALUES ('current_pm_phase', '')
+ON CONFLICT (key) DO NOTHING;
+
 -- After running this SQL:
 -- 1. Create an admin user in Authentication > Users.
 -- 2. Copy Project URL and anon key from Settings > API.

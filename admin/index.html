@@ -406,6 +406,31 @@
               <span class="settings-toggle-status" id="status-modules-visible">Đang tải...</span>
             </label>
           </div>
+
+          <div class="settings-row settings-row--block" style="margin-top:20px">
+            <div class="settings-row-info">
+              <div class="settings-row-label"><i class="fa-solid fa-circle-dot" style="color:var(--accent);margin-right:6px"></i>Giai đoạn PM hiện tại</div>
+              <div class="settings-row-desc">Highlight giai đoạn đang diễn ra trên trang học viên. Chọn "Không có" để tắt highlight.</div>
+            </div>
+            <div class="settings-phase-radios" id="phase-radios">
+              <label class="phase-radio-option">
+                <input type="radio" name="pm_phase" value="" onchange="saveSetting('current_pm_phase', '')">
+                <span>Không có</span>
+              </label>
+              <label class="phase-radio-option">
+                <input type="radio" name="pm_phase" value="goal-setting" onchange="saveSetting('current_pm_phase', 'goal-setting')">
+                <span>01 · Thiết lập Mục tiêu</span>
+              </label>
+              <label class="phase-radio-option">
+                <input type="radio" name="pm_phase" value="mid-year" onchange="saveSetting('current_pm_phase', 'mid-year')">
+                <span>02 · Đánh giá giữa năm</span>
+              </label>
+              <label class="phase-radio-option">
+                <input type="radio" name="pm_phase" value="year-end" onchange="saveSetting('current_pm_phase', 'year-end')">
+                <span>03 · Đánh giá cuối năm</span>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div id="settings-save-msg" style="display:none;margin-top:12px" class="toast-inline toast-inline--success">

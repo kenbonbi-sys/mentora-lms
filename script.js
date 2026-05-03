@@ -1010,9 +1010,29 @@ function loadSiteSettings() {
   .then(function (rows) {
     var map = {};
     (rows || []).forEach(function (r) { map[r.key] = r.value; });
+
+    // modules section visibility
     var wrap = document.getElementById('modules-section-wrap');
     if (wrap && map['modules_section_visible'] === 'true') {
       wrap.style.display = '';
+    }
+
+    // active PM phase highlight
+    var phase = map['current_pm_phase'] || '';
+    document.querySelectorAll('.pm-milestone').forEach(function (el) {
+      el.classList.remove('pm-milestone--active');
+      var badge = el.querySelector('.pm-phase-badge');
+      if (badge) badge.remove();
+    });
+    if (phase) {
+      var activeEl = document.querySelector('.pm-milestone[data-pm-phase="' + phase + '"]');
+      if (activeEl) {
+        activeEl.classList.add('pm-milestone--active');
+        var b = document.createElement('div');
+        b.className = 'pm-phase-badge';
+        b.textContent = 'Đang diễn ra';
+        activeEl.prepend(b);
+      }
     }
   })
   .catch(function () {});

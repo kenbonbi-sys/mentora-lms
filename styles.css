@@ -760,6 +760,53 @@ h1, h2, h3, h4,
 .pm-milestone:nth-child(5) { animation-delay: .25s; }
 .pm-milestone:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
+/* Active phase highlight */
+.pm-milestone--active {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px rgba(165,0,100,.10), var(--shadow-md);
+  background: linear-gradient(160deg, rgba(165,0,100,.04) 0%, var(--bg-card) 60%);
+}
+.pm-milestone--active .pm-milestone-badge {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(165,0,100,.20);
+  animation: phasePulse 2.4s ease-in-out infinite;
+}
+@keyframes phasePulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(165,0,100,.20); }
+  50%       { box-shadow: 0 0 0 8px rgba(165,0,100,.08); }
+}
+.pm-phase-badge {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(165,0,100,.35);
+}
+.pm-phase-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: .9;
+  animation: phaseDot 1.2s ease-in-out infinite;
+}
+@keyframes phaseDot {
+  0%, 100% { opacity: .9; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(.7); }
+}
+
 .pm-milestone-num { margin-bottom: 14px; }
 .pm-milestone-badge {
   display: inline-flex;
