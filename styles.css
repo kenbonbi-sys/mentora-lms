@@ -940,14 +940,16 @@ h1, h2, h3, h4,
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -.1px;
-  line-height: 1.5;
+  line-height: 1.55;
+  text-wrap: balance;
+  max-width: 70ch;
 }
 .pm-cf-text .sig {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
-  vertical-align: middle;
+  vertical-align: -2px;
   color: var(--accent);
-  margin: 0 3px;
+  margin: 0 2px;
 }
 
 /* Responsive */
