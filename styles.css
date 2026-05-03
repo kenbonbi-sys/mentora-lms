@@ -1690,17 +1690,28 @@ h1, h2, h3, h4,
    FAQ MODAL
    ══════════════════════════════════════════════════════ */
 .modal-box--faq {
-  max-width: 640px;
+  max-width: 560px;
   width: 100%;
-  padding: 28px;
+  padding: 0;
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.modal-box--faq .modal-header {
+  padding: 24px 28px 20px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
 }
 .faq-body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 60vh;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  padding-right: 6px;
+  padding: 16px 28px 24px;
 }
 .faq-item {
   background: var(--bg-app);
