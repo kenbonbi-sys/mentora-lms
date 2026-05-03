@@ -1457,6 +1457,57 @@ async function moveModule(id, dir) {
 // ══════════════════════════════════════════════════════════
 //  ANNOUNCEMENTS
 // ══════════════════════════════════════════════════════════
+// ════════════════════════════════════════
+//  SITE SETTINGS
+// ════════════════════════════════════════
+async function loadSiteSettingsAdmin() {
+  try {
+    const { data, error } = await sb.from('site_settings').select('key,value');
+    if (error) throw error;
+    const map = {};
+    (data || []).forEach(r => { map[r.key] = r.value; });
+
+    const chk = document.getElementById('toggle-modules-visible');
+    const status = document.getElementById('status-modules-visible');
+    if (chk) {
+      const on = map['modules_section_visible'] === 'true';
+      chk.checked = on;
+      if (status) status.textContent = on ? 'Đang hiển thị' : 'Đang ẩn';
+    }
+  } catch (e) {
+    const status = document.getElementById('status-modules-visible');
+    if (status) status.textContent = 'Lỗi kết nối';
+  }
+}
+
+async function saveSetting(key, value) {
+  const strVal = String(value);
+  try {
+    const { error } = await sb.from('site_settings')
+      .upsert({ key, value: strVal, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+    if (error) throw error;
+
+    // Update status label
+    const status = document.getElementById('status-' + key.replace(/_/g, '-'));
+    if (status) status.textContent = value === true || value === 'true' ? 'Đang hiển thị' : 'Đang ẩn';
+
+    // Flash save message
+    const msg = document.getElementById('settings-save-msg');
+    if (msg) {
+      msg.style.display = 'flex';
+      clearTimeout(msg._t);
+      msg._t = setTimeout(() => { msg.style.display = 'none'; }, 2500);
+    }
+  } catch (e) {
+    alert('Lỗi lưu cài đặt: ' + e.message);
+  }
+}
+
+// Load settings when tab is opened
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('atab-settings')?.addEventListener('click', loadSiteSettingsAdmin);
+});
+
 async function loadAnnouncements() {
   const el = document.getElementById('announcements-list');
   if (!el) return;

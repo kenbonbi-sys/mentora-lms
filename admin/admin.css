@@ -1292,3 +1292,78 @@ body {
   .data-table th:nth-child(n+4),
   .data-table td:nth-child(n+4) { display: none; }
 }
+
+
+/* ══ SITE SETTINGS TAB ══ */
+.settings-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+.settings-row-info { flex: 1; }
+.settings-row-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.settings-row-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.settings-toggle input { display: none; }
+.settings-toggle-track {
+  width: 44px;
+  height: 24px;
+  background: var(--border);
+  border-radius: 100px;
+  position: relative;
+  transition: background .2s ease;
+  flex-shrink: 0;
+}
+.settings-toggle input:checked ~ .settings-toggle-track {
+  background: var(--accent);
+}
+.settings-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform .2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.settings-toggle input:checked ~ .settings-toggle-track .settings-toggle-thumb {
+  transform: translateX(20px);
+}
+.settings-toggle-status {
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 90px;
+}
+.toast-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+}
+.toast-inline--success {
+  background: rgba(94,161,42,.1);
+  color: #3d7a12;
+}

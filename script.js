@@ -972,6 +972,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── Announcement ──
   loadAnnouncement();
 
+  // ── Site settings (show/hide modules section) ──
+  loadSiteSettings();
+
   // ── Load modules, then check URL param ──
   loadModules();
   setTimeout(function () {
@@ -994,6 +997,26 @@ document.addEventListener('DOMContentLoaded', function () {
     tryOpen(10);
   }, 200);
 });
+
+// ════════════════════════════════════════
+//  SITE SETTINGS — show/hide sections via admin
+// ════════════════════════════════════════
+function loadSiteSettings() {
+  if (!_sbReady()) return;
+  fetch(SB_URL + '/rest/v1/site_settings?select=key,value', {
+    headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON }
+  })
+  .then(function (r) { return r.ok ? r.json() : []; })
+  .then(function (rows) {
+    var map = {};
+    (rows || []).forEach(function (r) { map[r.key] = r.value; });
+    var wrap = document.getElementById('modules-section-wrap');
+    if (wrap && map['modules_section_visible'] === 'true') {
+      wrap.style.display = '';
+    }
+  })
+  .catch(function () {});
+}
 
 // ════════════════════════════════════════
 //  LOAD MODULES — fetch /data/modules.json, fallback sample

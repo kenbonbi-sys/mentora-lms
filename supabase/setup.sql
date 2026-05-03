@@ -139,7 +139,46 @@ DROP POLICY IF EXISTS "ann_auth_delete" ON public.announcements;
 CREATE POLICY "ann_auth_delete" ON public.announcements
   FOR DELETE USING (auth.role() = 'authenticated');
 
+-- site_settings: admin-controlled key-value flags for learner portal
+CREATE TABLE IF NOT EXISTS public.site_settings (
+  key        text        PRIMARY KEY,
+  value      text        NOT NULL,
+  updated_at timestamptz DEFAULT now()
+);
+ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can read settings (needed for public learner portal)
+DROP POLICY IF EXISTS "ss_public_select" ON public.site_settings;
+CREATE POLICY "ss_public_select" ON public.site_settings
+  FOR SELECT USING (true);
+
+-- Only authenticated admins can insert/update/delete
+DROP POLICY IF EXISTS "ss_auth_insert" ON public.site_settings;
+CREATE POLICY "ss_auth_insert" ON public.site_settings
+  FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "ss_auth_update" ON public.site_settings;
+CREATE POLICY "ss_auth_update" ON public.site_settings
+  FOR UPDATE USING (auth.role() = 'authenticated')
+  WITH CHECK (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "ss_auth_delete" ON public.site_settings;
+CREATE POLICY "ss_auth_delete" ON public.site_settings
+  FOR DELETE USING (auth.role() = 'authenticated');
+
+DROP TRIGGER IF EXISTS trg_site_settings_updated ON public.site_settings;
+CREATE TRIGGER trg_site_settings_updated
+  BEFORE UPDATE ON public.site_settings
+  FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+
+-- Default settings
+INSERT INTO public.site_settings (key, value)
+VALUES ('modules_section_visible', 'false')
+ON CONFLICT (key) DO NOTHING;
+
 -- After running this SQL:
 -- 1. Create an admin user in Authentication > Users.
 -- 2. Copy Project URL and anon key from Settings > API.
 -- 3. Update SB_URL/SB_ANON in script.js and admin/admin.js.
+-- 4. Run the site_settings block above to create the settings table.
+--    Then use the Admin > Cài đặt trang tab to toggle the old modules section.

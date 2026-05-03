@@ -73,6 +73,9 @@
         <button class="admin-tab" data-tab="announce" role="tab" aria-selected="false" id="atab-announce" aria-controls="tab-announce">
           <i class="fa-solid fa-bullhorn"></i> Thông báo & Phân tích
         </button>
+        <button class="admin-tab" data-tab="settings" role="tab" aria-selected="false" id="atab-settings" aria-controls="tab-settings">
+          <i class="fa-solid fa-sliders"></i> Cài đặt trang
+        </button>
       </div>
 
       <!-- ── TAB: OVERVIEW ── -->
@@ -379,6 +382,37 @@
           </table>
         </div>
       </div><!-- /tab-announce -->
+
+      <!-- ── TAB: SETTINGS ── -->
+      <div id="tab-settings" class="tab-content" style="display:none" role="tabpanel" aria-labelledby="atab-settings">
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="fa-solid fa-eye"></i> Hiển thị / Ẩn các section</div>
+            <button class="btn-ghost" onclick="loadSiteSettingsAdmin()"><i class="fa-solid fa-rotate-right"></i></button>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary);padding:0 0 20px">Bật/tắt các phần trên trang học viên. Thay đổi có hiệu lực ngay lập tức với tất cả người dùng.</p>
+
+          <div class="settings-row">
+            <div class="settings-row-info">
+              <div class="settings-row-label">Danh sách Modules (phần cũ)</div>
+              <div class="settings-row-desc">Phần hiển thị toàn bộ modules dạng lưới bên dưới thư viện. Hiện đang tắt để ưu tiên giao diện mới.</div>
+            </div>
+            <label class="settings-toggle" id="toggle-modules-wrap">
+              <input type="checkbox" id="toggle-modules-visible" onchange="saveSetting('modules_section_visible', this.checked)">
+              <span class="settings-toggle-track">
+                <span class="settings-toggle-thumb"></span>
+              </span>
+              <span class="settings-toggle-status" id="status-modules-visible">Đang tải...</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="settings-save-msg" style="display:none;margin-top:12px" class="toast-inline toast-inline--success">
+          <i class="fa-solid fa-circle-check"></i> Đã lưu cài đặt
+        </div>
+
+      </div><!-- /tab-settings -->
 
     </div><!-- /admin-body -->
   </div><!-- /screen-dash -->

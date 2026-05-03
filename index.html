@@ -356,17 +356,19 @@
           <p data-i18n="lib.empty">Không tìm thấy chủ đề nào.</p>
         </div>
 
-        <!-- Hidden but kept for backward compat with script.js -->
-        <div id="skeleton-loader" class="skeleton-wrap" style="display:none">
-          <div class="skeleton-row"></div>
+        <!-- Modules section — visibility controlled by admin site settings -->
+        <div id="modules-section-wrap" style="display:none">
+          <div id="skeleton-loader" class="skeleton-wrap" style="display:none">
+            <div class="skeleton-row"></div>
+          </div>
+          <div id="empty-state" class="empty-state" style="display:none">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <p>Không tìm thấy module nào.</p>
+          </div>
+          <div id="ai-recommend-banner" class="ai-recommend-banner" style="display:none"></div>
+          <div class="modules-grid" id="modules-grid" style="display:none"></div>
+          <span id="courses-count" style="display:none"></span>
         </div>
-        <div id="empty-state" class="empty-state" style="display:none">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <p>Không tìm thấy module nào.</p>
-        </div>
-        <div id="ai-recommend-banner" class="ai-recommend-banner" style="display:none"></div>
-        <div class="modules-grid" id="modules-grid" style="display:none"></div>
-        <span id="courses-count" style="display:none"></span>
 
       </div>
     </section>
