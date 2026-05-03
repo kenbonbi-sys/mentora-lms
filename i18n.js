@@ -34,7 +34,7 @@
       'pm.m2.desc':       'Cột mốc để ghi nhận nỗ lực, nhìn lại tiến độ và xác định những điểm có thể làm tốt hơn. Đây là cơ hội để điều chỉnh mục tiêu, ưu tiên và cách làm phù hợp với thực tế.',
       'pm.m3.title':      'Đánh giá cuối năm (Year-end Review)',
       'pm.m3.desc':       'Giai đoạn tổng kết thành tựu, ghi nhận đóng góp và làm cơ sở cho các quyết định tưởng thưởng. Đồng thời, đây là thời điểm định hướng phát triển cho chu kỳ tiếp theo.',
-      'pm.cf':            'Xuyên suốt quá trình này, MoMoers được khuyến khích thực hành văn hóa <span class="sig">Cho</span> và <span class="sig">Nhận Phản hồi</span> liên tục',
+      'pm.cf':            'Xuyên suốt quá trình này, MoMoers được khuyến khích thực hành văn hóa <span style="white-space:nowrap"><span class="sig">Cho</span> và <span class="sig">Nhận Phản hồi</span></span> liên tục',
       'pm.cfEn':          'Continuous Feedback',
 
       'lib.eyebrow':      'Thư viện',
@@ -225,7 +225,7 @@
       'pm.m2.desc':       'A checkpoint to acknowledge effort, assess progress and identify opportunities to do better. An opportunity to adjust goals, priorities and ways of working.',
       'pm.m3.title':      'Year-end Review',
       'pm.m3.desc':       'A phase to summarise achievements, recognise contributions and inform reward decisions. Also the time to set the direction for the next cycle.',
-      'pm.cf':            'Throughout this process, MoMoers are encouraged to practise a culture of <span class="sig">Give</span> &amp; <span class="sig">Receive Feedback</span> continuously',
+      'pm.cf':            'Throughout this process, MoMoers are encouraged to practise a culture of <span style="white-space:nowrap"><span class="sig">Give</span> &amp; <span class="sig">Receive Feedback</span></span> continuously',
       'pm.cfEn':          'Continuous Feedback',
 
       'lib.eyebrow':      'Library',
