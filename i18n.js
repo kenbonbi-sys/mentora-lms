@@ -71,7 +71,7 @@
       'role.hod':         'Trưởng đơn vị / HOD',
 
       'sup.eyebrow':      'Hỗ trợ',
-      'sup.title':        'Bạn cần hỗ trợ?',
+      'sup.title':        'Bạn cần <span class="sig">hỗ trợ</span><span class="sup-q">&thinsp;?</span>',
       'sup.subtitle':     'Tham khảo FAQ hoặc liên hệ trực tiếp với đầu mối phù hợp',
       'sup.faq.label':    'FAQ',
       'sup.faq.title':    'Câu hỏi thường gặp',
@@ -261,7 +261,7 @@
       'role.hod':         'Head of Department',
 
       'sup.eyebrow':      'Support',
-      'sup.title':        'Need help?',
+      'sup.title':        'Need <span class="sig">help</span><span class="sup-q">&thinsp;?</span>',
       'sup.subtitle':     'Browse the FAQ or reach out directly to the right contact',
       'sup.faq.label':    'FAQ',
       'sup.faq.title':    'Frequently asked questions',

@@ -1363,6 +1363,11 @@ h1, h2, h3, h4,
   line-height: 1.2;
   margin: 8px 0 8px;
 }
+.sup-q {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-style: normal;
+  letter-spacing: 0;
+}
 .support-subtitle {
   font-size: 14px;
   color: var(--text-secondary);
