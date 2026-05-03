@@ -378,9 +378,9 @@ h1, h2, h3, h4,
 /* Body layout */
 .hero-body {
   display: grid;
-  grid-template-columns: 1fr 420px;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 64px;
+  gap: 40px;
   padding: 64px 0 56px;
   position: relative;
   z-index: 1;
@@ -541,15 +541,17 @@ h1, h2, h3, h4,
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  overflow: visible;
 }
 .hero-img {
-  width: 100%;
-  max-width: 676px;
+  width: 115%;
+  max-width: none;
   height: auto;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 16px 40px rgba(165, 0, 100, 0.12));
+  filter: drop-shadow(0 16px 40px rgba(165, 0, 100, 0.10));
+  margin-right: -5%;
 }
 
 .hero-card-stack {
@@ -2632,7 +2634,7 @@ h1, h2, h3, h4,
 }
 /* ── Hero section responsive ── */
 @media (max-width: 1080px) {
-  .hero-body { grid-template-columns: 1fr 360px; gap: 40px; }
+  .hero-body { grid-template-columns: 1fr 1fr; gap: 32px; }
   .hcard--main { width: 290px; }
   .hcard--back { width: 240px; }
 }
