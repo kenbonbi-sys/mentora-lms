@@ -734,16 +734,20 @@ h1, h2, h3, h4,
   margin-bottom: 14px;
 }
 .pm-milestone-icon {
-  width: 56px; height: 56px;
+  width: 72px; height: 72px;
   border-radius: var(--radius-lg);
   background: var(--accent-subtle);
-  color: var(--accent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
   margin-bottom: 16px;
   transition: transform var(--dur-normal) var(--ease-spring);
+  overflow: hidden;
 }
-.pm-milestone:hover .pm-milestone-icon { transform: scale(1.08) rotate(-4deg); }
+.pm-milestone-icon-img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.pm-milestone:hover .pm-milestone-icon { transform: scale(1.1) rotate(-4deg); }
 
 .pm-milestone-title {
   font-family: 'MoMo Trust Display', sans-serif;
