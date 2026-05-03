@@ -1050,16 +1050,17 @@ h1, h2, h3, h4,
   align-items: center;
   gap: 8px;
   align-self: flex-start;
-  padding: 9px 16px;
+  padding: 11px 20px;
   background: var(--bg-inset);
   color: var(--text-primary);
   border-radius: 100px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
+  min-height: 44px;
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), gap var(--dur-fast) var(--ease-out);
 }
 .lib-card-cta i {
-  font-size: 11px;
+  font-size: 12px;
   transition: transform var(--dur-fast) var(--ease-out);
 }
 .lib-card:hover .lib-card-cta {
