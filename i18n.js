@@ -38,7 +38,7 @@
       'pm.cfEn':          'Continuous Feedback',
 
       'lib.eyebrow':      'Thư viện',
-      'lib.title':        'Thư viện học tập',
+      'lib.title':        'Thư viện <span class="sig">học tập</span>',
       'lib.subtitle':     'Chọn một chủ đề để xem các hướng dẫn chi tiết bên trong',
       'lib.searchPh':     'Tìm chủ đề...',
       'lib.rolesAll':     'Toàn bộ nhân sự',
@@ -63,7 +63,7 @@
       'cta.learn':        'Học ngay',
 
       'journey.eyebrow':  'Lộ trình',
-      'journey.title':    'Lộ trình học tập theo vai trò',
+      'journey.title':    'Lộ trình học tập theo <span class="sig">vai trò</span>',
       'journey.subtitle': 'Chọn vai trò của bạn để được gợi ý các module nên học',
       'role.employee':    'Nhân viên',
       'role.manager':     'Quản lý trực tiếp',
@@ -228,7 +228,7 @@
       'pm.cfEn':          'Continuous Feedback',
 
       'lib.eyebrow':      'Library',
-      'lib.title':        'Learning library',
+      'lib.title':        'Learning <span class="sig">library</span>',
       'lib.subtitle':     'Pick a topic to explore detailed guides inside',
       'lib.searchPh':     'Search topics...',
       'lib.rolesAll':     'All employees',
@@ -253,7 +253,7 @@
       'cta.learn':        'Start learning',
 
       'journey.eyebrow':  'Journey',
-      'journey.title':    'Learning journey by role',
+      'journey.title':    'Learning journey by <span class="sig">role</span>',
       'journey.subtitle': 'Select your role to get module recommendations tailored for you',
       'role.employee':    'Employee',
       'role.manager':     'Direct manager',
