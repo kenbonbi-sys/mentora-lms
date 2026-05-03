@@ -898,6 +898,7 @@ h1, h2, h3, h4,
 .pm-cf-inner {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   position: relative;
 }
@@ -933,23 +934,22 @@ h1, h2, h3, h4,
   background: rgba(165,0,100,.18);
   flex-shrink: 0;
 }
-/* Right: descriptive text */
+/* Right: descriptive text — auto-shrink to content, centered with the rest */
 .pm-cf-text {
-  flex: 1;
+  flex: 0 1 auto;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -.1px;
   line-height: 1.55;
   text-wrap: balance;
-  max-width: 70ch;
 }
 .pm-cf-text .sig {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
-  vertical-align: -2px;
+  vertical-align: middle;
   color: var(--accent);
-  margin: 0 2px;
+  margin: 0 3px;
 }
 
 /* Responsive */
