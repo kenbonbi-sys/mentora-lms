@@ -62,9 +62,10 @@
 
       'cta.learn':        'Học ngay',
 
-      'journey.eyebrow':  'Lộ trình',
-      'journey.title':    'Lộ trình học tập theo <span class="sig">vai trò</span>',
-      'journey.subtitle': 'Chọn vai trò của bạn để được gợi ý các module nên học',
+      'journey.eyebrow':      'Lộ trình',
+      'journey.title':        'Lộ trình học tập theo <span class="sig">vai trò</span>',
+      'journey.title.plain':  'Lộ trình theo vai trò',
+      'journey.subtitle':     'Chọn vai trò của bạn để được gợi ý các module nên học',
       'role.employee':    'Nhân viên',
       'role.manager':     'Quản lý trực tiếp',
       'role.senior':      'Quản lý cấp 2',
@@ -252,9 +253,10 @@
 
       'cta.learn':        'Start learning',
 
-      'journey.eyebrow':  'Journey',
-      'journey.title':    'Learning journey by <span class="sig">role</span>',
-      'journey.subtitle': 'Select your role to get module recommendations tailored for you',
+      'journey.eyebrow':      'Journey',
+      'journey.title':        'Learning journey by <span class="sig">role</span>',
+      'journey.title.plain':  'Journey by role',
+      'journey.subtitle':     'Select your role to get module recommendations tailored for you',
       'role.employee':    'Employee',
       'role.manager':     'Direct manager',
       'role.senior':      'Senior manager',
