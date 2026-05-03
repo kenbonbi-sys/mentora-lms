@@ -1,6 +1,6 @@
 # 📋 BACKLOG — Mentora LMS
 
-> **Cập nhật:** 02/05/2026
+> **Cập nhật:** 04/05/2026
 > **Mục đích:** Inventory toàn bộ tính năng đang có trong hệ thống. Dùng để track tiến độ, plan v2, và onboard người mới.
 >
 > **Quy ước trạng thái:**
@@ -18,7 +18,7 @@
 |---|---|---|---|
 | 1.1.1 | Sticky navbar với logo MoMo | ✅ | `lms-nav` — backdrop blur, height 68px |
 | 1.1.2 | Hamburger pill button "MENU" ở **góc trái** (brandbook style) | ✅ | Mới đổi vị trí — pink solid pill, dễ thấy |
-| 1.1.3 | Full-screen menu overlay (2 cột: Tổng Quan + Modules) | ✅ | Pink gradient bg, Trust Display 32px |
+| 1.1.3 | Full-screen menu overlay (2 cột: Tổng Quan + Modules) | ✅ | Pink gradient bg, Trust Display 32px — Tổng Quan có đủ 5 link: Trang chủ / Quy trình / Thư viện / Lộ trình / Tài nguyên |
 | 1.1.4 | Quick filter category từ menu (Policy/Process/Safety) | ✅ | Click → jump tới list + auto select tab |
 | 1.1.5 | Reading progress bar (top) | ✅ | Width = scroll % |
 | 1.1.6 | Footer với logo + copyright | ✅ | |
@@ -308,6 +308,11 @@
 ---
 
 ## 6. CHANGELOG (sessions gần đây)
+
+### 04/05/2026
+- ✅ CF bar (Continuous Feedback): cân bằng layout bằng cách giảm `padding-right` từ 28px → 16px, đẩy text block sát lề phải hơn
+- ✅ Menu overlay cột "Tổng Quan": thêm 3 link còn thiếu — **Quy trình tổng quan** (`#pm-overview`), **Thư viện học tập** (`#courses`), **Lộ trình học tập** (`#journey`)
+- ✅ Cập nhật i18n keys (VI + EN) cho 3 link mới trong menu
 
 ### 02/05/2026
 - ✅ Merge "Nội dung bài" step tracker vào TOC sidebar (nested under "Nội dung & Quy trình")
