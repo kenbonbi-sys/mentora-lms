@@ -180,6 +180,16 @@ INSERT INTO public.site_settings (key, value)
 VALUES ('current_pm_phase', '')
 ON CONFLICT (key) DO NOTHING;
 
+-- New section visibility flags (default: visible = true)
+INSERT INTO public.site_settings (key, value) VALUES ('pm_overview_visible', 'true')  ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('library_visible',     'true')  ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('journey_visible',     'true')  ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('support_visible',     'true')  ON CONFLICT (key) DO NOTHING;
+
+-- Contact info (JSON arrays)
+INSERT INTO public.site_settings (key, value) VALUES ('it_contacts',   '["sang.dang","phuong.nguyen36","anh.bui3"]') ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('lnod_contacts', '["tran.nguyen17","linh.tran5"]')             ON CONFLICT (key) DO NOTHING;
+
 -- After running this SQL:
 -- 1. Create an admin user in Authentication > Users.
 -- 2. Copy Project URL and anon key from Settings > API.

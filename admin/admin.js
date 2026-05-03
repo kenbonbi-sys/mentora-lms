@@ -928,11 +928,14 @@ async function loadCmsModules() {
     const combined = [];
     localModules.forEach(m => {
       const cms = (cmsRows || []).find(r => r.id === m.id);
+      const cmsData = cms ? _parseModuleData(cms) : {};
       combined.push({
         id: m.id, name: m.name, category: m.category, updated: m.updated,
         source: cms ? 'CMS + JSON' : 'JSON',
         status: cms ? (cms.status || 'published') : 'published',
         hasCms: !!cms,
+        topics: cmsData.topics || m.topics || [],
+        roles:  cmsData.roles  || m.roles  || [],
       });
     });
     (cmsRows || []).filter(r => !localIds.has(r.id)).forEach(r => {
@@ -941,23 +944,42 @@ async function loadCmsModules() {
         id: r.id, name: d.name || r.id, category: d.category,
         updated: d.updated || '—', source: 'CMS',
         status: r.status || 'published', hasCms: true,
+        topics: d.topics || [],
+        roles:  d.roles  || [],
       });
     });
 
     document.getElementById('cms-module-count').textContent = '(' + combined.length + ' modules)';
-    if (!combined.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có module nào.</td></tr>'; return; }
+    if (!combined.length) { tbody.innerHTML = '<tr><td colspan="8" class="empty-cell">Chưa có module nào.</td></tr>'; return; }
 
+    const TOPIC_LABEL = {
+      'overview': 'Tổng quan', 'goal-setting': 'Mục tiêu', 'mid-year': 'Giữa năm',
+      'year-end': 'Cuối năm', 'hrm': 'HRM', 'feedback': 'Phản hồi',
+    };
+    const ROLE_ICON = {
+      'employee': 'fa-user', 'manager': 'fa-user-tie',
+      'senior': 'fa-user-group', 'hod': 'fa-building',
+    };
     const catMap = { Policy: 'badge-policy', Process: 'badge-process', Safety: 'badge-safety' };
-    tbody.innerHTML = combined.map(m => `<tr class="${m.status === 'draft' ? 'row-draft' : ''}">
+
+    tbody.innerHTML = combined.map(m => {
+      const topicsHtml = m.topics && m.topics.length
+        ? m.topics.map(t => `<span class="badge badge-${esc(t)}">${esc(TOPIC_LABEL[t] || t)}</span>`).join(' ')
+        : (m.category ? `<span class="badge ${catMap[m.category] || ''}">${esc(m.category)}</span>` : '<span style="color:#9ca3af;font-size:11px">—</span>');
+      const rolesHtml = m.roles && m.roles.length
+        ? m.roles.map(r => `<i class="fa-solid ${ROLE_ICON[r] || 'fa-user'}" title="${esc(r)}" style="color:var(--text-tertiary);margin-right:3px"></i>`).join('')
+        : '<span style="color:#9ca3af;font-size:11px">—</span>';
+      return `<tr class="${m.status === 'draft' ? 'row-draft' : ''}">
       <td><code style="font-size:12px;background:#f5f6fa;padding:2px 6px;border-radius:4px">${esc(m.id)}</code></td>
-      <td style="max-width:240px">
+      <td style="max-width:220px">
         <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
           ${esc(m.name)}
           ${m.status === 'draft' ? '<span class="draft-inline">DRAFT</span>' : ''}
         </div>
         <span class="module-source"><i class="fa-solid fa-database"></i> ${esc(m.source)}</span>
       </td>
-      <td>${m.category ? '<span class="badge ' + (catMap[m.category] || '') + '">' + esc(m.category) + '</span>' : '—'}</td>
+      <td style="max-width:160px">${topicsHtml}</td>
+      <td style="white-space:nowrap">${rolesHtml}</td>
       <td style="color:#9ca3af;font-size:12px">${m.updated || '—'}</td>
       <td>${statusBadge(m.status)}</td>
       <td>${statusActions(m.id, m.status, m.hasCms)}</td>
@@ -967,9 +989,10 @@ async function loadCmsModules() {
         ${m.hasCms ? '<button class="btn-sm" title="Lên" onclick="moveModule(\'' + m.id + '\',-1)"><i class="fa-solid fa-chevron-up"></i></button><button class="btn-sm" title="Xuống" onclick="moveModule(\'' + m.id + '\',1)"><i class="fa-solid fa-chevron-down"></i></button>' : ''}
         ${m.source === 'CMS' ? '<button class="btn-danger" title="Xóa" onclick="deleteModule(\'' + m.id + '\',\'' + esc(m.name) + '\')"><i class="fa-solid fa-trash"></i></button>' : ''}
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+    }).join('');
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-cell" style="color:#e5303f">Lỗi: ' + esc(err.message) + '</td></tr>';
   }
 }
 
@@ -1467,6 +1490,7 @@ async function loadSiteSettingsAdmin() {
     const map = {};
     (data || []).forEach(r => { map[r.key] = r.value; });
 
+    // Modules section (old)
     const chk = document.getElementById('toggle-modules-visible');
     const status = document.getElementById('status-modules-visible');
     if (chk) {
@@ -1477,8 +1501,34 @@ async function loadSiteSettingsAdmin() {
 
     // PM phase radio
     const phase = map['current_pm_phase'] || '';
-    const radios = document.querySelectorAll('input[name="pm_phase"]');
-    radios.forEach(r => { r.checked = (r.value === phase); });
+    document.querySelectorAll('input[name="pm_phase"]').forEach(r => { r.checked = (r.value === phase); });
+
+    // Section visibility toggles
+    const sectionToggles = [
+      { key: 'pm_overview_visible', id: 'toggle-pm-overview', statusId: 'status-pm-overview' },
+      { key: 'library_visible',     id: 'toggle-library',     statusId: 'status-library'     },
+      { key: 'journey_visible',     id: 'toggle-journey',     statusId: 'status-journey'     },
+      { key: 'support_visible',     id: 'toggle-support',     statusId: 'status-support'     },
+    ];
+    sectionToggles.forEach(({ key, id, statusId }) => {
+      const el = document.getElementById(id);
+      const st = document.getElementById(statusId);
+      if (!el) return;
+      // Default visible = true (sections are shown by default unless explicitly set false)
+      const on = map[key] !== 'false';
+      el.checked = on;
+      if (st) st.textContent = on ? 'Đang hiển thị' : 'Đang ẩn';
+    });
+
+    // Contact info
+    const itTa   = document.getElementById('it-contacts-ta');
+    const lnodTa = document.getElementById('lnod-contacts-ta');
+    if (itTa && map['it_contacts']) {
+      try { itTa.value = JSON.parse(map['it_contacts']).join('\n'); } catch { itTa.value = map['it_contacts']; }
+    }
+    if (lnodTa && map['lnod_contacts']) {
+      try { lnodTa.value = JSON.parse(map['lnod_contacts']).join('\n'); } catch { lnodTa.value = map['lnod_contacts']; }
+    }
   } catch (e) {
     const status = document.getElementById('status-modules-visible');
     if (status) status.textContent = 'Lỗi kết nối';
@@ -1494,7 +1544,7 @@ async function saveSetting(key, value) {
 
     // Update status label
     const status = document.getElementById('status-' + key.replace(/_/g, '-'));
-    if (status) status.textContent = value === true || value === 'true' ? 'Đang hiển thị' : 'Đang ẩn';
+    if (status) status.textContent = (value === true || value === 'true') ? 'Đang hiển thị' : 'Đang ẩn';
 
     // Flash save message
     const msg = document.getElementById('settings-save-msg');
@@ -1505,6 +1555,27 @@ async function saveSetting(key, value) {
     }
   } catch (e) {
     alert('Lỗi lưu cài đặt: ' + e.message);
+  }
+}
+
+async function saveContactList(key, textareaId, btn) {
+  const ta = document.getElementById(textareaId);
+  if (!ta) return;
+  const lines = ta.value.split('\n').map(l => l.trim()).filter(Boolean);
+  const value = JSON.stringify(lines);
+  const oldHtml = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>'; }
+  try {
+    const { error } = await sb.from('site_settings')
+      .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+    if (error) throw error;
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#5ea12a"></i> Đã lưu'; }
+    setTimeout(() => { if (btn) { btn.disabled = false; btn.innerHTML = oldHtml; } }, 2000);
+    const msg = document.getElementById('settings-save-msg');
+    if (msg) { msg.style.display = 'flex'; clearTimeout(msg._t); msg._t = setTimeout(() => { msg.style.display = 'none'; }, 2500); }
+  } catch (e) {
+    if (btn) { btn.disabled = false; btn.innerHTML = oldHtml; }
+    showToast('Lỗi lưu contacts: ' + e.message, 'error');
   }
 }
 
@@ -2084,10 +2155,11 @@ function openAddModule() {
   document.getElementById('modal-module-title').textContent = 'Thêm Module mới';
   document.getElementById('mod-id').disabled = false;
   ['mod-id','mod-name','mod-subtitle','mod-duration','mod-thumbnail','mod-icon','mod-video'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('mod-category').value = 'Process';
+  document.getElementById('mod-category').value = '';
   document.getElementById('mod-level').value    = 'Bắt buộc';
   document.getElementById('mod-updated').value  = new Date().toLocaleDateString('vi-VN');
   document.getElementById('mod-status').value   = 'draft';
+  document.querySelectorAll('#mod-topics input, #mod-roles input').forEach(cb => { cb.checked = false; });
   _loadBlocksIntoEditor([]);
   document.getElementById('word-upload-status').style.display = 'none';
   document.getElementById('modal-module').style.display = '';
@@ -2117,10 +2189,21 @@ async function openEditModule(id) {
   document.getElementById('mod-thumbnail').value = mod.thumbnail || '';
   document.getElementById('mod-icon').value      = mod.icon || '';
   document.getElementById('mod-video').value     = mod.videoUrl || '';
-  document.getElementById('mod-category').value  = mod.category || 'Process';
+  document.getElementById('mod-category').value  = mod.category || '';
   document.getElementById('mod-level').value     = mod.level || 'Bắt buộc';
   document.getElementById('mod-status').value    = cmsStatus;
   _editingPrerequisites = Array.isArray(mod.prerequisites) ? mod.prerequisites.slice() : [];
+
+  // Load topics checkboxes
+  const modTopics = Array.isArray(mod.topics) ? mod.topics : [];
+  document.querySelectorAll('#mod-topics input[type="checkbox"]').forEach(cb => {
+    cb.checked = modTopics.indexOf(cb.value) >= 0;
+  });
+  // Load roles checkboxes
+  const modRoles = Array.isArray(mod.roles) ? mod.roles : [];
+  document.querySelectorAll('#mod-roles input[type="checkbox"]').forEach(cb => {
+    cb.checked = modRoles.indexOf(cb.value) >= 0;
+  });
 
   // Load blocks: prefer content_blocks, fallback to converting old steps/quiz
   const blocks = (mod.content_blocks && mod.content_blocks.length > 0)
@@ -2158,9 +2241,14 @@ async function saveModule() {
       if (block.type === 'file')      resources.push({ name: block.data.name, url: block.data.url, type: block.data.type, size: block.data.size });
     });
 
+    const topics = Array.from(document.querySelectorAll('#mod-topics input[type="checkbox"]:checked'))
+      .map(cb => cb.value);
+    const roles = Array.from(document.querySelectorAll('#mod-roles input[type="checkbox"]:checked'))
+      .map(cb => cb.value);
+
     const moduleData = {
       id, name, owner: 'HR-L&OD',
-      category:  document.getElementById('mod-category').value,
+      category:  document.getElementById('mod-category').value || '',
       level:     document.getElementById('mod-level').value,
       duration:  document.getElementById('mod-duration').value.trim() || '30 phút đọc',
       subtitle:  document.getElementById('mod-subtitle').value.trim(),
@@ -2169,6 +2257,8 @@ async function saveModule() {
       status:    'Đang hoạt động',
       updated:   document.getElementById('mod-updated').value.trim() || new Date().toLocaleDateString('vi-VN'),
       videoUrl,
+      topics,
+      roles,
       prerequisites: _editingPrerequisites.slice(),
       content_blocks,   // new flexible format
       steps, quiz, resources, images: [],  // legacy compat

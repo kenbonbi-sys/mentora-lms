@@ -298,6 +298,14 @@ body {
 .badge-policy  { background: var(--accent-subtle); color: var(--accent); }
 .badge-process { background: #e5f9f2; color: #1a7a53; }
 .badge-safety  { background: var(--warning-bg); color: var(--warning-text); }
+/* PM topic badges */
+.badge-overview     { background: rgba(28,102,187,.1);  color: #1c66bb; }
+.badge-goal-setting { background: rgba(165,0,100,.1);   color: #a50064; }
+.badge-mid-year     { background: rgba(245,158,11,.12); color: #92400e; }
+.badge-year-end     { background: rgba(94,161,42,.12);  color: #365314; }
+.badge-hrm          { background: rgba(8,145,178,.12);  color: #0e7490; }
+.badge-feedback     { background: rgba(119,89,210,.12); color: #5b21b6; }
+.badge-open         { background: var(--bg-inset); color: var(--text-secondary); }
 
 .pct-bar { display: flex; align-items: center; gap: 8px; }
 .pct-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
@@ -1381,6 +1389,110 @@ body {
   font-weight: 600;
 }
 .phase-radio-option input[type="radio"] { display: none; }
+
+/* ── Checkbox group (topics / roles) ───────────────── */
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.check-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-primary);
+  border-radius: var(--radius-xs);
+  padding: 4px 6px;
+  transition: background var(--dur-fast);
+  user-select: none;
+}
+.check-opt:hover { background: var(--bg-hover); }
+.check-opt input[type="checkbox"] {
+  width: 14px; height: 14px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.check-opt:has(input:checked) {
+  background: var(--accent-subtle);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Contact info editor ────────────────────────────── */
+.contact-editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 4px 0 16px;
+}
+@media (max-width: 640px) {
+  .contact-editor-grid { grid-template-columns: 1fr; }
+}
+.contact-editor-block { display: flex; flex-direction: column; gap: 8px; }
+.contact-editor-label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.contact-editor-hint  { font-size: 11px; color: var(--text-tertiary); }
+.contact-editor-ta {
+  width: 100%;
+  font-size: 12px;
+  font-family: monospace;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color var(--dur-fast);
+}
+.contact-editor-ta:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring-sm);
+}
+.contact-save-btn {
+  align-self: flex-start;
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--dur-fast);
+}
+.contact-save-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* ── Section visibility toggle grid ───────────────── */
+.section-toggles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 4px 0 16px;
+}
+.section-toggle-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  background: var(--bg-inset);
+}
+.section-toggle-info { flex: 1; }
+.section-toggle-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.section-toggle-desc { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
 
 .toast-inline {
   display: flex;

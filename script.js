@@ -1100,10 +1100,46 @@ function loadSiteSettings() {
     var map = {};
     (rows || []).forEach(function (r) { map[r.key] = r.value; });
 
-    // modules section visibility
+    // modules section visibility (legacy)
     var wrap = document.getElementById('modules-section-wrap');
     if (wrap && map['modules_section_visible'] === 'true') {
       wrap.style.display = '';
+    }
+
+    // Section visibility — default ON unless admin explicitly set false
+    var pmSec  = document.getElementById('pm-overview');
+    var libSec = document.getElementById('courses');
+    var jrySec = document.getElementById('journey');
+    var supSec = document.getElementById('support');
+    if (pmSec)  pmSec.style.display  = map['pm_overview_visible'] === 'false' ? 'none' : '';
+    if (libSec) libSec.style.display = map['library_visible']     === 'false' ? 'none' : '';
+    if (jrySec) jrySec.style.display = map['journey_visible']     === 'false' ? 'none' : '';
+    if (supSec) supSec.style.display = map['support_visible']     === 'false' ? 'none' : '';
+
+    // Contact info — IT
+    if (map['it_contacts']) {
+      try {
+        var itList = JSON.parse(map['it_contacts']);
+        var itUl = document.querySelector('.support-card--contact:nth-of-type(1) .contact-popover-list');
+        if (!itUl) itUl = document.querySelectorAll('.contact-popover-list')[0];
+        if (itUl && Array.isArray(itList) && itList.length) {
+          itUl.innerHTML = itList.map(function (name) {
+            return '<li><span class="contact-chip">' + name + '</span></li>';
+          }).join('');
+        }
+      } catch (e) {}
+    }
+    // Contact info — LnOD
+    if (map['lnod_contacts']) {
+      try {
+        var lnodList = JSON.parse(map['lnod_contacts']);
+        var lnodUl = document.querySelectorAll('.contact-popover-list')[1];
+        if (lnodUl && Array.isArray(lnodList) && lnodList.length) {
+          lnodUl.innerHTML = lnodList.map(function (name) {
+            return '<li><span class="contact-chip">' + name + '</span></li>';
+          }).join('');
+        }
+      } catch (e) {}
     }
 
     // active PM phase highlight

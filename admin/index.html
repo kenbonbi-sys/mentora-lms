@@ -263,7 +263,8 @@
               <tr>
                 <th>ID</th>
                 <th>Tên Module</th>
-                <th>Danh mục</th>
+                <th>Chủ đề</th>
+                <th>Vai trò</th>
                 <th>Cập nhật</th>
                 <th>Trạng thái</th>
                 <th>Thao tác nhanh</th>
@@ -271,7 +272,7 @@
               </tr>
             </thead>
             <tbody id="modules-cms-body">
-              <tr><td colspan="7" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
+              <tr><td colspan="8" class="loading-cell"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</td></tr>
             </tbody>
           </table>
         </div>
@@ -437,6 +438,87 @@
           <i class="fa-solid fa-circle-check"></i> Đã lưu cài đặt
         </div>
 
+        <!-- ── Section visibility ── -->
+        <div class="admin-card" style="margin-top:20px">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="fa-solid fa-layout" style="color:var(--accent)"></i> Hiện / Ẩn sections</div>
+            <span style="font-size:12px;color:var(--text-tertiary)">Thay đổi có hiệu lực ngay với tất cả người dùng</span>
+          </div>
+          <div class="section-toggles-grid">
+            <div class="section-toggle-card">
+              <div class="section-toggle-info">
+                <div class="section-toggle-name"><i class="fa-solid fa-diagram-project" style="color:#1c66bb;margin-right:5px"></i>Quy trình tổng quan</div>
+                <div class="section-toggle-desc">3 milestone + Continuous Feedback bar</div>
+              </div>
+              <label class="settings-toggle">
+                <input type="checkbox" id="toggle-pm-overview" onchange="saveSetting('pm_overview_visible', this.checked)">
+                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                <span class="settings-toggle-status" id="status-pm-overview">Đang tải...</span>
+              </label>
+            </div>
+            <div class="section-toggle-card">
+              <div class="section-toggle-info">
+                <div class="section-toggle-name"><i class="fa-solid fa-book-open" style="color:#a50064;margin-right:5px"></i>Thư viện học tập</div>
+                <div class="section-toggle-desc">6 category cards (Học ngay)</div>
+              </div>
+              <label class="settings-toggle">
+                <input type="checkbox" id="toggle-library" onchange="saveSetting('library_visible', this.checked)">
+                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                <span class="settings-toggle-status" id="status-library">Đang tải...</span>
+              </label>
+            </div>
+            <div class="section-toggle-card">
+              <div class="section-toggle-info">
+                <div class="section-toggle-name"><i class="fa-solid fa-route" style="color:#7759d2;margin-right:5px"></i>Lộ trình theo vai trò</div>
+                <div class="section-toggle-desc">4 role tiles (NV / QL / cấp 2 / HOD)</div>
+              </div>
+              <label class="settings-toggle">
+                <input type="checkbox" id="toggle-journey" onchange="saveSetting('journey_visible', this.checked)">
+                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                <span class="settings-toggle-status" id="status-journey">Đang tải...</span>
+              </label>
+            </div>
+            <div class="section-toggle-card">
+              <div class="section-toggle-info">
+                <div class="section-toggle-name"><i class="fa-solid fa-headset" style="color:#0e7490;margin-right:5px"></i>Hỗ trợ (FAQ + Liên hệ)</div>
+                <div class="section-toggle-desc">FAQ modal, Liên hệ IT và LnOD</div>
+              </div>
+              <label class="settings-toggle">
+                <input type="checkbox" id="toggle-support" onchange="saveSetting('support_visible', this.checked)">
+                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                <span class="settings-toggle-status" id="status-support">Đang tải...</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Contact info management ── -->
+        <div class="admin-card" style="margin-top:20px">
+          <div class="admin-card-header">
+            <div class="admin-card-title"><i class="fa-solid fa-address-book" style="color:var(--accent)"></i> Thông tin liên hệ</div>
+            <span style="font-size:12px;color:var(--text-tertiary)">Hiển thị trong popover khi click "Liên hệ IT / LnOD"</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary);padding:0 0 16px">Mỗi dòng = 1 tên người liên hệ (username Teams/email nội bộ).</p>
+          <div class="contact-editor-grid">
+            <div class="contact-editor-block">
+              <div class="contact-editor-label"><i class="fa-solid fa-headset" style="color:#0e7490;margin-right:5px"></i>Đầu mối IT (Hỗ trợ hệ thống)</div>
+              <div class="contact-editor-hint">Lỗi HRM, đăng nhập, kỹ thuật</div>
+              <textarea class="contact-editor-ta" id="it-contacts-ta" rows="4" placeholder="sang.dang&#10;phuong.nguyen36&#10;anh.bui3"></textarea>
+              <button class="contact-save-btn" onclick="saveContactList('it_contacts', 'it-contacts-ta', this)">
+                <i class="fa-solid fa-floppy-disk"></i> Lưu IT contacts
+              </button>
+            </div>
+            <div class="contact-editor-block">
+              <div class="contact-editor-label"><i class="fa-solid fa-people-arrows" style="color:#7759d2;margin-right:5px"></i>Đầu mối LnOD (Hỗ trợ quy trình)</div>
+              <div class="contact-editor-hint">Câu hỏi về PM process, mục tiêu</div>
+              <textarea class="contact-editor-ta" id="lnod-contacts-ta" rows="4" placeholder="tran.nguyen17&#10;linh.tran5"></textarea>
+              <button class="contact-save-btn" onclick="saveContactList('lnod_contacts', 'lnod-contacts-ta', this)">
+                <i class="fa-solid fa-floppy-disk"></i> Lưu LnOD contacts
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div><!-- /tab-settings -->
 
     </div><!-- /admin-body -->
@@ -491,8 +573,29 @@
           <div class="meta-panel-section">
             <div class="meta-section-title">Phân loại</div>
             <div class="form-group">
-              <label>Danh mục</label>
+              <label>Chủ đề PM (Topics) *</label>
+              <div class="check-group" id="mod-topics">
+                <label class="check-opt"><input type="checkbox" value="overview"><span>Quy trình tổng quan</span></label>
+                <label class="check-opt"><input type="checkbox" value="goal-setting"><span>Thiết lập mục tiêu</span></label>
+                <label class="check-opt"><input type="checkbox" value="mid-year"><span>Đánh giá giữa năm</span></label>
+                <label class="check-opt"><input type="checkbox" value="year-end"><span>Đánh giá cuối năm</span></label>
+                <label class="check-opt"><input type="checkbox" value="hrm"><span>Hệ thống HRM</span></label>
+                <label class="check-opt"><input type="checkbox" value="feedback"><span>Phản hồi liên tục</span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Vai trò áp dụng</label>
+              <div class="check-group" id="mod-roles">
+                <label class="check-opt"><input type="checkbox" value="employee"><span>Nhân viên</span></label>
+                <label class="check-opt"><input type="checkbox" value="manager"><span>Quản lý trực tiếp</span></label>
+                <label class="check-opt"><input type="checkbox" value="senior"><span>Quản lý cấp 2</span></label>
+                <label class="check-opt"><input type="checkbox" value="hod"><span>Trưởng đơn vị / HOD</span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Nhóm cũ (legacy)</label>
               <select id="mod-category">
+                <option value="">— Không áp dụng —</option>
                 <option value="Process">Process</option>
                 <option value="Policy">Policy</option>
                 <option value="Safety">Safety</option>
