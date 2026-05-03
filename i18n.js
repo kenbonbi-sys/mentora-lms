@@ -17,6 +17,9 @@
       'menu.col1':        'Tổng Quan',
       'menu.col2':        'Modules',
       'menu.home':        'Trang chủ',
+      'menu.pmOverview':  'Quy trình tổng quan',
+      'menu.library':     'Thư viện học tập',
+      'menu.journey':     'Lộ trình học tập',
       'menu.support':     'Tài nguyên hỗ trợ',
       'menu.allModules':  'Tất cả modules',
 
@@ -208,6 +211,9 @@
       'menu.col1':        'Overview',
       'menu.col2':        'Modules',
       'menu.home':        'Home',
+      'menu.pmOverview':  'Process overview',
+      'menu.library':     'Learning library',
+      'menu.journey':     'Learning journey',
       'menu.support':     'Support resources',
       'menu.allModules':  'All modules',
 
