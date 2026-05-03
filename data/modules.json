@@ -706,5 +706,847 @@
     "topics": [
       "feedback"
     ]
+  },
+
+  {
+    "id": "M010",
+    "name": "Tổng quan Quy trình Quản lý Hiệu quả Công việc",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Bức tranh toàn cảnh về chu kỳ QLHQCV tại MoMo — từ Goal Setting đến Year-end Review.",
+    "thumbnail": "/assets/images/hero/hero-01.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "01/04/2026",
+    "steps": [
+      {
+        "title": "Chu kỳ QLHQCV là gì?",
+        "desc": "Quản lý Hiệu quả Công việc (QLHQCV) là hệ thống giúp MoMo đảm bảo mọi cá nhân đều hiểu rõ kỳ vọng, theo dõi tiến độ và nhận được phản hồi liên tục. Chu kỳ kéo dài một năm với 3 mốc chính:\n\n• **Goal Setting** (đầu năm): Thiết lập mục tiêu cá nhân phù hợp với mục tiêu team và công ty.\n• **Mid-year Review** (giữa năm): Điểm giữa kỳ để đánh giá tiến độ và điều chỉnh nếu cần.\n• **Year-end Review** (cuối năm): Tổng kết thành tích, xếp hạng hiệu suất và quyết định tưởng thưởng.\n\nXuyên suốt cả năm là văn hóa Cho và Nhận Phản hồi liên tục (Continuous Feedback) — không chỉ tập trung ở các kỳ đánh giá chính thức.",
+        "note": "Lịch cụ thể cho từng kỳ được công bố bởi HR-L&OD vào đầu mỗi năm. Hãy để ý thông báo trên intranet và email nội bộ."
+      },
+      {
+        "title": "Tại sao QLHQCV quan trọng với bạn?",
+        "desc": "QLHQCV không chỉ là thủ tục hành chính — đây là cơ hội để bạn:\n\n• **Định hướng rõ ràng**: Biết mình cần làm gì, ưu tiên gì và thành công trông như thế nào.\n• **Phát triển bản thân**: Nhận phản hồi thường xuyên giúp bạn cải thiện nhanh hơn.\n• **Được ghi nhận**: Thành tích được ghi lại minh bạch là cơ sở để xét thưởng và thăng tiến.\n• **Xây dựng mối quan hệ**: Các buổi 1:1 định kỳ với manager tạo không gian tin tưởng và hỗ trợ.\n\nNhân viên tham gia chủ động vào QLHQCV thường có tốc độ phát triển nhanh hơn và mức độ hài lòng với công việc cao hơn đáng kể.",
+        "note": "QLHQCV là quy trình 2 chiều — manager có trách nhiệm hỗ trợ, nhưng nhân viên chủ động đóng vai trò quan trọng không kém."
+      },
+      {
+        "title": "Trách nhiệm của từng vai trò",
+        "desc": "Mỗi người trong tổ chức đều có vai trò rõ ràng trong chu kỳ QLHQCV:\n\n**Nhân viên:**\n• Thiết lập mục tiêu chủ động, không chờ manager giao hết\n• Tự đánh giá (self-assessment) trung thực tại mỗi kỳ review\n• Chủ động xin feedback thường xuyên, không chỉ tại kỳ chính thức\n\n**Quản lý trực tiếp:**\n• Hỗ trợ nhân viên cascade mục tiêu từ team xuống cá nhân\n• Thực hiện 1:1 định kỳ và ghi nhận feedback kịp thời\n• Hoàn thành đánh giá đúng deadline với nhận xét chất lượng\n\n**Quản lý cấp 2 & HOD:**\n• Đảm bảo mục tiêu team nhất quán với chiến lược phòng ban\n• Phê duyệt xếp hạng và đảm bảo tính công bằng giữa các team",
+        "note": "HR-L&OD đóng vai trò hỗ trợ quy trình, cung cấp hướng dẫn và giải đáp thắc mắc — không phải người ra quyết định thay manager."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-01.jpg", "caption": "Chu kỳ QLHQCV tại MoMo" },
+      { "url": "/assets/images/hero/hero-02.jpg", "caption": "Buổi 1:1 giữa nhân viên và manager" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Tài liệu tổng quan QLHQCV 2026.pdf", "type": "pdf", "size": "1.2 MB", "url": "#" },
+      { "name": "Lịch chu kỳ QLHQCV 2026.xlsx", "type": "doc", "size": "85 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Chu kỳ QLHQCV tại MoMo có bao nhiêu mốc đánh giá chính thức?",
+        "options": ["1 mốc — chỉ Year-end Review", "2 mốc — Mid-year và Year-end", "3 mốc — Goal Setting, Mid-year và Year-end", "4 mốc — theo từng quý"],
+        "correct": 2,
+        "explanation": "Chu kỳ QLHQCV có 3 mốc chính: Goal Setting (đầu năm), Mid-year Review (giữa năm) và Year-end Review (cuối năm). Xuyên suốt là văn hóa Continuous Feedback."
+      },
+      {
+        "question": "Ai là người chịu trách nhiệm chính trong việc thiết lập mục tiêu cá nhân?",
+        "options": ["HR-L&OD soạn sẵn mục tiêu cho từng người", "Manager giao mục tiêu hoàn toàn cho nhân viên", "Nhân viên chủ động thiết lập với sự hỗ trợ của manager", "Quản lý cấp 2 quyết định mục tiêu cho cả team"],
+        "correct": 2,
+        "explanation": "QLHQCV là quy trình 2 chiều. Nhân viên chủ động thiết lập mục tiêu cá nhân, manager hỗ trợ cascade từ mục tiêu team và thống nhất kỳ vọng cùng nhau."
+      },
+      {
+        "question": "Continuous Feedback diễn ra khi nào trong chu kỳ QLHQCV?",
+        "options": ["Chỉ trong kỳ Mid-year Review", "Chỉ trong kỳ Year-end Review", "Chỉ khi có vấn đề hiệu suất", "Xuyên suốt cả năm, không chỉ tại kỳ chính thức"],
+        "correct": 3,
+        "explanation": "Continuous Feedback là văn hóa cho và nhận phản hồi xuyên suốt cả năm — đây là điểm khác biệt quan trọng so với mô hình đánh giá một lần truyền thống."
+      },
+      {
+        "question": "Kết quả của Year-end Review được dùng để làm gì?",
+        "options": ["Chỉ để lưu hồ sơ nhân sự", "Là cơ sở xét thưởng và quyết định thăng tiến", "Chỉ để manager biết nhân viên làm gì trong năm", "Quyết định phân công dự án năm sau"],
+        "correct": 1,
+        "explanation": "Kết quả Year-end Review là cơ sở minh bạch để xét thưởng, quyết định thăng tiến và định hướng phát triển cho chu kỳ tiếp theo."
+      }
+    ],
+    "prerequisites": [],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["overview"]
+  },
+
+  {
+    "id": "M011",
+    "name": "Vai trò và Kỳ vọng theo Cấp bậc trong QLHQCV",
+    "owner": "HR-L&OD",
+    "duration": "15 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hiểu rõ kỳ vọng và trách nhiệm cụ thể của từng cấp bậc trong toàn bộ chu kỳ đánh giá.",
+    "thumbnail": "/assets/images/hero/hero-03.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "01/04/2026",
+    "steps": [
+      {
+        "title": "Nhân viên — Người chủ động trong hành trình của mình",
+        "desc": "Là nhân viên, bạn là người trung tâm của quy trình QLHQCV. Kỳ vọng theo từng giai đoạn:\n\n**Goal Setting:** Đề xuất tối thiểu 3 mục tiêu cá nhân, trao đổi và thống nhất với manager, nhập lên HRM trước deadline.\n\n**Mid-year Review:** Hoàn thành self-assessment theo form quy định, tham gia buổi review 1:1 với manager, cập nhật tiến độ mục tiêu trên HRM.\n\n**Year-end Review:** Viết self-assessment tổng kết cả năm, tham gia buổi calibration (nếu có), nhận kết quả xếp hạng.\n\n**Liên tục:** Chủ động xin feedback sau mỗi dự án hoặc milestone quan trọng, tham gia các buổi 1:1 định kỳ.",
+        "note": "Nếu bạn không chắc mục tiêu của mình có phù hợp không, hãy hỏi manager ngay — đừng chờ đến cuối kỳ mới phát hiện lệch hướng."
+      },
+      {
+        "title": "Quản lý trực tiếp — Người dẫn dắt và phát triển team",
+        "desc": "Quản lý trực tiếp đóng vai trò quan trọng nhất trong việc đảm bảo chất lượng của quy trình:\n\n**Goal Setting:** Chia sẻ mục tiêu team, hỗ trợ từng thành viên cascade mục tiêu, review và phê duyệt mục tiêu cá nhân trên HRM.\n\n**Thường xuyên:** Thực hiện 1:1 ít nhất 2 tuần/lần, ghi nhận feedback kịp thời trên HRM, theo dõi tiến độ mục tiêu của từng người.\n\n**Review kỳ:** Hoàn thành đánh giá cho từng nhân viên với nhận xét cụ thể và có căn cứ, tham gia calibration session với peers.\n\n**Year-end:** Thông báo kết quả xếp hạng cho nhân viên trong buổi 1:1 riêng, trước khi kết quả được công bố chính thức.",
+        "note": "Chất lượng feedback của manager ảnh hưởng trực tiếp đến động lực và sự phát triển của nhân viên. Nhận xét 'Tốt' hay 'Cần cải thiện' mà không có ví dụ cụ thể là không đủ tiêu chuẩn."
+      },
+      {
+        "title": "Quản lý cấp 2 & HOD — Người đảm bảo tính nhất quán",
+        "desc": "Quản lý cấp 2 và HOD chịu trách nhiệm đảm bảo QLHQCV được triển khai nhất quán trong toàn bộ phòng ban:\n\n**Chiến lược:** Xây dựng và chia sẻ OKR/mục tiêu phòng ban để các team cấp dưới cascade xuống.\n\n**Giám sát:** Đảm bảo tất cả manager trong team hoàn thành đánh giá đúng deadline và đạt tiêu chuẩn chất lượng.\n\n**Calibration:** Dẫn dắt hoặc tham gia buổi calibration để đảm bảo tính công bằng trong xếp hạng giữa các team.\n\n**Tưởng thưởng:** Phê duyệt đề xuất tăng lương, thưởng và thăng chức dựa trên kết quả đánh giá được calibrate.",
+        "note": "Calibration session là bước quan trọng để tránh tình trạng manager 'dễ tính' hoặc 'khó tính' ảnh hưởng đến tính công bằng giữa các team."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-03.jpg", "caption": "Manager và nhân viên trong buổi 1:1" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Ma trận Trách nhiệm QLHQCV.pdf", "type": "pdf", "size": "340 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Quản lý trực tiếp nên thực hiện 1:1 với nhân viên tối thiểu bao lâu một lần?",
+        "options": ["Mỗi tháng 1 lần", "2 tuần 1 lần", "Mỗi quý 1 lần", "Chỉ tại kỳ review chính thức"],
+        "correct": 1,
+        "explanation": "Quản lý trực tiếp cần thực hiện 1:1 ít nhất 2 tuần/lần để theo dõi tiến độ, hỗ trợ và cho phản hồi kịp thời — không chờ đến kỳ review chính thức."
+      },
+      {
+        "question": "Calibration session có mục đích gì?",
+        "options": ["Để manager báo cáo số lượng mục tiêu của team", "Đảm bảo tính công bằng trong xếp hạng giữa các team", "Để nhân viên phúc khảo kết quả đánh giá", "Để HR tính toán ngân sách tưởng thưởng"],
+        "correct": 1,
+        "explanation": "Calibration session là buổi họp giữa các manager cùng cấp để đảm bảo tiêu chí xếp hạng được áp dụng nhất quán — tránh tình trạng không công bằng do phong cách đánh giá khác nhau."
+      },
+      {
+        "question": "Khi nào manager nên thông báo kết quả xếp hạng year-end cho nhân viên?",
+        "options": ["Sau khi HR công bố danh sách chính thức", "Trong buổi 1:1 riêng, trước khi kết quả công bố chính thức", "Qua email sau khi hệ thống HRM cập nhật", "Cùng lúc với toàn bộ team trong all-hands"],
+        "correct": 1,
+        "explanation": "Manager nên thông báo kết quả cho từng nhân viên trong buổi 1:1 riêng tư trước khi kết quả chính thức được công bố — để nhân viên có không gian phản hồi và đặt câu hỏi."
+      },
+      {
+        "question": "Nhân viên cần đề xuất tối thiểu bao nhiêu mục tiêu cá nhân trong Goal Setting?",
+        "options": ["1 mục tiêu", "2 mục tiêu", "3 mục tiêu", "5 mục tiêu"],
+        "correct": 2,
+        "explanation": "Nhân viên cần đề xuất tối thiểu 3 mục tiêu cá nhân trong kỳ Goal Setting, trao đổi và thống nhất với manager, sau đó nhập lên hệ thống HRM trước deadline được công bố."
+      }
+    ],
+    "prerequisites": ["M010"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["overview"]
+  },
+
+  {
+    "id": "M020",
+    "name": "Hướng dẫn Thiết lập Mục tiêu (Goal Setting)",
+    "owner": "HR-L&OD",
+    "duration": "25 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hướng dẫn từng bước thiết lập mục tiêu cá nhân hiệu quả, đúng quy trình và đúng deadline.",
+    "thumbnail": "/assets/images/hero/hero-04.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "10/01/2026",
+    "steps": [
+      {
+        "title": "Hiểu mục tiêu team trước khi đặt mục tiêu cá nhân",
+        "desc": "Trước khi viết mục tiêu cá nhân, bước đầu tiên là hiểu rõ mục tiêu của team và phòng ban. Manager trực tiếp có trách nhiệm chia sẻ OKR hoặc KPI team trong buổi kick-off đầu năm.\n\nSau khi nghe, hãy tự hỏi: 'Mình có thể đóng góp cụ thể gì vào từng mục tiêu team?' Mục tiêu cá nhân tốt là mục tiêu có thể nhìn thấy rõ đường dẫn từ công việc hàng ngày của bạn đến kết quả chung của team.\n\nNếu team bạn chưa có OKR rõ ràng, chủ động đặt câu hỏi với manager — đừng đặt mục tiêu trong bóng tối.",
+        "note": "Thời hạn để manager chia sẻ mục tiêu team cho nhân viên thường là tuần đầu tiên của kỳ Goal Setting. Nếu quá thời hạn mà chưa nhận được, hãy nhắc nhở manager."
+      },
+      {
+        "title": "Viết mục tiêu theo chuẩn SMART",
+        "desc": "Mục tiêu SMART giúp bạn và manager cùng hiểu rõ kỳ vọng và đo lường kết quả một cách khách quan:\n\n• **S — Specific (Cụ thể):** Mục tiêu mô tả rõ bạn sẽ làm gì và đạt được điều gì. Tránh dùng từ mơ hồ như 'cải thiện' hay 'tốt hơn' mà không định lượng được.\n• **M — Measurable (Đo lường được):** Có chỉ số rõ ràng để biết khi nào đạt mục tiêu. Ví dụ: tỷ lệ %, số lượng, điểm số, deadline.\n• **A — Achievable (Khả thi):** Tham vọng nhưng trong tầm với — không quá dễ đến mức nhàm chán, không quá khó đến mức nản lòng.\n• **R — Relevant (Phù hợp):** Liên kết rõ ràng với mục tiêu team và phòng ban.\n• **T — Time-bound (Có thời hạn):** Xác định rõ deadline hoặc mốc kiểm tra tiến độ.",
+        "note": "Một mục tiêu tốt thường mất 15–30 phút để suy nghĩ và viết. Nếu chỉ mất 2 phút, có thể bạn đang viết quá chung chung."
+      },
+      {
+        "title": "Quy trình thống nhất và nhập mục tiêu lên HRM",
+        "desc": "Sau khi tự soạn thảo mục tiêu, lên lịch buổi 1:1 với manager để review và thống nhất. Trong buổi này:\n\n• Trình bày từng mục tiêu và giải thích logic\n• Lắng nghe feedback và điều chỉnh nếu cần\n• Thống nhất về tiêu chí đánh giá cho từng mức (Đạt / Vượt mức / Chưa đạt)\n\nSau khi thống nhất, nhập mục tiêu lên hệ thống HRM theo đường dẫn: **HRM → Hiệu suất → Mục tiêu → Thêm mới**. Mỗi mục tiêu cần điền: tiêu đề, mô tả, chỉ số đo lường, trọng số (%) và deadline.\n\nTổng trọng số của tất cả mục tiêu phải bằng 100%. Manager sẽ nhận thông báo để review và phê duyệt.",
+        "note": "Deadline nhập mục tiêu lên HRM thường là cuối tháng 1. Mục tiêu chưa được phê duyệt trên HRM không có giá trị pháp lý trong quy trình đánh giá."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-04.jpg", "caption": "Buổi Goal Setting với manager" },
+      { "url": "/assets/images/hero/hero-05.jpg", "caption": "Nhập mục tiêu trên hệ thống HRM" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Template Mục tiêu SMART.docx", "type": "doc", "size": "125 KB", "url": "#" },
+      { "name": "Hướng dẫn nhập mục tiêu HRM.pdf", "type": "pdf", "size": "890 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Chữ 'M' trong SMART Goals có nghĩa là gì?",
+        "options": ["Meaningful — Có ý nghĩa", "Measurable — Đo lường được", "Motivating — Có tính động lực", "Multi-faceted — Đa chiều"],
+        "correct": 1,
+        "explanation": "M trong SMART là Measurable (Đo lường được) — mục tiêu phải có chỉ số cụ thể để biết khi nào đạt được, ví dụ: tỷ lệ %, con số, điểm số hay deadline rõ ràng."
+      },
+      {
+        "question": "Tổng trọng số của tất cả mục tiêu cá nhân trên HRM phải bằng bao nhiêu?",
+        "options": ["50%", "80%", "100%", "Không cần tổng cộng bằng nhau"],
+        "correct": 2,
+        "explanation": "Tổng trọng số (%) của tất cả mục tiêu cá nhân phải bằng đúng 100%. Điều này đảm bảo mọi mục tiêu đều có trọng lượng rõ ràng trong đánh giá tổng thể."
+      },
+      {
+        "question": "Bước đầu tiên cần làm trước khi viết mục tiêu cá nhân là gì?",
+        "options": ["Xem lại kết quả đánh giá năm ngoái", "Hiểu rõ mục tiêu team và phòng ban", "Hỏi HR về template mục tiêu", "Tham khảo mục tiêu của đồng nghiệp cùng cấp"],
+        "correct": 1,
+        "explanation": "Trước khi viết mục tiêu cá nhân, cần hiểu rõ OKR/KPI của team để đảm bảo mục tiêu cá nhân cascade đúng từ mục tiêu chung — tránh làm việc không đóng góp vào kết quả team."
+      },
+      {
+        "question": "Sau khi thống nhất mục tiêu với manager, bạn cần làm gì tiếp theo?",
+        "options": ["Gửi email tóm tắt cho HR", "Nhập mục tiêu lên hệ thống HRM và đợi manager phê duyệt", "Lưu lại trong file cá nhân", "Thông báo cho đồng nghiệp trong team"],
+        "correct": 1,
+        "explanation": "Sau khi thống nhất, mục tiêu phải được nhập lên HRM (HRM → Hiệu suất → Mục tiêu → Thêm mới) và được manager phê duyệt. Mục tiêu chưa có trên HRM không có giá trị trong quy trình đánh giá chính thức."
+      }
+    ],
+    "prerequisites": ["M010"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["goal-setting"]
+  },
+
+  {
+    "id": "M021",
+    "name": "Kỹ thuật viết Mục tiêu hiệu quả cho MoMoers",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Khuyến khích",
+    "subtitle": "Các kỹ thuật thực tế để viết mục tiêu rõ ràng, thuyết phục và dễ đo lường trong ngữ cảnh MoMo.",
+    "thumbnail": "/assets/images/hero/hero-06.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "10/01/2026",
+    "steps": [
+      {
+        "title": "Những lỗi phổ biến khi viết mục tiêu",
+        "desc": "Dù đã biết về SMART, nhiều người vẫn mắc một số lỗi thường gặp:\n\n**Lỗi 1 — Quá chung chung:** 'Cải thiện kỹ năng giao tiếp' → Không đo được. Sửa thành: 'Hoàn thành 2 buổi thuyết trình trước stakeholder và nhận điểm phản hồi ≥4/5 từ manager trong Q2.'\n\n**Lỗi 2 — Nhầm lẫn giữa hoạt động và kết quả:** 'Tham gia đủ các buổi họp team' là hoạt động, không phải mục tiêu. Mục tiêu là kết quả từ hoạt động đó.\n\n**Lỗi 3 — Mục tiêu không trong tầm kiểm soát:** Tránh đặt mục tiêu mà kết quả phụ thuộc hoàn toàn vào người khác.\n\n**Lỗi 4 — Quá nhiều mục tiêu:** 8–10 mục tiêu sẽ làm bạn phân tâm. Tập trung vào 3–5 mục tiêu quan trọng nhất.",
+        "note": "Nguyên tắc chọn mục tiêu: nếu bạn phải trả lời 'Tôi đã đạt mục tiêu này chưa?' mà câu trả lời không rõ ràng ngay lập tức, mục tiêu đó cần được viết lại."
+      },
+      {
+        "title": "Cấu trúc câu mục tiêu chuẩn",
+        "desc": "Một câu mục tiêu tốt thường có cấu trúc:\n\n**[Động từ hành động] + [Kết quả cụ thể] + [Chỉ số đo lường] + [Thời hạn]**\n\nVí dụ theo vai trò:\n\n**Nhân viên (Individual Contributor):**\n'Triển khai và hoàn thiện tính năng X đạt chất lượng release (0 critical bug) vào Q2/2026.'\n\n**Quản lý:**\n'Duy trì mức độ hài lòng của team (eNPS) ≥ 40 điểm trong cả năm, đo qua khảo sát quý.'\n\n**Vai trò hỗ trợ:**\n'Rút ngắn thời gian xử lý yêu cầu hỗ trợ nội bộ từ 48h xuống còn 24h trong Q3, đo qua hệ thống ticket.'",
+        "note": "Nếu bạn không chắc chỉ số đo lường phù hợp, hãy hỏi manager 'Cuối năm bằng cách nào chúng ta biết mục tiêu này đã đạt?'"
+      },
+      {
+        "title": "Trọng số và mức độ ưu tiên mục tiêu",
+        "desc": "Sau khi có danh sách mục tiêu, cần phân bổ trọng số phản ánh mức độ ưu tiên thực tế:\n\n• Mục tiêu cốt lõi của vị trí (deliverable chính): 50–70%\n• Mục tiêu phát triển năng lực: 15–25%\n• Mục tiêu đóng góp cho team/công ty: 10–20%\n\nLưu ý: Trọng số phản ánh kỳ vọng, không phải thời gian bỏ ra. Một mục tiêu chiếm 5% trọng số không có nghĩa là chỉ cần 5% thời gian để hoàn thành.\n\nĐối với mục tiêu có trọng số cao (≥30%), nên có kế hoạch kiểm tra tiến độ định kỳ hàng tháng với manager.",
+        "note": "Khi tình huống thay đổi đáng kể giữa chừng (ví dụ: dự án bị dừng, bị chuyển sang team khác), mục tiêu có thể được điều chỉnh trong kỳ Mid-year Review — không cần cứng nhắc giữ nguyên mục tiêu lỗi thời."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-06.jpg", "caption": "Workshop viết mục tiêu hiệu quả" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Ví dụ mục tiêu theo vai trò 2026.pdf", "type": "pdf", "size": "560 KB", "url": "#" },
+      { "name": "Checklist mục tiêu SMART.pdf", "type": "pdf", "size": "180 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Số lượng mục tiêu cá nhân lý tưởng trong một chu kỳ là bao nhiêu?",
+        "options": ["1–2 mục tiêu để tập trung tối đa", "3–5 mục tiêu quan trọng nhất", "8–10 mục tiêu để bao phủ toàn bộ công việc", "Không giới hạn, càng nhiều càng thể hiện tham vọng"],
+        "correct": 1,
+        "explanation": "3–5 mục tiêu là con số lý tưởng — đủ để bao phủ các ưu tiên chính mà không làm phân tán sự tập trung. Quá nhiều mục tiêu đồng nghĩa với không có ưu tiên thực sự."
+      },
+      {
+        "question": "'Tham gia đủ các buổi họp team hàng tuần' là ví dụ của loại mục tiêu nào?",
+        "options": ["Mục tiêu kết quả tốt", "Mục tiêu hoạt động — không phải mục tiêu đúng nghĩa", "Mục tiêu phát triển năng lực", "Mục tiêu đóng góp cho team"],
+        "correct": 1,
+        "explanation": "Đây là mục tiêu hoạt động (activity), không phải mục tiêu kết quả (outcome). Mục tiêu đúng nghĩa phải phản ánh kết quả/giá trị tạo ra, không chỉ mô tả việc đã làm."
+      },
+      {
+        "question": "Khi nào mục tiêu đã đặt có thể được điều chỉnh?",
+        "options": ["Không được điều chỉnh sau khi đã phê duyệt", "Bất kỳ lúc nào nhân viên muốn", "Trong kỳ Mid-year Review khi có thay đổi lớn", "Chỉ khi manager yêu cầu điều chỉnh"],
+        "correct": 2,
+        "explanation": "Mục tiêu có thể điều chỉnh trong kỳ Mid-year Review khi có thay đổi đáng kể về phạm vi công việc hoặc chiến lược. Mọi điều chỉnh cần thống nhất với manager và cập nhật trên HRM."
+      },
+      {
+        "question": "Mục tiêu có trọng số bao nhiêu trở lên nên có kế hoạch kiểm tra tiến độ hàng tháng?",
+        "options": ["10%", "20%", "30%", "50%"],
+        "correct": 2,
+        "explanation": "Mục tiêu có trọng số ≥30% nên được theo dõi tiến độ hàng tháng với manager vì đây là mục tiêu có ảnh hưởng lớn đến kết quả đánh giá tổng thể."
+      }
+    ],
+    "prerequisites": ["M020"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["goal-setting"]
+  },
+
+  {
+    "id": "M030",
+    "name": "Hướng dẫn Đánh giá Giữa năm (Mid-year Review)",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hướng dẫn đầy đủ quy trình Mid-year Review — từ self-assessment đến buổi 1:1 với manager.",
+    "thumbnail": "/assets/images/hero/hero-07.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "01/06/2026",
+    "steps": [
+      {
+        "title": "Mục đích của Mid-year Review",
+        "desc": "Mid-year Review không phải là đánh giá cuối kỳ thu nhỏ — đây là cơ hội điều chỉnh giữa hành trình:\n\n• **Nhìn lại tiến độ:** Bạn đã đạt được bao nhiêu % so với mục tiêu đề ra? Những gì đang đi đúng hướng, những gì cần điều chỉnh?\n• **Cập nhật mục tiêu:** Nếu ưu tiên công việc đã thay đổi hoặc có mục tiêu mới phát sinh, đây là thời điểm chính thức cập nhật.\n• **Nhận feedback từ manager:** Nghe nhận xét trung thực về hiệu suất và hành vi trong 6 tháng đầu.\n• **Chia sẻ nhu cầu phát triển:** Nêu rõ bạn cần hỗ trợ gì từ manager hay công ty để đạt mục tiêu trong 6 tháng còn lại.\n\nTâm thế đúng cho Mid-year Review: tò mò và cởi mở, không phòng thủ.",
+        "note": "Mid-year Review không ảnh hưởng trực tiếp đến tưởng thưởng nhưng ảnh hưởng đến tiến trình phát triển và chất lượng Year-end Review. Đừng xem nhẹ."
+      },
+      {
+        "title": "Hoàn thành Self-assessment giữa năm",
+        "desc": "Self-assessment là tài liệu bạn viết về chính mình — trung thực, cụ thể và có dẫn chứng. Quy trình trên HRM:\n\n**Bước 1:** HRM → Hiệu suất → Đánh giá giữa năm → Tự đánh giá.\n\n**Bước 2:** Với mỗi mục tiêu, đánh giá mức hoàn thành và cung cấp bằng chứng cụ thể. Tránh viết chung chung như 'Tôi đã nỗ lực rất nhiều' — hãy dùng số liệu và ví dụ thực tế.\n\n**Bước 3:** Điền phần 'Điểm mạnh nổi bật trong kỳ' và 'Điểm cần cải thiện' — đây là phần manager sẽ đọc kỹ nhất.\n\n**Bước 4:** Ghi rõ nhu cầu hỗ trợ và phát triển bạn muốn trong 6 tháng còn lại.\n\nDeadline: hoàn thành và submit trước ngày HR thông báo (thường là tuần 1–2 tháng 7).",
+        "note": "Self-assessment tốt mất ít nhất 1–2 giờ để viết cẩn thận. Đừng làm vội vào đêm trước deadline — chất lượng đánh giá của bạn phản ánh cách bạn nhìn nhận bản thân."
+      },
+      {
+        "title": "Buổi 1:1 Mid-year với Manager",
+        "desc": "Sau khi cả hai hoàn thành phần của mình trên HRM, manager sẽ lên lịch buổi 1:1 Mid-year Review (thường 45–60 phút). Để tận dụng tối đa buổi này:\n\n**Trước buổi họp:**\n• Đọc lại mục tiêu và self-assessment của mình\n• Chuẩn bị 2–3 câu hỏi muốn hỏi manager\n• Ghi lại những điểm muốn thảo luận\n\n**Trong buổi họp:**\n• Lắng nghe feedback của manager mà không chen ngang giải thích ngay\n• Hỏi ví dụ cụ thể khi nhận feedback mơ hồ ('Bạn có thể kể ví dụ cụ thể không?')\n• Ghi chép lại các điểm quan trọng\n\n**Sau buổi họp:**\n• Tóm tắt các cam kết trong email follow-up trong vòng 24 giờ\n• Cập nhật kế hoạch hành động nếu có điều chỉnh mục tiêu",
+        "note": "Nếu bạn nhận được feedback tiêu cực không đồng ý, hãy phản hồi sau khi đã suy nghĩ kỹ — không phản ứng ngay trong buổi họp. Bạn có thể yêu cầu một buổi follow-up."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-07.jpg", "caption": "Mid-year Review 1:1" },
+      { "url": "/assets/images/hero/hero-08.jpg", "caption": "Điền self-assessment trên HRM" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn viết self-assessment Mid-year.pdf", "type": "pdf", "size": "420 KB", "url": "#" },
+      { "name": "Template câu hỏi cho buổi 1:1 Mid-year.docx", "type": "doc", "size": "95 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Mục đích chính của Mid-year Review là gì?",
+        "options": ["Xét duyệt tăng lương giữa năm", "Điểm giữa kỳ để đánh giá, điều chỉnh và phát triển", "Thay thế hoàn toàn cho Year-end Review", "Báo cáo tiến độ dự án lên cấp trên"],
+        "correct": 1,
+        "explanation": "Mid-year Review là cơ hội giữa hành trình để nhìn lại tiến độ, cập nhật mục tiêu nếu cần và nhận feedback từ manager — giúp cả hai chuẩn bị tốt hơn cho 6 tháng còn lại."
+      },
+      {
+        "question": "Sau buổi 1:1 Mid-year Review, nhân viên nên làm gì trong vòng 24 giờ?",
+        "options": ["Không cần làm gì thêm sau buổi họp", "Gửi email tóm tắt các cam kết và điểm đã thảo luận", "Cập nhật ngay lập tức toàn bộ mục tiêu trên HRM", "Báo cáo kết quả buổi họp lên HR"],
+        "correct": 1,
+        "explanation": "Trong vòng 24 giờ sau buổi 1:1, nhân viên nên gửi email tóm tắt các điểm quan trọng đã thảo luận và cam kết đã đưa ra — đây là cách tạo trách nhiệm và tránh hiểu nhầm về sau."
+      },
+      {
+        "question": "Trong self-assessment, phần nào manager thường đọc kỹ nhất?",
+        "options": ["Phần đánh giá % hoàn thành mục tiêu", "Phần 'Điểm mạnh nổi bật' và 'Điểm cần cải thiện'", "Phần kê khai thời gian làm việc", "Phần đề xuất mức tăng lương"],
+        "correct": 1,
+        "explanation": "Manager thường đọc kỹ nhất phần Điểm mạnh nổi bật và Điểm cần cải thiện vì đây thể hiện khả năng tự nhận thức của nhân viên — yếu tố quan trọng trong đánh giá năng lực."
+      },
+      {
+        "question": "Khi nhận feedback tiêu cực không đồng ý trong buổi 1:1, nên làm gì?",
+        "options": ["Phản bác ngay để bảo vệ quan điểm của mình", "Lắng nghe, ghi chú và hỏi ví dụ cụ thể; phản hồi sau khi đã suy nghĩ", "Im lặng và không phản hồi", "Báo cáo ngay lên HR về feedback không công bằng"],
+        "correct": 1,
+        "explanation": "Khi nhận feedback không đồng ý, hãy lắng nghe đầy đủ, hỏi ví dụ cụ thể để hiểu rõ hơn, sau đó suy nghĩ kỹ trước khi phản hồi. Có thể yêu cầu một buổi follow-up nếu cần thảo luận thêm."
+      }
+    ],
+    "prerequisites": ["M020"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["mid-year"]
+  },
+
+  {
+    "id": "M031",
+    "name": "Hướng dẫn Viết Self-assessment Hiệu quả",
+    "owner": "HR-L&OD",
+    "duration": "15 phút đọc",
+    "category": "Process",
+    "level": "Khuyến khích",
+    "subtitle": "Kỹ thuật viết self-assessment rõ ràng, thuyết phục và trung thực — áp dụng cho cả Mid-year và Year-end.",
+    "thumbnail": "/assets/images/hero/hero-09.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "01/06/2026",
+    "steps": [
+      {
+        "title": "Tại sao self-assessment quan trọng?",
+        "desc": "Self-assessment không chỉ là thủ tục — đây là cơ hội để bạn kể câu chuyện của mình theo góc nhìn của bạn. Manager không thể quan sát toàn bộ công việc bạn làm — self-assessment giúp họ nhìn thấy đầy đủ bức tranh.\n\nMột self-assessment tốt có thể:\n• Làm nổi bật những đóng góp ít được nhìn thấy hàng ngày\n• Thể hiện tư duy tự nhận thức và sẵn sàng phát triển\n• Tạo nền tảng cho một buổi 1:1 review chất lượng hơn\n\nMột self-assessment kém (quá ngắn, quá chung chung, hoặc chỉ liệt kê hoạt động) khiến manager khó đánh giá và bạn bỏ lỡ cơ hội được nhìn nhận đúng mức.",
+        "note": "Self-assessment phản ánh cách bạn nhìn nhận bản thân và công việc. Đây cũng là tài liệu được lưu trong hồ sơ nhân sự của bạn."
+      },
+      {
+        "title": "Cấu trúc self-assessment chuẩn",
+        "desc": "Sử dụng phương pháp STAR để viết self-assessment:\n\n• **S — Situation (Bối cảnh):** Mô tả ngắn gọn tình huống hoặc bối cảnh công việc\n• **T — Task (Nhiệm vụ):** Nhiệm vụ hoặc mục tiêu bạn cần đạt được\n• **A — Action (Hành động):** Bạn đã làm gì cụ thể — tập trung vào 'tôi' chứ không phải 'team'\n• **R — Result (Kết quả):** Kết quả đạt được với số liệu cụ thể nếu có\n\nVí dụ tệ: 'Tôi đã tham gia nhiều dự án và hoàn thành tốt.'\nVí dụ tốt: 'Khi module thanh toán gặp sự cố nghiêm trọng vào tháng 3, tôi chủ động phối hợp với team backend để debug và deploy hotfix trong 4 giờ, giảm downtime xuống dưới 30 phút và tránh ảnh hưởng đến 200K+ giao dịch ngày hôm đó.'",
+        "note": "Mỗi điểm mạnh hoặc thành tựu nên có ít nhất 1 ví dụ STAR cụ thể. Tổng cộng cần 2–4 ví dụ STAR trong một self-assessment chất lượng."
+      },
+      {
+        "title": "Viết phần 'Điểm cần cải thiện' trung thực và thông minh",
+        "desc": "Đây là phần nhiều người né tránh nhất — nhưng lại là phần thể hiện sự trưởng thành nhất. Một số nguyên tắc:\n\n**Đừng viết điểm yếu giả:** 'Tôi làm việc quá chăm chỉ đến mức quên nghỉ ngơi' không ai tin cả.\n\n**Chọn điểm yếu thực tế nhưng không fatal:** Chọn những điểm cần cải thiện thực sự ảnh hưởng đến công việc nhưng không phải lỗi nghiêm trọng về đạo đức hay năng lực cốt lõi.\n\n**Kèm theo kế hoạch cải thiện:** 'Tôi nhận thấy kỹ năng trình bày trước nhóm đông còn hạn chế. Tôi đã đăng ký khóa Public Speaking nội bộ trong Q3 và tình nguyện dẫn dắt 2 buổi sprint review trong H2 để luyện tập.'\n\nFormula: [Điểm cần cải thiện] + [Hành động cụ thể đang/đã thực hiện] + [Mục tiêu cải thiện]",
+        "note": "Viết về điểm cần cải thiện một cách chân thực và có kế hoạch cụ thể thường tạo ấn tượng tốt hơn so với việc né tránh hoàn toàn."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-09.jpg", "caption": "Viết self-assessment chất lượng" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Template Self-assessment STAR.docx", "type": "doc", "size": "145 KB", "url": "#" },
+      { "name": "Ví dụ self-assessment tốt và chưa tốt.pdf", "type": "pdf", "size": "380 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Phương pháp STAR trong self-assessment có chữ 'A' là viết tắt của gì?",
+        "options": ["Achievement — Thành tích đạt được", "Action — Hành động bạn đã thực hiện", "Analysis — Phân tích tình huống", "Attitude — Thái độ làm việc"],
+        "correct": 1,
+        "explanation": "A trong STAR là Action — mô tả những hành động cụ thể bạn đã thực hiện. Đây là phần quan trọng nhất vì nó thể hiện đóng góp cá nhân của bạn, tập trung vào 'tôi' thay vì 'team'."
+      },
+      {
+        "question": "Ví dụ nào dưới đây là self-assessment chất lượng tốt?",
+        "options": [
+          "Tôi đã hoàn thành tốt tất cả công việc được giao trong kỳ.",
+          "Tôi deploy hotfix trong 4 giờ khi module thanh toán bị lỗi, giảm downtime dưới 30 phút.",
+          "Tôi đã nỗ lực rất nhiều và học hỏi được nhiều thứ.",
+          "Tôi tham gia đầy đủ các buổi họp team hàng tuần."
+        ],
+        "correct": 1,
+        "explanation": "Ví dụ tốt sử dụng phương pháp STAR: có bối cảnh (module bị lỗi), hành động cụ thể (deploy hotfix), và kết quả đo được (4 giờ, downtime dưới 30 phút). Các ví dụ còn lại quá chung chung hoặc chỉ mô tả hoạt động."
+      },
+      {
+        "question": "Khi viết phần 'Điểm cần cải thiện', điều gì nên được kèm theo?",
+        "options": ["Giải thích lý do tại sao có điểm yếu đó", "Kế hoạch hành động cụ thể để cải thiện", "Cam kết sẽ cố gắng hơn trong tương lai", "Dẫn chứng rằng điểm yếu không ảnh hưởng đến công việc"],
+        "correct": 1,
+        "explanation": "Điểm cần cải thiện nên đi kèm với kế hoạch hành động cụ thể (khóa học, cơ hội thực hành, mentor...). Điều này thể hiện sự trưởng thành và chủ động phát triển bản thân."
+      },
+      {
+        "question": "Tại sao không nên viết điểm yếu giả như 'Tôi làm việc quá chăm chỉ'?",
+        "options": ["Vì sẽ bị manager phạt nếu phát hiện không trung thực", "Vì manager đọc nhiều self-assessment nên dễ nhận ra và mất độ tin cậy", "Vì sẽ ảnh hưởng đến kết quả xếp hạng cuối năm", "Vì HR yêu cầu ít nhất 2 điểm yếu thực sự"],
+        "correct": 1,
+        "explanation": "Manager đọc hàng chục self-assessment mỗi kỳ và dễ dàng nhận ra điểm yếu giả. Viết không trung thực làm giảm độ tin cậy của toàn bộ self-assessment và cả mối quan hệ với manager."
+      }
+    ],
+    "prerequisites": ["M030"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["mid-year"]
+  },
+
+  {
+    "id": "M040",
+    "name": "Hướng dẫn Đánh giá Cuối năm (Year-end Review)",
+    "owner": "HR-L&OD",
+    "duration": "25 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hướng dẫn toàn diện quy trình Year-end Review — tổng kết thành tích, nhận xếp hạng và định hướng phát triển.",
+    "thumbnail": "/assets/images/hero/hero-10.jpg",
+    "icon": "/assets/icons/education.png",
+    "status": "Đang hoạt động",
+    "updated": "01/11/2026",
+    "steps": [
+      {
+        "title": "Year-end Review khác Mid-year Review như thế nào?",
+        "desc": "Year-end Review là kỳ đánh giá chính thức, toàn diện và có hệ quả trực tiếp đến tưởng thưởng:\n\n| | Mid-year | Year-end |\n|---|---|---|\n| Mục đích | Điều chỉnh giữa chặng | Tổng kết và tưởng thưởng |\n| Ảnh hưởng | Không ảnh hưởng lương/thưởng | Cơ sở xét thưởng & thăng tiến |\n| Phạm vi | 6 tháng đầu năm | Cả năm |\n| Quy trình | 1:1 với manager | 1:1 + Calibration + Phê duyệt |\n\nYear-end Review là cơ hội để cả năm làm việc của bạn được nhìn nhận và đánh giá toàn diện — hãy chuẩn bị kỹ.",
+        "note": "Year-end Review thường diễn ra vào tháng 11–12. Hãy theo dõi thông báo lịch từ HR-L&OD và đảm bảo hoàn thành đúng deadline mỗi bước."
+      },
+      {
+        "title": "Self-assessment cuối năm — Tổng kết cả hành trình",
+        "desc": "Self-assessment cuối năm có phạm vi rộng hơn Mid-year: nhìn lại toàn bộ 12 tháng, bao gồm cả những điều đã thay đổi so với mục tiêu ban đầu.\n\n**Cần trả lời trong self-assessment:**\n• Với mỗi mục tiêu: mức hoàn thành (%) và bằng chứng cụ thể\n• Thành tựu nổi bật nhất trong năm (ngoài cả mục tiêu đã đặt)\n• Bài học quan trọng nhất bạn học được\n• Điểm phát triển lớn nhất so với đầu năm\n• Mục tiêu phát triển cho năm tiếp theo\n\nNgoài ra, một số team còn có thêm phần đánh giá competency (năng lực hành vi) — hỏi manager về template cụ thể của team bạn.",
+        "note": "Self-assessment Year-end thường dài và chi tiết hơn Mid-year. Dành ít nhất 2–3 giờ để viết cẩn thận — đây là tài liệu ảnh hưởng trực tiếp đến kết quả tưởng thưởng của bạn."
+      },
+      {
+        "title": "Quy trình Calibration và nhận kết quả xếp hạng",
+        "desc": "Sau khi tất cả tự đánh giá và manager hoàn thành đánh giá, bước Calibration diễn ra:\n\n**Calibration là gì?** Buổi họp giữa các manager cùng cấp (do HOD dẫn dắt) để thảo luận và thống nhất xếp hạng — đảm bảo tiêu chí nhất quán giữa các team.\n\n**Thang xếp hạng thường dùng:**\n• **E (Exceptional):** Vượt kỳ vọng ở tất cả mục tiêu, có tác động lớn\n• **S (Strong):** Đạt và một số mục tiêu vượt kỳ vọng\n• **M (Meets):** Hoàn thành đầy đủ kỳ vọng\n• **D (Developing):** Một số mục tiêu chưa đạt, cần cải thiện\n• **U (Underperforming):** Không đạt kỳ vọng ở phần lớn mục tiêu\n\nSau calibration, manager sẽ thông báo kết quả trong buổi 1:1 Year-end Review chính thức.",
+        "note": "Xếp hạng là đánh giá của cả năm — không phải chỉ 1–2 tháng cuối. Hiệu suất nhất quán trong cả năm quan trọng hơn là 'sprint' cuối năm."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-10.jpg", "caption": "Buổi Year-end Review chính thức" },
+      { "url": "/assets/images/hero/hero-01.jpg", "caption": "Calibration session" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn Year-end Review 2026.pdf", "type": "pdf", "size": "780 KB", "url": "#" },
+      { "name": "Template Self-assessment Year-end.docx", "type": "doc", "size": "210 KB", "url": "#" },
+      { "name": "Thang xếp hạng & Mô tả chi tiết.pdf", "type": "pdf", "size": "290 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Điểm khác biệt lớn nhất giữa Year-end và Mid-year Review là gì?",
+        "options": ["Year-end dài hơn Mid-year", "Year-end có ảnh hưởng trực tiếp đến tưởng thưởng và thăng tiến", "Year-end chỉ do HR thực hiện, không cần manager", "Year-end chỉ đánh giá mục tiêu, Mid-year đánh giá thái độ"],
+        "correct": 1,
+        "explanation": "Khác biệt cốt lõi: Year-end Review là cơ sở chính thức để xét thưởng, tăng lương và thăng tiến — trong khi Mid-year chỉ để điều chỉnh và phát triển, không ảnh hưởng trực tiếp đến tưởng thưởng."
+      },
+      {
+        "question": "Xếp hạng 'S (Strong)' có nghĩa là gì?",
+        "options": ["Vượt kỳ vọng ở tất cả mục tiêu với tác động lớn", "Đạt và một số mục tiêu vượt kỳ vọng", "Hoàn thành đầy đủ kỳ vọng, không hơn không kém", "Chưa đạt một số mục tiêu, cần cải thiện"],
+        "correct": 1,
+        "explanation": "S (Strong) nghĩa là hoàn thành đầy đủ kỳ vọng và vượt kỳ vọng ở một số mục tiêu — đây là mức xếp hạng tốt. E (Exceptional) mới là mức cao nhất, dành cho những người có tác động vượt trội."
+      },
+      {
+        "question": "Calibration session là gì?",
+        "options": ["Buổi nhân viên phúc khảo kết quả đánh giá", "Buổi họp giữa các manager để thống nhất xếp hạng công bằng", "Buổi HR công bố kết quả toàn công ty", "Buổi nhân viên tự đánh giá lần cuối"],
+        "correct": 1,
+        "explanation": "Calibration là buổi họp giữa các manager cùng cấp (do HOD dẫn dắt) để thảo luận và thống nhất xếp hạng — đảm bảo tiêu chí được áp dụng nhất quán và công bằng giữa các team."
+      },
+      {
+        "question": "Để đạt xếp hạng cao trong Year-end Review, điều gì quan trọng nhất?",
+        "options": ["Sprint mạnh trong 2 tháng cuối năm", "Hiệu suất nhất quán và tác động rõ ràng trong cả năm", "Xây dựng mối quan hệ tốt với manager", "Hoàn thành đúng deadline self-assessment"],
+        "correct": 1,
+        "explanation": "Xếp hạng Year-end phản ánh cả năm làm việc — hiệu suất nhất quán và tác động rõ ràng quan trọng hơn bất kỳ 'sprint' cuối năm nào. Manager và calibration panel nhìn vào xu hướng cả năm."
+      }
+    ],
+    "prerequisites": ["M030"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["year-end"]
+  },
+
+  {
+    "id": "M041",
+    "name": "Quy trình Tưởng thưởng và Định hướng Phát triển",
+    "owner": "HR-L&OD",
+    "duration": "15 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hiểu cách kết quả Year-end Review ảnh hưởng đến tưởng thưởng, tăng lương và lộ trình thăng tiến tại MoMo.",
+    "thumbnail": "/assets/images/hero/hero-02.jpg",
+    "icon": "/assets/icons/money.png",
+    "status": "Đang hoạt động",
+    "updated": "01/11/2026",
+    "steps": [
+      {
+        "title": "Cơ chế tưởng thưởng dựa trên kết quả đánh giá",
+        "desc": "Sau Year-end Review, kết quả xếp hạng là một trong các yếu tố chính ảnh hưởng đến:\n\n• **Thưởng cuối năm (Annual Bonus):** Được tính theo công thức kết hợp giữa xếp hạng cá nhân và kết quả kinh doanh của công ty. Xếp hạng E/S thường nhận bonus cao hơn mức chuẩn; D/U có thể không nhận bonus.\n• **Tăng lương (Merit Increase):** Quyết định tăng lương hàng năm (nếu có) dựa vào xếp hạng và mức lương hiện tại so với thị trường.\n• **Thăng chức (Promotion):** Nhân viên muốn thăng tiến thường cần duy trì xếp hạng S hoặc E ít nhất 1–2 chu kỳ liên tiếp.\n\nHR-L&OD sẽ chia sẻ hướng dẫn chi tiết về cycle tưởng thưởng vào cuối Q4 mỗi năm.",
+        "note": "Tưởng thưởng là kết quả của cả chu kỳ làm việc — không phải phần thưởng cho buổi review. Hãy tập trung vào chất lượng công việc thay vì 'chơi hệ thống' để có xếp hạng cao."
+      },
+      {
+        "title": "Kế hoạch Phát triển Cá nhân (Individual Development Plan)",
+        "desc": "Sau Year-end Review, manager và nhân viên cùng thảo luận và thống nhất Individual Development Plan (IDP) cho năm tiếp theo. IDP là tài liệu mô tả:\n\n• **Mục tiêu phát triển:** Bạn muốn phát triển năng lực gì trong năm tới?\n• **Hành động cụ thể:** Khóa học, dự án stretch, mentoring, on-the-job practice...\n• **Lộ trình career:** Hướng phát triển trong 1–3 năm tới (chuyên sâu theo chiều dọc hay mở rộng theo chiều ngang?)\n• **Hỗ trợ cần từ công ty:** Resources, budget, thời gian học tập...\n\nIDP được lưu trên HRM và kết nối với Goal Setting năm tiếp theo để đảm bảo phát triển năng lực song song với kết quả công việc.",
+        "note": "IDP là quyền lợi, không phải nghĩa vụ. Nhân viên chủ động trong việc xây dựng IDP thường phát triển nhanh hơn và được manager ưu tiên hỗ trợ hơn."
+      },
+      {
+        "title": "Quy trình phúc khảo kết quả đánh giá",
+        "desc": "Nếu nhân viên không đồng ý với kết quả xếp hạng sau Year-end Review, có quy trình phúc khảo chính thức:\n\n**Bước 1:** Trao đổi trực tiếp với manager trước tiên — yêu cầu giải thích rõ cơ sở đánh giá và ví dụ cụ thể.\n\n**Bước 2:** Nếu vẫn không đồng ý sau buổi trao đổi, gửi đơn phúc khảo bằng văn bản cho HR trong vòng 5 ngày làm việc kể từ khi nhận kết quả chính thức.\n\n**Bước 3:** HR cùng HOD xem xét lại toàn bộ tài liệu (self-assessment, đánh giá của manager, ghi chú calibration) và phản hồi trong vòng 10 ngày làm việc.\n\n**Lưu ý quan trọng:** Phúc khảo là quyền của nhân viên — không bị kỳ thị. Tuy nhiên, cần có bằng chứng và lý lẽ rõ ràng, không chỉ là cảm xúc không hài lòng.",
+        "note": "Đa số tranh chấp đánh giá xuất phát từ kỳ vọng không được thống nhất rõ ràng từ đầu năm. Đây là lý do tại sao Goal Setting và các buổi 1:1 thường xuyên quan trọng đến vậy."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-02.jpg", "caption": "Thảo luận kết quả và định hướng phát triển" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn Tưởng thưởng 2026.pdf", "type": "pdf", "size": "450 KB", "url": "#" },
+      { "name": "Template IDP 2027.docx", "type": "doc", "size": "175 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "IDP (Individual Development Plan) được thảo luận vào thời điểm nào?",
+        "options": ["Đầu năm, cùng lúc với Goal Setting", "Sau Year-end Review, cùng với định hướng năm tiếp theo", "Giữa năm, trong kỳ Mid-year Review", "Bất kỳ lúc nào nhân viên yêu cầu"],
+        "correct": 1,
+        "explanation": "IDP được thảo luận sau Year-end Review khi manager và nhân viên cùng nhìn lại cả năm và lên kế hoạch phát triển cho năm tiếp theo. IDP kết nối với Goal Setting của năm mới."
+      },
+      {
+        "question": "Nếu không đồng ý với xếp hạng Year-end, nhân viên nên làm gì đầu tiên?",
+        "options": ["Gửi đơn phúc khảo lên HR ngay lập tức", "Trao đổi trực tiếp với manager, yêu cầu giải thích rõ cơ sở", "Nhờ đồng nghiệp can thiệp giúp", "Chờ đến năm sau để chứng minh lại"],
+        "correct": 1,
+        "explanation": "Bước đầu tiên là trao đổi trực tiếp với manager để hiểu rõ cơ sở đánh giá. Nếu vẫn không đồng ý sau đó, mới gửi đơn phúc khảo chính thức cho HR trong vòng 5 ngày làm việc."
+      },
+      {
+        "question": "Để được thăng chức, nhân viên thường cần duy trì xếp hạng tối thiểu nào?",
+        "options": ["M (Meets expectations) liên tục 3 năm", "S (Strong) hoặc E (Exceptional) ít nhất 1–2 chu kỳ liên tiếp", "Bất kỳ xếp hạng nào kèm đề xuất của manager", "D (Developing) trở lên trong 1 năm gần nhất"],
+        "correct": 1,
+        "explanation": "Nhân viên muốn thăng tiến thường cần duy trì xếp hạng S hoặc E ít nhất 1–2 chu kỳ liên tiếp — thể hiện năng lực nhất quán ở mức cao trước khi được giao trách nhiệm lớn hơn."
+      },
+      {
+        "question": "Đơn phúc khảo xếp hạng phải gửi cho HR trong vòng bao nhiêu ngày làm việc?",
+        "options": ["2 ngày làm việc", "5 ngày làm việc", "10 ngày làm việc", "30 ngày làm việc"],
+        "correct": 1,
+        "explanation": "Đơn phúc khảo phải được gửi cho HR trong vòng 5 ngày làm việc kể từ khi nhận kết quả chính thức. HR và HOD sẽ xem xét và phản hồi trong vòng 10 ngày làm việc tiếp theo."
+      }
+    ],
+    "prerequisites": ["M040"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["year-end"]
+  },
+
+  {
+    "id": "M050",
+    "name": "Làm quen với Hệ thống HRM tại MoMo",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hướng dẫn đăng nhập, khám phá giao diện và sử dụng các tính năng cơ bản của hệ thống HRM.",
+    "thumbnail": "/assets/images/hero/hero-05.jpg",
+    "icon": "/assets/icons/security.png",
+    "status": "Đang hoạt động",
+    "updated": "15/01/2026",
+    "steps": [
+      {
+        "title": "Đăng nhập và cài đặt tài khoản HRM",
+        "desc": "Hệ thống HRM là nền tảng trung tâm để quản lý toàn bộ chu kỳ QLHQCV tại MoMo. Để truy cập:\n\n**Đăng nhập lần đầu:**\n1. Truy cập hrm.momo.vn hoặc qua link trên intranet\n2. Dùng email công ty (@momo.vn) làm username\n3. Mật khẩu mặc định được gửi qua email khi onboard — đổi ngay sau lần đăng nhập đầu tiên\n4. Bật xác thực 2 yếu tố (2FA) bắt buộc: Settings → Security → Enable 2FA\n\n**Cài đặt thông báo:**\nVào Settings → Notifications để bật nhận thông báo qua email khi:\n• Manager phê duyệt/từ chối mục tiêu\n• Đến deadline review\n• Có feedback mới từ đồng nghiệp",
+        "note": "Nếu không nhận được email mật khẩu hoặc gặp lỗi đăng nhập, liên hệ IT qua helpdesk@momo.vn hoặc ext. 1234. Không dùng mật khẩu của người khác để truy cập."
+      },
+      {
+        "title": "Khám phá giao diện và các module chính",
+        "desc": "Sau khi đăng nhập, giao diện HRM có 4 module chính liên quan đến QLHQCV:\n\n**1. Dashboard (Trang chủ):** Hiển thị tóm tắt trạng thái mục tiêu, deadline sắp đến và thông báo pending.\n\n**2. Hiệu suất (Performance):** Trung tâm của QLHQCV — nơi quản lý mục tiêu, self-assessment và xem kết quả đánh giá.\n\n**3. Phản hồi (Feedback):** Gửi và nhận Continuous Feedback, xem lịch sử feedback.\n\n**4. Phát triển (Development):** Quản lý IDP, theo dõi tiến độ học tập và đăng ký khóa đào tạo.\n\nMenu chính nằm ở sidebar trái. Trên mobile, dùng icon hamburger ☰ để mở menu.",
+        "note": "Bookmark trang hrm.momo.vn trên trình duyệt để tiết kiệm thời gian. HRM cũng có app mobile trên App Store và Google Play — tìm 'MoMo HRM'."
+      },
+      {
+        "title": "Các thao tác thường dùng trong ngày làm việc",
+        "desc": "5 thao tác bạn sẽ dùng thường xuyên nhất trên HRM:\n\n**1. Kiểm tra dashboard:** Xem trạng thái mục tiêu và deadline pending mỗi đầu tuần (2–3 phút).\n\n**2. Cập nhật tiến độ mục tiêu:** Hiệu suất → Mục tiêu → Chọn mục tiêu → Cập nhật tiến độ. Nên làm sau mỗi milestone quan trọng.\n\n**3. Gửi feedback:** Phản hồi → Gửi feedback → Tìm tên đồng nghiệp → Điền nội dung. Phản hồi ngắn 2–3 câu vẫn có giá trị.\n\n**4. Xem feedback nhận được:** Phản hồi → Feedback của tôi.\n\n**5. Đặt lịch 1:1:** Tích hợp với Google Calendar — Hiệu suất → 1:1 → Lên lịch mới.",
+        "note": "HRM được cập nhật hàng tháng. Nếu thấy giao diện có thay đổi so với hướng dẫn này, tham khảo mục Help Center ngay trên HRM hoặc liên hệ HR-L&OD."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-05.jpg", "caption": "Giao diện dashboard HRM" },
+      { "url": "/assets/images/hero/hero-06.jpg", "caption": "Module Hiệu suất trên HRM" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn sử dụng HRM toàn tập.pdf", "type": "pdf", "size": "3.2 MB", "url": "#" },
+      { "name": "HRM Quick Start Guide.pdf", "type": "pdf", "size": "680 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Để đăng nhập HRM, bạn dùng thông tin gì làm username?",
+        "options": ["Mã nhân viên (employee ID)", "Email công ty (@momo.vn)", "Số điện thoại cá nhân", "Tên đăng nhập do IT cấp riêng"],
+        "correct": 1,
+        "explanation": "Username để đăng nhập HRM là địa chỉ email công ty (@momo.vn). Mật khẩu mặc định được gửi qua email khi onboard và phải được đổi ngay sau lần đăng nhập đầu tiên."
+      },
+      {
+        "question": "Module nào trên HRM là nơi quản lý mục tiêu và self-assessment?",
+        "options": ["Dashboard", "Phản hồi (Feedback)", "Hiệu suất (Performance)", "Phát triển (Development)"],
+        "correct": 2,
+        "explanation": "Module Hiệu suất (Performance) là trung tâm của QLHQCV trên HRM — nơi nhập mục tiêu, viết self-assessment và xem kết quả đánh giá từ manager."
+      },
+      {
+        "question": "Tính năng bảo mật bắt buộc phải bật sau khi đăng nhập HRM lần đầu là gì?",
+        "options": ["VPN kết nối", "Xác thực 2 yếu tố (2FA)", "Mã hóa thiết bị", "Đăng xuất tự động sau 10 phút"],
+        "correct": 1,
+        "explanation": "Xác thực 2 yếu tố (2FA) là bắt buộc trên HRM. Bật tại Settings → Security → Enable 2FA. Điều này bảo vệ dữ liệu nhân sự nhạy cảm của bạn và toàn team."
+      },
+      {
+        "question": "Nên cập nhật tiến độ mục tiêu trên HRM khi nào?",
+        "options": ["Chỉ cần cập nhật 1 lần vào cuối kỳ review", "Sau mỗi milestone quan trọng hoặc khi có tiến độ đáng kể", "Hàng ngày để manager thấy bạn chăm chỉ", "Chỉ khi manager yêu cầu"],
+        "correct": 1,
+        "explanation": "Nên cập nhật tiến độ mục tiêu sau mỗi milestone quan trọng. Điều này giúp manager theo dõi sát hơn và là bằng chứng cụ thể cho self-assessment — thay vì phải nhớ lại toàn bộ cả năm vào mùa review."
+      }
+    ],
+    "prerequisites": ["M010"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["hrm"]
+  },
+
+  {
+    "id": "M051",
+    "name": "Nhập và Quản lý Mục tiêu trên Hệ thống HRM",
+    "owner": "HR-L&OD",
+    "duration": "15 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hướng dẫn từng bước nhập mục tiêu, theo dõi tiến độ và hoàn thành self-assessment trên HRM.",
+    "thumbnail": "/assets/images/hero/hero-08.jpg",
+    "icon": "/assets/icons/security.png",
+    "status": "Đang hoạt động",
+    "updated": "15/01/2026",
+    "steps": [
+      {
+        "title": "Nhập mục tiêu cá nhân lên HRM",
+        "desc": "Sau khi đã thống nhất mục tiêu với manager, nhập lên HRM theo các bước sau:\n\n1. Đăng nhập HRM → chọn **Hiệu suất** → **Mục tiêu của tôi** → **+ Thêm mục tiêu mới**\n2. Điền đầy đủ các trường:\n   • **Tiêu đề mục tiêu:** Ngắn gọn, rõ ràng (tối đa 80 ký tự)\n   • **Mô tả chi tiết:** Bối cảnh, tiêu chí đánh giá các mức (Đạt / Vượt mức)\n   • **Chỉ số đo lường (KPI):** Số liệu cụ thể để theo dõi tiến độ\n   • **Trọng số (%):** Phần trăm đóng góp vào tổng điểm\n   • **Deadline:** Ngày dự kiến hoàn thành\n3. Nhấn **Lưu và Gửi phê duyệt** → Manager sẽ nhận thông báo\n4. Sau khi manager phê duyệt, mục tiêu chuyển sang trạng thái **Đang thực hiện**",
+        "note": "Nhập từng mục tiêu riêng, không gộp nhiều mục tiêu vào một. Tổng trọng số tất cả mục tiêu phải bằng 100% — HRM sẽ báo lỗi nếu không đúng."
+      },
+      {
+        "title": "Theo dõi và cập nhật tiến độ mục tiêu",
+        "desc": "Việc cập nhật tiến độ đều đặn giúp bạn và manager có dữ liệu thực để thảo luận trong 1:1 và review:\n\n**Cập nhật tiến độ:**\nHiệu suất → Mục tiêu của tôi → Chọn mục tiêu → **Cập nhật tiến độ**\n• Kéo thanh trượt đến % ước tính đã hoàn thành\n• Thêm ghi chú ngắn về những gì đã làm, khó khăn gặp phải\n• Upload bằng chứng nếu có (screenshot, link, số liệu)\n\n**Gắn flag khi gặp rủi ro:**\nNếu dự kiến không đạt mục tiêu, gắn flag 🚩 **At Risk** ngay khi phát hiện — đừng chờ đến review mới báo. Manager cần biết sớm để hỗ trợ kịp thời.",
+        "note": "Mục tiêu có trạng thái 'At Risk' không tự động dẫn đến xếp hạng thấp — quan trọng là bạn có kế hoạch ứng phó và chủ động trao đổi với manager."
+      },
+      {
+        "title": "Điền self-assessment trên HRM",
+        "desc": "Khi đến kỳ review, HRM sẽ tự động mở form self-assessment. Quy trình:\n\n**1. Truy cập form:** Hiệu suất → Đánh giá → Chu kỳ hiện tại → **Tự đánh giá**\n\n**2. Đánh giá từng mục tiêu:**\n   • Chọn mức đánh giá: Chưa đạt / Đạt / Vượt mức / Vượt trội\n   • Viết nhận xét (tối thiểu 100 từ) với bằng chứng cụ thể\n\n**3. Đánh giá tổng thể:**\n   • Thành tựu nổi bật trong kỳ\n   • Điểm cần cải thiện và kế hoạch\n   • Nhu cầu hỗ trợ từ manager/công ty\n\n**4. Submit:** Nhấn **Gửi đánh giá** — sau khi gửi không thể sửa, hãy đọc lại kỹ trước khi submit.\n\nHRM sẽ gửi thông báo cho manager khi bạn đã submit.",
+        "note": "HRM lưu draft tự động mỗi 5 phút. Dù vậy, hãy nhấn Save thường xuyên khi viết để tránh mất dữ liệu nếu mất kết nối."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-08.jpg", "caption": "Màn hình nhập mục tiêu trên HRM" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn nhập mục tiêu HRM (có hình ảnh).pdf", "type": "pdf", "size": "1.8 MB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Sau khi nhập mục tiêu, bước nào bắt buộc để mục tiêu có hiệu lực chính thức?",
+        "options": ["Gửi email thông báo cho HR", "Manager phê duyệt trên HRM", "In ra và ký tay", "HOD xem xét và duyệt"],
+        "correct": 1,
+        "explanation": "Sau khi nhập và gửi phê duyệt, manager cần phê duyệt mục tiêu trên HRM. Chỉ khi manager phê duyệt, mục tiêu mới chuyển sang trạng thái 'Đang thực hiện' và có giá trị chính thức."
+      },
+      {
+        "question": "Khi nào nên gắn flag 'At Risk' cho một mục tiêu?",
+        "options": ["Chỉ khi chắc chắn 100% sẽ không đạt", "Ngay khi dự đoán có rủi ro không đạt mục tiêu", "Sau khi kết thúc kỳ review và đã không đạt", "Chỉ khi manager yêu cầu"],
+        "correct": 1,
+        "explanation": "Gắn flag At Risk ngay khi phát hiện rủi ro — không chờ đến review. Điều này giúp manager biết sớm để hỗ trợ kịp thời. Chủ động thông báo rủi ro được đánh giá cao hơn là che giấu đến phút chót."
+      },
+      {
+        "question": "Sau khi submit self-assessment trên HRM, bạn có thể chỉnh sửa lại không?",
+        "options": ["Có, trong vòng 24 giờ sau khi submit", "Có, cho đến khi manager phê duyệt", "Không, không thể sửa sau khi đã submit", "Có, nhưng cần xin phép HR trước"],
+        "correct": 2,
+        "explanation": "Sau khi nhấn Gửi đánh giá, bạn không thể chỉnh sửa nữa. Do đó, hãy đọc lại kỹ toàn bộ self-assessment trước khi submit. HRM lưu draft tự động nên bạn có thể xem lại bất kỳ lúc nào trước khi gửi."
+      },
+      {
+        "question": "Trường 'Trọng số (%)' khi nhập mục tiêu thể hiện điều gì?",
+        "options": ["% thời gian làm việc dành cho mục tiêu đó", "Phần trăm đóng góp của mục tiêu vào tổng điểm đánh giá", "% khó khăn ước tính để hoàn thành mục tiêu", "Mức độ ưu tiên so với các công việc khác"],
+        "correct": 1,
+        "explanation": "Trọng số (%) thể hiện mức đóng góp của mục tiêu đó vào tổng điểm đánh giá cuối kỳ. Tổng trọng số của tất cả mục tiêu phải bằng 100% — HRM sẽ báo lỗi nếu không đúng."
+      }
+    ],
+    "prerequisites": ["M050"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["hrm"]
+  },
+
+  {
+    "id": "M060",
+    "name": "Văn hóa Phản hồi Liên tục tại MoMo",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Bắt buộc",
+    "subtitle": "Hiểu triết lý Continuous Feedback của MoMo và tại sao phản hồi thường xuyên tạo ra sự phát triển bền vững.",
+    "thumbnail": "/assets/images/hero/hero-03.jpg",
+    "icon": "/assets/icons/chat.png",
+    "status": "Đang hoạt động",
+    "updated": "01/04/2026",
+    "steps": [
+      {
+        "title": "Tại sao MoMo đầu tư vào Continuous Feedback?",
+        "desc": "Nghiên cứu của Gallup cho thấy nhân viên nhận feedback thường xuyên có năng suất cao hơn 12.5% và tỷ lệ gắn bó với công ty cao hơn đáng kể so với những người chỉ nhận feedback trong kỳ đánh giá chính thức.\n\nTại MoMo, Continuous Feedback là văn hóa — không phải quy định. Điều này có nghĩa là:\n• Bất kỳ ai cũng có thể cho phản hồi bất kỳ ai, không phân biệt cấp bậc\n• Phản hồi không chờ đến kỳ review — diễn ra ngay sau khi có dịp\n• Phản hồi không chỉ từ manager xuống nhân viên mà còn từ nhân viên lên manager (upward feedback)\n• Phản hồi giữa các đồng nghiệp (peer feedback) được khuyến khích mạnh mẽ\n\nMục tiêu: Mọi người đều biết mình đang làm tốt gì và cần cải thiện gì — không chờ đến cuối năm mới biết.",
+        "note": "Continuous Feedback hiệu quả không cần dài dòng. Một câu feedback cụ thể và kịp thời có giá trị hơn nhiều đoạn nhận xét chung chung sau 6 tháng."
+      },
+      {
+        "title": "4 loại phản hồi cần biết",
+        "desc": "Trong văn hóa Continuous Feedback tại MoMo, có 4 loại phản hồi chính:\n\n**1. Reinforcing Feedback (Phản hồi củng cố):** Ghi nhận và khuyến khích hành vi tốt. Mục đích: giúp người nhận biết cần làm nhiều hơn điều gì. Ví dụ: 'Cách bạn giải thích vấn đề kỹ thuật cho team business trong buổi họp hôm qua rất rõ ràng — mọi người đều hiểu ngay.'\n\n**2. Redirecting Feedback (Phản hồi định hướng):** Chỉ ra hành vi cần thay đổi. Không phải chỉ trích mà là định hướng. Ví dụ: 'Khi bạn phản hồi email khách hàng trễ 2 ngày, họ lo lắng và escalate. Đặt reminder để phản hồi trong 4 giờ cho những email quan trọng sẽ giúp nhiều.'\n\n**3. Upward Feedback:** Phản hồi từ nhân viên lên manager — về phong cách quản lý, cách hỗ trợ team, cách tổ chức họp...\n\n**4. Peer Feedback:** Phản hồi giữa đồng nghiệp cùng cấp — đặc biệt có giá trị khi đã làm việc cùng nhau trong dự án.",
+        "note": "Upward feedback là quyền và trách nhiệm của nhân viên — không phải hành vi 'dám lên tiếng với sếp'. Manager giỏi luôn hoan nghênh và cần upward feedback để phát triển."
+      },
+      {
+        "title": "Xây dựng thói quen cho và nhận phản hồi",
+        "desc": "Biết là một chuyện, làm thường xuyên là chuyện khác. Một số mẹo thực tế để xây dựng thói quen:\n\n**Cho phản hồi:**\n• Sau mỗi project milestone hoặc buổi thuyết trình quan trọng, dành 5 phút gửi feedback cho 1–2 người đã làm tốt hoặc cần điều chỉnh\n• Đặt nhắc nhở định kỳ (mỗi 2 tuần) để gửi ít nhất 1 feedback\n• Dùng app HRM mobile để gửi feedback ngay khi có cảm hứng\n\n**Nhận phản hồi:**\n• Cảm ơn người cho feedback — dù đồng ý hay không\n• Không giải thích hay bào chữa ngay lập tức\n• Hỏi thêm để hiểu rõ: 'Bạn có ví dụ cụ thể không?', 'Theo bạn tôi nên làm gì khác?'\n• Suy nghĩ 24–48 giờ trước khi quyết định có áp dụng feedback không",
+        "note": "Số lượng feedback không phải tất cả — 1 feedback chất lượng cao, cụ thể và kịp thời tốt hơn 10 feedback chung chung. Hãy ưu tiên chất lượng."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-03.jpg", "caption": "Văn hóa feedback tại MoMo" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Hướng dẫn Continuous Feedback.pdf", "type": "pdf", "size": "520 KB", "url": "#" },
+      { "name": "Bộ thẻ Feedback Starters.pdf", "type": "pdf", "size": "245 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Upward feedback là loại phản hồi như thế nào?",
+        "options": ["Feedback từ manager xuống nhân viên", "Feedback từ nhân viên lên manager về phong cách quản lý", "Feedback tích cực (khen ngợi) từ bất kỳ ai", "Feedback được gửi qua cấp cao nhất trong tổ chức"],
+        "correct": 1,
+        "explanation": "Upward feedback là phản hồi từ nhân viên gửi lên manager về phong cách quản lý, cách hỗ trợ team, v.v. Đây là quyền và trách nhiệm của nhân viên — manager giỏi luôn hoan nghênh upward feedback."
+      },
+      {
+        "question": "Reinforcing Feedback có mục đích gì?",
+        "options": ["Chỉ ra lỗi sai cần sửa ngay lập tức", "Ghi nhận hành vi tốt để người nhận biết cần làm nhiều hơn điều gì", "Tóm tắt hiệu suất trong một khoảng thời gian", "Đề xuất lộ trình phát triển cho nhân viên"],
+        "correct": 1,
+        "explanation": "Reinforcing Feedback ghi nhận và củng cố hành vi tốt — giúp người nhận biết mình đang làm đúng gì và cần tiếp tục làm nhiều hơn. Khác với Redirecting Feedback chỉ ra điều cần thay đổi."
+      },
+      {
+        "question": "Sau khi nhận feedback không đồng ý, bạn nên làm gì ngay lúc đó?",
+        "options": ["Phản bác ngay để bảo vệ quan điểm", "Cảm ơn, không bào chữa, hỏi thêm để hiểu rõ", "Im lặng và không phản hồi gì", "Nhờ HR phán xét ai đúng ai sai"],
+        "correct": 1,
+        "explanation": "Khi nhận feedback, dù đồng ý hay không: cảm ơn người cho feedback, không giải thích bào chữa ngay, hỏi thêm ví dụ nếu chưa rõ. Sau 24–48 giờ suy nghĩ mới quyết định có áp dụng hay không."
+      },
+      {
+        "question": "Để xây dựng thói quen cho feedback, nên đặt nhắc nhở như thế nào?",
+        "options": ["Chờ khi có inspiration mới gửi feedback", "Đặt nhắc nhở định kỳ mỗi 2 tuần để gửi ít nhất 1 feedback", "Chỉ gửi feedback khi manager yêu cầu", "Gửi feedback hàng ngày để thể hiện sự tích cực"],
+        "correct": 1,
+        "explanation": "Đặt nhắc nhở định kỳ mỗi 2 tuần để gửi ít nhất 1 feedback là cách thực tế để xây dựng thói quen. Không cần feedback hàng ngày — quan trọng là nhất quán và chất lượng."
+      }
+    ],
+    "prerequisites": ["M010"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["feedback"]
+  },
+
+  {
+    "id": "M061",
+    "name": "Kỹ năng Cho và Nhận Phản hồi Hiệu quả",
+    "owner": "HR-L&OD",
+    "duration": "20 phút đọc",
+    "category": "Process",
+    "level": "Khuyến khích",
+    "subtitle": "Kỹ thuật thực tế để đưa feedback rõ ràng, xây dựng và nhận feedback với thái độ cởi mở.",
+    "thumbnail": "/assets/images/hero/hero-10.jpg",
+    "icon": "/assets/icons/chat.png",
+    "status": "Đang hoạt động",
+    "updated": "01/04/2026",
+    "steps": [
+      {
+        "title": "Mô hình SBI — Công thức cho feedback chất lượng",
+        "desc": "Mô hình SBI (Situation – Behavior – Impact) là chuẩn vàng để cho feedback vừa rõ ràng vừa không gây phòng thủ:\n\n• **S — Situation (Tình huống):** Mô tả cụ thể thời gian, địa điểm hoặc bối cảnh. Tránh nói chung chung 'thường xuyên' hay 'mỗi lần'.\n• **B — Behavior (Hành vi):** Mô tả hành vi cụ thể, quan sát được — không phán xét ý định hay tính cách. Nói về điều bạn thấy/nghe, không phải điều bạn suy đoán.\n• **I — Impact (Tác động):** Mô tả ảnh hưởng của hành vi đó lên bạn, team hay kết quả công việc.\n\n**Ví dụ không dùng SBI:** 'Bạn hay thiếu chuyên nghiệp trong các buổi họp.'\n\n**Ví dụ dùng SBI:** 'Trong buổi demo với client hôm qua (S), bạn check điện thoại 3 lần trong khi client đang trình bày (B). Client nhận ra và có vẻ không thoải mái, điều đó có thể ảnh hưởng đến mối quan hệ chúng ta đang xây dựng (I).'",
+        "note": "SBI không chỉ dùng cho feedback tiêu cực — dùng cho cả feedback tích cực sẽ giúp người nhận hiểu rõ họ đã làm tốt gì và nhân rộng hành vi đó."
+      },
+      {
+        "title": "Những lỗi phổ biến khi cho feedback",
+        "desc": "Dù có thiện chí, nhiều người vẫn mắc lỗi khiến feedback kém hiệu quả hoặc gây ra phản ứng phòng thủ:\n\n**Lỗi 1 — Generalizing (Khái quát hóa quá mức):** 'Bạn lúc nào cũng...' hay 'Bạn không bao giờ...' → Dùng tình huống cụ thể thay vì mẫu hành vi chung.\n\n**Lỗi 2 — Đánh giá tính cách thay vì hành vi:** 'Bạn lười biếng' thay vì 'Bạn nộp report trễ 3 lần trong tháng này.'\n\n**Lỗi 3 — Sandwich feedback giả tạo:** Khen → Chê → Khen để 'giảm đau' thường khiến người nhận chỉ nhớ phần khen và bỏ qua phần chê.\n\n**Lỗi 4 — Feedback quá trễ:** Feedback về sự kiện xảy ra từ 2 tháng trước thường ít có tác dụng và khó kiểm chứng.\n\n**Lỗi 5 — Không cụ thể hóa kỳ vọng:** Sau khi nói 'cần cải thiện', không chỉ ra cụ thể cần làm gì khác đi.",
+        "note": "Feedback tốt cần dũng khí — nhưng feedback kém còn tệ hơn là không feedback. Thà không nói còn hơn nói sai cách."
+      },
+      {
+        "title": "Nhận feedback với Growth Mindset",
+        "desc": "Nhận feedback tốt cũng là một kỹ năng — đặc biệt khi feedback tiêu cực hay không đồng ý. Growth Mindset giúp bạn nhìn nhận feedback như thông tin hữu ích thay vì tấn công cá nhân:\n\n**Phản ứng Fixed Mindset:** 'Họ không hiểu công việc của mình. Mình đã làm đúng rồi. Họ đang cố tình dìm mình.'\n\n**Phản ứng Growth Mindset:** 'Thú vị — góc nhìn này khác với mình. Mình có thể học gì từ đây? Phần nào là đúng và đáng áp dụng?'\n\n**4 bước nhận feedback hiệu quả:**\n1. **Lắng nghe** đến hết mà không ngắt lời\n2. **Hỏi làm rõ:** 'Bạn có ví dụ cụ thể không?' / 'Bạn mong đợi điều gì ở tình huống đó?'\n3. **Cảm ơn** — bất kể đồng ý hay không\n4. **Suy nghĩ** 24–48 giờ trước khi quyết định có thay đổi gì không",
+        "note": "Nhận feedback tốt không có nghĩa là chấp nhận tất cả. Bạn có quyền suy nghĩ và quyết định không áp dụng — nhưng hãy làm điều đó sau khi đã suy nghĩ kỹ, không phải ngay lúc nhận."
+      }
+    ],
+    "images": [
+      { "url": "/assets/images/hero/hero-10.jpg", "caption": "Buổi feedback workshop" }
+    ],
+    "videoUrl": "",
+    "resources": [
+      { "name": "Mô hình SBI Feedback Guide.pdf", "type": "pdf", "size": "310 KB", "url": "#" },
+      { "name": "Feedback Phrases Toolkit.pdf", "type": "pdf", "size": "420 KB", "url": "#" }
+    ],
+    "quiz": [
+      {
+        "question": "Trong mô hình SBI, chữ 'B' đại diện cho điều gì?",
+        "options": ["Background — Bối cảnh xảy ra sự việc", "Behavior — Hành vi cụ thể và quan sát được", "Benefit — Lợi ích của việc thay đổi", "Belief — Niềm tin của người cho feedback"],
+        "correct": 1,
+        "explanation": "B trong SBI là Behavior (Hành vi) — mô tả hành vi cụ thể, quan sát được, không phán xét ý định hay tính cách. Tập trung vào 'bạn đã làm gì' thay vì 'bạn là người như thế nào'."
+      },
+      {
+        "question": "Lỗi nào dưới đây là 'Generalizing' khi cho feedback?",
+        "options": [
+          "'Trong buổi họp sáng nay, bạn ngắt lời client 2 lần.'",
+          "'Bạn lúc nào cũng không nghe khi người khác nói.'",
+          "'Report tuần này thiếu phần phân tích xu hướng.'",
+          "'Tôi thấy bạn gặp khó khăn với phần phân tích số liệu.'"
+        ],
+        "correct": 1,
+        "explanation": "'Bạn lúc nào cũng...' là ví dụ điển hình của Generalizing — khái quát hóa quá mức bằng cách dùng từ tuyệt đối như 'lúc nào cũng', 'không bao giờ'. Điều này dễ gây phòng thủ và thường không chính xác."
+      },
+      {
+        "question": "Growth Mindset khi nhận feedback tiêu cực có nghĩa là gì?",
+        "options": ["Đồng ý với tất cả feedback để thể hiện sự cầu thị", "Nhìn nhận feedback như thông tin để học hỏi, không phải tấn công cá nhân", "Không phản hồi để tránh xung đột", "Áp dụng ngay tất cả feedback nhận được"],
+        "correct": 1,
+        "explanation": "Growth Mindset là nhìn nhận feedback (kể cả tiêu cực) như thông tin hữu ích để học hỏi và phát triển — không phải tấn công cá nhân. Điều này không có nghĩa là đồng ý tất cả, mà là mở ra để đánh giá khách quan."
+      },
+      {
+        "question": "Tại sao 'sandwich feedback' (khen-chê-khen) thường kém hiệu quả?",
+        "options": ["Vì quá dài và mất thời gian", "Vì người nhận thường chỉ nhớ phần khen và bỏ qua phần chê", "Vì không theo chuẩn SBI", "Vì chỉ phù hợp với feedback từ manager xuống nhân viên"],
+        "correct": 1,
+        "explanation": "Sandwich feedback thường kém hiệu quả vì người nhận có xu hướng nhớ và giữ lại phần tích cực (khen) nhiều hơn, trong khi phần cần cải thiện (chê ở giữa) bị 'mờ đi'. Tốt hơn là nói thẳng và rõ ràng."
+      }
+    ],
+    "prerequisites": ["M060"],
+    "hotspotImage": "",
+    "hotspots": [],
+    "topics": ["feedback"]
   }
 ]
