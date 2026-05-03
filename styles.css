@@ -549,7 +549,7 @@ h1, h2, h3, h4,
   height: auto;
   object-fit: contain;
   display: block;
-  mix-blend-mode: multiply;
+  filter: drop-shadow(0 12px 32px rgba(165, 0, 100, 0.08));
 }
 
 .hero-card-stack {
