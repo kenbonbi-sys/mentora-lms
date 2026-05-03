@@ -797,12 +797,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ── Library card → category drill-down (slide-in drawer) ──
   var CAT_META = {
-    'overview':     { i18nTitle: 'lib.c1.title', i18nDesc: 'lib.c1.desc', icon: 'fa-diagram-project' },
-    'goal-setting': { i18nTitle: 'lib.c2.title', i18nDesc: 'lib.c2.desc', icon: 'fa-bullseye' },
-    'mid-year':     { i18nTitle: 'lib.c3.title', i18nDesc: 'lib.c3.desc', icon: 'fa-chart-line' },
-    'year-end':     { i18nTitle: 'lib.c4.title', i18nDesc: 'lib.c4.desc', icon: 'fa-medal' },
-    'hrm':          { i18nTitle: 'lib.c5.title', i18nDesc: 'lib.c5.desc', icon: 'fa-laptop' },
-    'feedback':     { i18nTitle: 'lib.c6.title', i18nDesc: 'lib.c6.desc', icon: 'fa-comments' }
+    'overview':     { i18nTitle: 'lib.c1.title', i18nDesc: 'lib.c1.desc', icon: 'fa-diagram-project', img: '/assets/images/icons/icon-overview.png' },
+    'goal-setting': { i18nTitle: 'lib.c2.title', i18nDesc: 'lib.c2.desc', icon: 'fa-bullseye',        img: '/assets/images/icons/icon-goal.png' },
+    'mid-year':     { i18nTitle: 'lib.c3.title', i18nDesc: 'lib.c3.desc', icon: 'fa-chart-line',      img: '/assets/images/icons/icon-mid.png' },
+    'year-end':     { i18nTitle: 'lib.c4.title', i18nDesc: 'lib.c4.desc', icon: 'fa-medal',           img: '/assets/images/icons/icon-end.png' },
+    'hrm':          { i18nTitle: 'lib.c5.title', i18nDesc: 'lib.c5.desc', icon: 'fa-laptop',          img: '/assets/images/icons/icon-hrm.png' },
+    'feedback':     { i18nTitle: 'lib.c6.title', i18nDesc: 'lib.c6.desc', icon: 'fa-comments',        img: '/assets/images/icons/icon-feedback.png' }
   };
 
   function tr(key, fallback) {
@@ -829,7 +829,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     titleEl.textContent = tr(meta.i18nTitle, catKey);
     descEl.textContent  = tr(meta.i18nDesc, '');
-    iconEl.innerHTML    = '<i class="fa-solid ' + meta.icon + '"></i>';
+    iconEl.innerHTML    = meta.img
+      ? '<img src="' + meta.img + '" alt="" class="cat-drawer-icon-img">'
+      : '<i class="fa-solid ' + meta.icon + '"></i>';
 
     // Filter modules by topic
     var matched = (allModules || []).filter(function (m) {
@@ -846,7 +848,7 @@ document.addEventListener('DOMContentLoaded', function () {
       bodyEl.innerHTML = matched.map(function (m) {
         return (
           '<button class="cat-drawer-mod" data-id="' + m.id + '">' +
-            '<div class="cat-drawer-mod-icon"><i class="fa-solid fa-book-open"></i></div>' +
+            '<div class="cat-drawer-mod-icon">' + (meta.img ? '<img src="' + meta.img + '" alt="" class="cat-drawer-mod-icon-img">' : '<i class="fa-solid fa-book-open"></i>') + '</div>' +
             '<div class="cat-drawer-mod-body">' +
               '<div class="cat-drawer-mod-title">' + (m.name || '') + '</div>' +
               '<div class="cat-drawer-mod-meta">' +
