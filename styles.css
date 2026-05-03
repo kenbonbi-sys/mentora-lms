@@ -671,12 +671,12 @@ h1, h2, h3, h4,
   display: inline-flex;
   align-items: center;
   font-family: 'MoMo Trust Display', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--primary-foreground);
-  padding: 5px 14px;
+  padding: 8px 18px;
   border-radius: var(--radius-md);
   background-color: var(--pink-400);
   background-image: repeating-linear-gradient(

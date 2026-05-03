@@ -26,7 +26,7 @@
       'hero.imgPlaceholder': 'Hình ảnh sẽ được cập nhật',
 
       'pm.eyebrow':       'Performance Management',
-      'pm.title':         'Quy trình tổng quan',
+      'pm.title':         'Quy trình <span class="sig">tổng quan</span>',
       'pm.subtitle':      'Ba giai đoạn chính trong chu kỳ Quản lý Hiệu quả Công việc tại MoMo',
       'pm.m1.title':      'Thiết lập Mục tiêu (Goal Setting)',
       'pm.m1.desc':       'Giai đoạn giúp nhân viên và quản lý thống nhất mục tiêu, kỳ vọng và tiêu chí thành công. Giúp nhân viên hiểu rõ ưu tiên công việc, đóng góp của mình vào mục tiêu chung và có cơ sở minh bạch cho đánh giá sau này.',
@@ -216,7 +216,7 @@
       'hero.imgPlaceholder': 'Image to be added',
 
       'pm.eyebrow':       'Performance Management',
-      'pm.title':         'Process overview',
+      'pm.title':         'Process <span class="sig">overview</span>',
       'pm.subtitle':      'Three key milestones in the Performance Management cycle at MoMo',
       'pm.m1.title':      'Goal Setting',
       'pm.m1.desc':       'A phase where employees and managers align on goals, expectations and success criteria — giving everyone a clear, transparent basis for later reviews.',
