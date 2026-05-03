@@ -1521,11 +1521,87 @@ h1, h2, h3, h4,
   align-self: center;
   white-space: nowrap;
 }
+.support-card-tag--btn {
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+.support-card-tag--btn:hover,
+.support-card-tag--btn.active {
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Contact popover */
+.contact-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 20px;
+  min-width: 220px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 14px 16px;
+  z-index: var(--z-content);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity var(--dur-fast) var(--ease-out),
+              visibility var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+  pointer-events: none;
+}
+.contact-popover.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.contact-popover-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.contact-popover-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.contact-chip {
+  display: inline-block;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-family: 'MoMo Trust Sans', sans-serif;
+  letter-spacing: .2px;
+}
+.contact-popover-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border-light);
+  padding-top: 8px;
+  line-height: 1.5;
+}
 
 /* Responsive */
 @media (max-width: 860px) {
   .support-grid { grid-template-columns: 1fr; gap: 14px; }
   .support-card { padding: 20px; }
+  .contact-popover { right: 0; left: 0; min-width: unset; }
 }
 
 /* ══════════════════════════════════════════════════════

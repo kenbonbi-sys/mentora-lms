@@ -905,6 +905,36 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.setAttribute('aria-expanded', String(!isOpen));
   };
 
+  // ── Contact popover ──
+  window.toggleContactPopover = function (btn) {
+    var card = btn.closest('.support-card');
+    if (!card) return;
+    var popover = card.querySelector('.contact-popover');
+    if (!popover) return;
+    var isOpen = popover.classList.contains('open');
+    // close all other popovers first
+    document.querySelectorAll('.contact-popover.open').forEach(function (p) {
+      p.classList.remove('open');
+      var b = p.closest('.support-card') && p.closest('.support-card').querySelector('.support-card-tag--btn');
+      if (b) b.classList.remove('active');
+    });
+    if (!isOpen) {
+      popover.classList.add('open');
+      btn.classList.add('active');
+    }
+  };
+
+  // close contact popover on outside click
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.support-card--contact')) {
+      document.querySelectorAll('.contact-popover.open').forEach(function (p) {
+        p.classList.remove('open');
+        var b = p.closest('.support-card') && p.closest('.support-card').querySelector('.support-card-tag--btn');
+        if (b) b.classList.remove('active');
+      });
+    }
+  });
+
   // ── Re-render dynamic strings when language changes ──
   document.addEventListener('mentora:langchange', function () {
     if (typeof updateHeroCount === 'function') updateHeroCount();

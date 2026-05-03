@@ -462,24 +462,41 @@
             <div class="support-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
           </a>
 
-          <div class="support-card support-card--contact">
+          <div class="support-card support-card--contact" style="position:relative">
             <div class="support-card-icon support-card-icon--it"><i class="fa-solid fa-headset"></i></div>
             <div class="support-card-body">
               <div class="support-card-label" data-i18n="sup.it.label">Hỗ trợ hệ thống</div>
               <div class="support-card-title">IT</div>
               <div class="support-card-desc" data-i18n="sup.it.desc">Lỗi hệ thống HRM, đăng nhập, tài khoản hoặc bất kỳ vấn đề kỹ thuật nào.</div>
             </div>
-            <div class="support-card-tag" data-i18n="sup.it.tag">Liên hệ IT</div>
+            <button class="support-card-tag support-card-tag--btn" onclick="toggleContactPopover(this)" data-i18n="sup.it.tag">Liên hệ IT</button>
+            <div class="contact-popover" role="tooltip">
+              <div class="contact-popover-title"><i class="fa-solid fa-address-book"></i> Liên hệ trực tiếp</div>
+              <ul class="contact-popover-list">
+                <li><span class="contact-chip">sang.dang</span></li>
+                <li><span class="contact-chip">phuong.nguyen36</span></li>
+                <li><span class="contact-chip">anh.bui3</span></li>
+              </ul>
+              <div class="contact-popover-hint">Nhắn tin qua Teams hoặc email nội bộ</div>
+            </div>
           </div>
 
-          <div class="support-card support-card--contact">
+          <div class="support-card support-card--contact" style="position:relative">
             <div class="support-card-icon support-card-icon--lnod"><i class="fa-solid fa-people-arrows"></i></div>
             <div class="support-card-body">
               <div class="support-card-label" data-i18n="sup.lnod.label">Hỗ trợ quy trình</div>
               <div class="support-card-title">LnOD</div>
               <div class="support-card-desc" data-i18n="sup.lnod.desc">Câu hỏi về quy trình Performance Management, mục tiêu, đánh giá và phản hồi.</div>
             </div>
-            <div class="support-card-tag" data-i18n="sup.lnod.tag">Liên hệ LnOD</div>
+            <button class="support-card-tag support-card-tag--btn" onclick="toggleContactPopover(this)" data-i18n="sup.lnod.tag">Liên hệ LnOD</button>
+            <div class="contact-popover" role="tooltip">
+              <div class="contact-popover-title"><i class="fa-solid fa-address-book"></i> Liên hệ trực tiếp</div>
+              <ul class="contact-popover-list">
+                <li><span class="contact-chip">tran.nguyen17</span></li>
+                <li><span class="contact-chip">quynh.nguyen18</span></li>
+              </ul>
+              <div class="contact-popover-hint">Nhắn tin qua Teams hoặc email nội bộ</div>
+            </div>
           </div>
 
         </div>
