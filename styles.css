@@ -1028,7 +1028,7 @@ h1, h2, h3, h4,
 }
 
 .journey-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 36px;
 }
 .journey-title {
@@ -1044,8 +1044,80 @@ h1, h2, h3, h4,
   font-size: 15px;
   color: var(--text-secondary);
   max-width: 540px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.6;
+}
+
+/* Role navigation tiles (replaces inline tab panels on landing page) */
+.journey-role-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.journey-role-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 20px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, transform var(--dur-fast) ease;
+  position: relative;
+}
+.journey-role-tile:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(165,0,100,.12);
+  transform: translateY(-2px);
+}
+.journey-role-tile-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--pink-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--accent);
+}
+.journey-role-tile-label {
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  flex: 1;
+}
+.journey-role-tile-arrow {
+  font-size: 13px;
+  color: var(--accent);
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+.journey-role-tile:hover .journey-role-tile-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (max-width: 860px) {
+  .journey-role-nav { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .journey-role-nav { grid-template-columns: 1fr; }
+}
+
+/* ── Journey role page (#page-journey) ── */
+.journey-page-inner {
+  padding: 32px 0 80px;
+}
+.journey-tabs--page {
+  margin-bottom: 32px;
 }
 
 /* Tabs */

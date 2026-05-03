@@ -1280,9 +1280,10 @@ function drawMapEdges(svgEl) {
 var PAGE_TRANSITION_MS = 250;
 
 function _getPageEl(page) {
-  if (page === 'list')   return document.getElementById('page-list');
-  if (page === 'detail') return document.getElementById('page-detail');
-  if (page === 'map')    return document.getElementById('page-map');
+  if (page === 'list')    return document.getElementById('page-list');
+  if (page === 'detail')  return document.getElementById('page-detail');
+  if (page === 'map')     return document.getElementById('page-map');
+  if (page === 'journey') return document.getElementById('page-journey');
   return null;
 }
 
@@ -1300,11 +1301,33 @@ function _activatePage(page, el) {
   });
 }
 
+/* ── Journey role page navigation ── */
+window.showJourneyRole = function (role) {
+  switchJourneyTab(role);
+  showPage('journey');
+};
+
+window.switchJourneyTab = function (role) {
+  var tabs    = document.querySelectorAll('#journey-page-tabs .journey-tab');
+  var panels  = document.querySelectorAll('#journey-page-panels .journey-panel');
+  tabs.forEach(function (t) {
+    var active = t.dataset.role === role;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+  panels.forEach(function (p) {
+    var active = p.dataset.role === role;
+    p.classList.toggle('active', active);
+    if (active) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+  });
+};
+
 function showPage(page) {
-  var pageList   = document.getElementById('page-list');
-  var pageDetail = document.getElementById('page-detail');
-  var pageMap    = document.getElementById('page-map');
-  var allPages   = [pageList, pageDetail, pageMap].filter(Boolean);
+  var pageList    = document.getElementById('page-list');
+  var pageDetail  = document.getElementById('page-detail');
+  var pageMap     = document.getElementById('page-map');
+  var pageJourney = document.getElementById('page-journey');
+  var allPages    = [pageList, pageDetail, pageMap, pageJourney].filter(Boolean);
   var nextEl     = _getPageEl(page);
   if (!nextEl) return;
 
