@@ -662,9 +662,34 @@ h1, h2, h3, h4,
 }
 
 .pm-process-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 48px;
 }
+
+/* PM section eyebrow — diagonal-stripe badge (smaller version of hero-promo-badge) */
+.pm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--primary-foreground);
+  padding: 5px 14px;
+  border-radius: var(--radius-md);
+  background-color: var(--pink-400);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 9px,
+    rgba(165,0,100,.28) 9px, rgba(165,0,100,.28) 18px
+  );
+  box-shadow: 0 3px 10px rgba(165,0,100,.30);
+  margin-bottom: 16px;
+  white-space: nowrap;
+}
+
+/* Shared eyebrow (other sections keep subtle pill) */
 .section-eyebrow {
   display: inline-block;
   font-size: 11px;
@@ -690,7 +715,7 @@ h1, h2, h3, h4,
   font-size: 15px;
   color: var(--text-secondary);
   max-width: 520px;
-  margin: 0 auto;
+  margin: 0;
   line-height: 1.6;
 }
 
@@ -710,8 +735,8 @@ h1, h2, h3, h4,
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   padding: 32px 24px;
   background: var(--bg-card);
   border: 1px solid var(--border-light);
@@ -726,12 +751,19 @@ h1, h2, h3, h4,
 .pm-milestone:nth-child(5) { animation-delay: .25s; }
 .pm-milestone:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
-.pm-milestone-num {
+.pm-milestone-num { margin-bottom: 14px; }
+.pm-milestone-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-tertiary);
-  margin-bottom: 14px;
+  letter-spacing: .5px;
+  box-shadow: 0 2px 8px rgba(165,0,100,.30);
 }
 .pm-milestone-icon {
   width: 72px; height: 72px;
