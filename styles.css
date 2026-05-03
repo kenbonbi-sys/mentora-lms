@@ -879,7 +879,7 @@ h1, h2, h3, h4,
   background: linear-gradient(135deg, var(--accent-subtle) 0%, rgba(249,83,150,.06) 100%);
   border: 1px solid rgba(165,0,100,.15);
   border-radius: var(--radius-xl);
-  padding: 16px 28px;
+  padding: 16px 16px 16px 28px;
   position: relative;
   overflow: hidden;
   animation: fadeSlideIn var(--dur-slow) var(--ease-out) .35s both;
