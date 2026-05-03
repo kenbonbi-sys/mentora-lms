@@ -689,18 +689,27 @@ h1, h2, h3, h4,
   white-space: nowrap;
 }
 
-/* Shared eyebrow (other sections keep subtle pill) */
+/* Shared eyebrow — same diagonal-stripe badge as .pm-eyebrow */
 .section-eyebrow {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  font-family: 'MoMo Trust Display', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent);
-  background: var(--accent-subtle);
-  padding: 5px 14px;
-  border-radius: 100px;
-  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+  color: var(--primary-foreground);
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  background-color: var(--pink-400);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 9px,
+    rgba(165,0,100,.28) 9px, rgba(165,0,100,.28) 18px
+  );
+  box-shadow: 0 3px 10px rgba(165,0,100,.30);
+  margin-bottom: 16px;
+  white-space: nowrap;
 }
 .pm-process-title {
   font-family: 'MoMo Trust Display', sans-serif;
