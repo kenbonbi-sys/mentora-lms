@@ -783,17 +783,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // ── Search (now filters library cards) ──
+  // ── Search — module search with dropdown ──
   var searchInput = document.getElementById('input-search');
   if (searchInput) {
-    searchInput.addEventListener('keyup', function () {
-      if (document.getElementById('library-grid')) {
-        filterLibrary();
-      } else {
-        filterAndRender();
+    searchInput.addEventListener('input', function () {
+      searchModules();
+    });
+    searchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        closeSearchDropdown();
       }
     });
   }
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.library-search')) closeSearchDropdown();
+  });
 
   // ── Library card → category drill-down (slide-in drawer) ──
   var CAT_META = {
@@ -846,17 +851,21 @@ document.addEventListener('DOMContentLoaded', function () {
         '</div>';
     } else {
       bodyEl.innerHTML = matched.map(function (m) {
+        var catClass = (m.category || '').replace(/\s/g, '').toLowerCase();
+        var catIcon  = CAT_ICON[m.category] || 'fa-book-open';
         return (
           '<button class="cat-drawer-mod" data-id="' + m.id + '">' +
-            '<div class="cat-drawer-mod-icon">' + (meta.img ? '<img src="' + meta.img + '" alt="" class="cat-drawer-mod-icon-img">' : '<i class="fa-solid fa-book-open"></i>') + '</div>' +
-            '<div class="cat-drawer-mod-body">' +
+            '<div class="cat-drawer-mod-thumb">' +
+              (m.thumbnail ? '<img src="' + m.thumbnail + '" alt="" class="cat-drawer-mod-thumb-img">' : '<div class="cat-drawer-mod-thumb-placeholder"></div>') +
+              (m.category ? '<span class="badge badge-' + catClass + ' cat-drawer-mod-badge"><i class="fa-solid ' + catIcon + '"></i> ' + m.category + '</span>' : '') +
+            '</div>' +
+            '<div class="cat-drawer-mod-info">' +
               '<div class="cat-drawer-mod-title">' + (m.name || '') + '</div>' +
               '<div class="cat-drawer-mod-meta">' +
                 '<span><i class="fa-regular fa-clock"></i> ' + (m.duration || '') + '</span>' +
                 (m.owner ? '<span><i class="fa-regular fa-user"></i> ' + m.owner + '</span>' : '') +
               '</div>' +
             '</div>' +
-            '<i class="fa-solid fa-arrow-right cat-drawer-mod-arrow"></i>' +
           '</button>'
         );
       }).join('');
@@ -967,21 +976,61 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function filterLibrary() {
-    var grid = document.getElementById('library-grid');
-    var empty = document.getElementById('library-empty');
-    if (!grid) return;
+  // ── Module search dropdown ──
+  var CAT_ICON = {
+    'Process': 'fa-diagram-project',
+    'Policy':  'fa-file-shield',
+    'Safety':  'fa-triangle-exclamation'
+  };
+
+  function closeSearchDropdown() {
+    var dd = document.getElementById('search-dropdown');
+    if (dd) { dd.innerHTML = ''; dd.classList.remove('open'); }
+  }
+
+  function searchModules() {
+    var dd = document.getElementById('search-dropdown');
+    if (!dd) return;
     var q = (document.getElementById('input-search').value || '').trim().toLowerCase();
-    var cards = grid.querySelectorAll('.lib-card');
-    var visible = 0;
-    cards.forEach(function (c) {
-      var title = (c.querySelector('.lib-card-title') || {}).textContent || '';
-      var desc  = (c.querySelector('.lib-card-desc')  || {}).textContent || '';
-      var match = !q || (title + ' ' + desc).toLowerCase().indexOf(q) >= 0;
-      c.style.display = match ? '' : 'none';
-      if (match) visible++;
+    if (!q) { closeSearchDropdown(); return; }
+
+    var results = (allModules || []).filter(function (m) {
+      return ((m.name || '') + ' ' + (m.subtitle || '')).toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 8);
+
+    if (results.length === 0) {
+      dd.innerHTML = '<div class="search-dropdown-empty"><i class="fa-solid fa-magnifying-glass"></i><span>Không tìm thấy bài học nào</span></div>';
+      dd.classList.add('open');
+      return;
+    }
+
+    dd.innerHTML = results.map(function (m) {
+      var catClass = (m.category || '').replace(/\s/g, '');
+      var catIcon  = CAT_ICON[m.category] || 'fa-book-open';
+      return (
+        '<button class="search-dropdown-item" data-id="' + m.id + '">' +
+          '<div class="search-dropdown-thumb">' +
+            (m.thumbnail ? '<img src="' + m.thumbnail + '" alt="" class="search-dropdown-thumb-img">' : '') +
+          '</div>' +
+          '<div class="search-dropdown-body">' +
+            '<span class="badge badge-' + catClass.toLowerCase() + '">' +
+              '<i class="fa-solid ' + catIcon + '"></i> ' + (m.category || '') +
+            '</span>' +
+            '<div class="search-dropdown-title">' + (m.name || '') + '</div>' +
+            '<div class="search-dropdown-meta"><i class="fa-regular fa-clock"></i> ' + (m.duration || '') + '</div>' +
+          '</div>' +
+        '</button>'
+      );
+    }).join('');
+
+    dd.classList.add('open');
+    dd.querySelectorAll('.search-dropdown-item').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.getElementById('input-search').value = '';
+        closeSearchDropdown();
+        if (typeof openDetail === 'function') openDetail(btn.dataset.id);
+      });
     });
-    if (empty) empty.style.display = visible === 0 ? '' : 'none';
   }
 
   // ── Card click ──
