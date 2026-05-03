@@ -1387,25 +1387,25 @@ var JOURNEY_CATS = {
 var JOURNEY_ROLES = {
   employee: {
     label: 'Nhân viên', labelKey: 'role.employee',
-    icon: 'fa-regular fa-user',
+    img: '/assets/images/icons/role-employee.png',
     intro: 'Tham gia đầy đủ chu kỳ Quản lý Hiệu quả Công việc — từ thiết lập mục tiêu đến đánh giá cuối năm — và xây dựng thói quen phản hồi liên tục.',
     introKey: 'j.emp.intro.p'
   },
   manager: {
     label: 'Quản lý trực tiếp', labelKey: 'role.manager',
-    icon: 'fa-solid fa-user-tie',
+    img: '/assets/images/icons/role-manager.png',
     intro: 'Định hướng team, cascade mục tiêu, đánh giá nhân viên và xây dựng văn hóa phản hồi trong nhóm.',
     introKey: 'j.mgr.intro.p'
   },
   senior: {
     label: 'Quản lý cấp 2', labelKey: 'role.senior',
-    icon: 'fa-solid fa-users-line',
+    img: '/assets/images/icons/role-senior.png',
     intro: 'Đảm bảo chất lượng mục tiêu, calibration công bằng và theo dõi performance của nhiều team.',
     introKey: 'j.sen.intro.p'
   },
   hod: {
     label: 'Trưởng đơn vị / HOD', labelKey: 'role.hod',
-    icon: 'fa-solid fa-crown',
+    img: '/assets/images/icons/role-hod.png',
     intro: 'Governance toàn bộ chu kỳ, phê duyệt calibration và xây dựng văn hóa Performance trong đơn vị.',
     introKey: 'j.hod.intro.p'
   }
@@ -1437,7 +1437,7 @@ window.switchJourneyTab = function (role) {
 
   /* role intro banner */
   var html = '<div class="journey-role-header">'
-    + '<div class="journey-role-header-icon"><i class="' + roleData.icon + '"></i></div>'
+    + '<div class="journey-role-header-icon"><img src="' + roleData.img + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;"></div>'
     + '<div>'
     + '<h3 class="journey-role-header-title">' + _t(roleData.labelKey, roleData.label) + '</h3>'
     + '<p class="journey-role-header-intro">' + _t(roleData.introKey, roleData.intro) + '</p>'

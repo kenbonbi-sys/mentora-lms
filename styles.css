@@ -1135,15 +1135,22 @@ h1, h2, h3, h4,
   transform: translateY(-2px);
 }
 .journey-role-tile-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--pink-50);
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  color: var(--accent);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.journey-role-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
 }
 .journey-role-tile-label {
   font-family: 'MoMo Trust Display', sans-serif;
@@ -1193,12 +1200,9 @@ h1, h2, h3, h4,
   margin-bottom: 28px;
 }
 .journey-role-header-icon {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  overflow: hidden;
   flex-shrink: 0;
 }
 .journey-role-header-title {
