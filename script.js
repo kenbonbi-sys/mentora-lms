@@ -1419,9 +1419,15 @@ function _getPageEl(page) {
   return null;
 }
 
-function _activatePage(page, el) {
+function _activatePage(page, el, scrollToId) {
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  if (scrollToId) {
+    var scrollTarget = document.getElementById(scrollToId);
+    if (scrollTarget) scrollTarget.scrollIntoView({ behavior: 'instant', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'instant' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
   if (page === 'list')    updateReadingProgress();
   if (page === 'map')     renderKnowledgeMap();
   if (page === 'journey') {
@@ -1533,6 +1539,7 @@ window.switchJourneyTab = function (role) {
     var active = t.dataset.role === role;
     t.classList.toggle('active', active);
     t.setAttribute('aria-selected', active ? 'true' : 'false');
+    t.style.display = active ? '' : 'none';
   });
 
   /* render category cards for this role */
@@ -1575,7 +1582,7 @@ window.switchJourneyTab = function (role) {
   container.innerHTML = html;
 };
 
-function showPage(page) {
+function showPage(page, scrollToId) {
   var pageList    = document.getElementById('page-list');
   var pageDetail  = document.getElementById('page-detail');
   var pageMap     = document.getElementById('page-map');
@@ -1597,12 +1604,12 @@ function showPage(page) {
     window.setTimeout(function () {
       currentEl.style.display = 'none';
       currentEl.classList.remove('page-exit');
-      _activatePage(page, nextEl);
+      _activatePage(page, nextEl, scrollToId);
     }, PAGE_TRANSITION_MS);
   } else {
     // No current page visible or reduced motion — hide all and show next instantly
     allPages.forEach(function (el) { if (el !== nextEl) el.style.display = 'none'; });
-    _activatePage(page, nextEl);
+    _activatePage(page, nextEl, scrollToId);
   }
 }
 
