@@ -820,13 +820,15 @@ h1, h2, h3, h4,
 .pm-cf-text {
   font-size: 15px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text-primary);
   letter-spacing: -.2px;
 }
 .pm-cf-text .sig {
   font-size: 22px;
   line-height: 1;
   vertical-align: middle;
+  color: var(--accent);
+  margin: 0 4px;
 }
 .pm-cf-en {
   font-size: 12px;
