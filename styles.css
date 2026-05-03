@@ -543,6 +543,14 @@ h1, h2, h3, h4,
   align-items: center;
   justify-content: center;
 }
+.hero-img {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 16px 40px rgba(165, 0, 100, 0.12));
+}
 
 .hero-card-stack {
   position: relative;
