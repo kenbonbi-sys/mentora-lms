@@ -823,6 +823,11 @@ h1, h2, h3, h4,
   color: var(--accent);
   letter-spacing: -.2px;
 }
+.pm-cf-text .sig {
+  font-size: 22px;
+  line-height: 1;
+  vertical-align: middle;
+}
 .pm-cf-en {
   font-size: 12px;
   color: var(--text-tertiary);
