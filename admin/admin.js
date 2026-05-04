@@ -1480,6 +1480,345 @@ async function moveModule(id, dir) {
 // ══════════════════════════════════════════════════════════
 //  ANNOUNCEMENTS
 // ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+//  SECTION CONTENT MANAGER
+// ══════════════════════════════════════════════════════════
+
+const SECTION_META = [
+  {
+    key: 'pm_overview', visKey: 'pm_overview_visible',
+    contentKey: 'content_pm_overview',
+    name: 'Quy trình tổng quan', icon: 'fa-diagram-project', color: '#1c66bb',
+    desc: '3 milestone cards + Continuous Feedback bar',
+    defaultContent: {
+      eyebrow: 'Performance Management',
+      title: 'Quy trình *tổng quan*',
+      subtitle: 'Ba giai đoạn chính trong chu kỳ Quản lý Hiệu quả Công việc tại MoMo',
+      m1_title: 'Thiết lập Mục tiêu (Goal Setting)',
+      m1_desc: 'Giai đoạn giúp nhân viên và quản lý thống nhất mục tiêu, kỳ vọng và tiêu chí thành công.',
+      m2_title: 'Đánh giá giữa năm (Mid-year Review)',
+      m2_desc: 'Cột mốc để ghi nhận nỗ lực, nhìn lại tiến độ và xác định những điểm có thể làm tốt hơn.',
+      m3_title: 'Đánh giá cuối năm (Year-end Review)',
+      m3_desc: 'Giai đoạn tổng kết thành tựu, ghi nhận đóng góp và làm cơ sở cho các quyết định tưởng thưởng.',
+    },
+  },
+  {
+    key: 'library', visKey: 'library_visible',
+    contentKey: 'content_library',
+    name: 'Thư viện học tập', icon: 'fa-book-open', color: '#a50064',
+    desc: '6 category cards (nút Học ngay)',
+    defaultContent: {
+      eyebrow: 'Thư viện',
+      title: 'Thư viện *học tập*',
+      subtitle: 'Chọn một chủ đề để xem các hướng dẫn chi tiết bên trong',
+      cats: [
+        { key: 'overview',     title: 'Quy trình tổng quan',              desc: 'Bức tranh tổng thể về quy trình Quản lý Hiệu quả Công việc tại MoMo.', roles: 'Toàn bộ nhân sự' },
+        { key: 'goal-setting', title: 'Hướng dẫn Thiết lập mục tiêu',     desc: 'Cách thiết lập, cascade và viết mục tiêu hiệu quả cho cả nhân viên và quản lý.', roles: 'Nhân viên · Quản lý' },
+        { key: 'mid-year',     title: 'Hướng dẫn Đánh giá giữa năm',      desc: 'Self-assessment, đánh giá tiến độ và điều chỉnh mục tiêu giữa chu kỳ.', roles: 'Nhân viên · Quản lý' },
+        { key: 'year-end',     title: 'Hướng dẫn Đánh giá cuối năm',      desc: 'Chuẩn bị nội dung, đánh giá hiệu quả cuối năm và phản hồi cho nhân viên.', roles: 'Nhân viên · Quản lý' },
+        { key: 'hrm',          title: 'Hướng dẫn về hệ thống HRM',        desc: 'Cách sử dụng hệ thống HRM để thực hiện các bước trong chu kỳ đánh giá.', roles: 'Toàn bộ nhân sự' },
+        { key: 'feedback',     title: 'Văn hóa phản hồi hiệu quả',        desc: 'Cách cho, nhận phản hồi và vai trò của quản lý trong việc thúc đẩy văn hóa phản hồi.', roles: 'Toàn bộ nhân sự' },
+      ],
+    },
+  },
+  {
+    key: 'journey', visKey: 'journey_visible',
+    contentKey: 'content_journey',
+    name: 'Lộ trình theo vai trò', icon: 'fa-route', color: '#7759d2',
+    desc: '4 role tiles (NV / QL trực tiếp / Cấp 2 / HOD)',
+    defaultContent: {
+      eyebrow: 'Lộ trình',
+      title: 'Lộ trình học tập theo *vai trò*',
+      subtitle: 'Chọn vai trò của bạn để được gợi ý các module nên học',
+    },
+  },
+  {
+    key: 'support', visKey: 'support_visible',
+    contentKey: 'content_support',
+    name: 'Hỗ trợ (FAQ + Liên hệ)', icon: 'fa-headset', color: '#0e7490',
+    desc: 'FAQ accordion, liên hệ IT & LnOD',
+    defaultContent: {
+      eyebrow: 'Hỗ trợ',
+      title: 'Bạn cần *hỗ trợ*?',
+      subtitle: 'Tham khảo FAQ hoặc liên hệ trực tiếp với đầu mối phù hợp',
+      faq: [
+        { q: 'Quy trình Quản lý Hiệu quả Công việc tại MoMo gồm mấy giai đoạn?', a: 'Gồm 3 giai đoạn chính: Goal Setting (đầu chu kỳ), Mid-year Review (giữa chu kỳ) và Year-end Review (cuối chu kỳ). Xuyên suốt là văn hóa Cho và nhận phản hồi liên tục (Continuous Feedback).' },
+        { q: 'Tôi cần làm gì khi mới bắt đầu chu kỳ đánh giá?', a: 'Bạn cần thiết lập mục tiêu cá nhân (cascade từ mục tiêu team), trao đổi và thống nhất với quản lý trực tiếp, sau đó nhập lên hệ thống HRM trước deadline được công bố.' },
+        { q: 'Self-assessment được làm khi nào?', a: 'Self-assessment thực hiện ở 2 thời điểm: giữa năm (Mid-year Review) để đánh giá tiến độ và cuối năm (Year-end Review) để tổng kết kết quả.' },
+        { q: 'Nếu gặp lỗi đăng nhập hệ thống HRM thì liên hệ ai?', a: 'Mọi vấn đề kỹ thuật về hệ thống HRM hãy liên hệ bộ phận IT. Câu hỏi về quy trình hoặc cách viết mục tiêu thì liên hệ LnOD.' },
+        { q: 'Tôi có thể chỉnh sửa mục tiêu sau khi đã thiết lập không?', a: 'Có. Mục tiêu có thể được điều chỉnh trong kỳ Mid-year Review nếu có thay đổi lớn về phạm vi công việc. Mọi điều chỉnh cần được thống nhất với quản lý và cập nhật trên hệ thống HRM.' },
+        { q: 'Phản hồi liên tục (Continuous Feedback) là gì?', a: 'Là văn hóa cho và nhận phản hồi xuyên suốt cả năm — không chỉ tại các kỳ đánh giá chính thức. Mục đích giúp cải thiện hiệu quả công việc nhanh hơn và xây dựng mối quan hệ tin cậy.' },
+      ],
+    },
+  },
+];
+
+let _sectionContent = {}; // contentKey → parsed object
+
+// ── Render the section manager accordion ──────────────────
+function renderSectionMgr(settingsMap) {
+  const container = document.getElementById('section-mgr');
+  if (!container) return;
+  container.innerHTML = SECTION_META.map(s => {
+    const on = settingsMap[s.visKey] !== 'false';
+    return `<div class="smgr-row" id="smgr-${esc(s.key)}">
+      <div class="smgr-head">
+        <div class="smgr-left">
+          <div class="smgr-icon" style="background:${s.color}18;color:${s.color}">
+            <i class="fa-solid ${s.icon}"></i>
+          </div>
+          <div>
+            <div class="smgr-name">${esc(s.name)}</div>
+            <div class="smgr-desc">${esc(s.desc)}</div>
+          </div>
+        </div>
+        <div class="smgr-right">
+          <span class="smgr-status ${on ? 'smgr-on' : 'smgr-off'}" id="smgr-status-${esc(s.key)}">${on ? '● Hiển thị' : '○ Ẩn'}</span>
+          <label class="settings-toggle" title="${on ? 'Đang hiển thị — click để ẩn' : 'Đang ẩn — click để hiển thị'}">
+            <input type="checkbox" id="smgr-toggle-${esc(s.key)}" ${on ? 'checked' : ''}
+              onchange="saveSectionVisible('${esc(s.visKey)}', '${esc(s.key)}', this.checked)">
+            <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+          </label>
+          <button class="smgr-edit-btn" onclick="toggleSectionEditor('${esc(s.key)}')">
+            <i class="fa-solid fa-pen-to-square"></i> Sửa nội dung
+          </button>
+        </div>
+      </div>
+      <div class="smgr-editor" id="seditor-${esc(s.key)}" data-loaded=""></div>
+    </div>`;
+  }).join('');
+}
+
+// ── Toggle section visibility ─────────────────────────────
+async function saveSectionVisible(visKey, sectionKey, on) {
+  await saveSetting(visKey, on);
+  const statusEl = document.getElementById('smgr-status-' + sectionKey);
+  if (statusEl) {
+    statusEl.textContent = on ? '● Hiển thị' : '○ Ẩn';
+    statusEl.className = 'smgr-status ' + (on ? 'smgr-on' : 'smgr-off');
+  }
+}
+
+// ── Toggle inline editor ──────────────────────────────────
+async function toggleSectionEditor(key) {
+  const editor = document.getElementById('seditor-' + key);
+  if (!editor) return;
+  const isOpen = editor.classList.contains('seditor-open');
+  // Close all first
+  document.querySelectorAll('.smgr-editor.seditor-open').forEach(el => {
+    el.classList.remove('seditor-open');
+  });
+  if (isOpen) return; // was open → just close
+  // Build editor if not yet loaded
+  if (!editor.dataset.loaded) {
+    const meta = SECTION_META.find(s => s.key === key);
+    if (!meta) return;
+    let content = Object.assign({}, meta.defaultContent);
+    if (_sectionContent[meta.contentKey]) {
+      content = Object.assign({}, meta.defaultContent, _sectionContent[meta.contentKey]);
+      if (meta.key === 'library' && _sectionContent[meta.contentKey].cats) {
+        content.cats = _sectionContent[meta.contentKey].cats;
+      }
+      if (meta.key === 'support' && _sectionContent[meta.contentKey].faq) {
+        content.faq = _sectionContent[meta.contentKey].faq;
+      }
+    }
+    editor.innerHTML = buildSectionEditor(meta, content);
+    editor.dataset.loaded = '1';
+  }
+  editor.classList.add('seditor-open');
+  editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── Build editor HTML ─────────────────────────────────────
+function buildSectionEditor(meta, content) {
+  const CAT_COLORS = {
+    'overview': '#1c66bb', 'goal-setting': '#a50064', 'mid-year': '#92400e',
+    'year-end': '#365314', 'hrm': '#0e7490', 'feedback': '#5b21b6',
+  };
+
+  let html = `<div class="seditor-form">`;
+
+  // ── Common header fields ──
+  html += `<div class="seditor-group-label"><i class="fa-solid fa-heading"></i> Tiêu đề & Mô tả section</div>
+  <div class="seditor-header-fields">
+    <div class="form-group">
+      <label>Badge eyebrow</label>
+      <input type="text" class="sed-eyebrow" value="${esc(content.eyebrow || '')}">
+    </div>
+    <div class="form-group">
+      <label>Tiêu đề chính (H2)</label>
+      <input type="text" class="sed-title" value="${esc(content.title || '')}">
+      <div class="sed-hint">Dùng <code>*từ*</code> để in nghiêng màu hồng — VD: <code>Thư viện *học tập*</code></div>
+    </div>
+    <div class="form-group">
+      <label>Mô tả phụ</label>
+      <input type="text" class="sed-subtitle" value="${esc(content.subtitle || '')}">
+    </div>
+  </div>`;
+
+  // ── PM Overview: 3 milestones ──
+  if (meta.key === 'pm_overview') {
+    const milestones = [
+      { n: 1, label: 'Goal Setting',    color: '#1c66bb' },
+      { n: 2, label: 'Mid-year Review', color: '#a50064' },
+      { n: 3, label: 'Year-end Review', color: '#5ea12a' },
+    ];
+    html += `<div class="seditor-group-label" style="margin-top:20px"><i class="fa-solid fa-list-check"></i> 3 Milestone cards</div>
+    <div class="seditor-milestones">`;
+    milestones.forEach(({ n, label, color }) => {
+      html += `<div class="seditor-milestone-card">
+        <div class="seditor-milestone-num" style="color:${color}">0${n} <span>${esc(label)}</span></div>
+        <div class="form-group"><label>Tiêu đề card</label>
+          <input type="text" class="sed-m${n}-title" value="${esc(content['m' + n + '_title'] || '')}"></div>
+        <div class="form-group"><label>Mô tả</label>
+          <textarea class="sed-m${n}-desc" rows="3">${esc(content['m' + n + '_desc'] || '')}</textarea></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Library: 6 category cards ──
+  if (meta.key === 'library') {
+    const cats = content.cats || meta.defaultContent.cats;
+    html += `<div class="seditor-group-label" style="margin-top:20px"><i class="fa-solid fa-grid-2"></i> 6 Category cards</div>
+    <div class="seditor-cats">`;
+    cats.forEach((cat, i) => {
+      const col = CAT_COLORS[cat.key] || '#666';
+      html += `<div class="seditor-cat-card" data-cat-idx="${i}">
+        <div class="seditor-cat-badge" style="background:${col}18;color:${col}"><i class="fa-solid fa-tag"></i> ${esc(cat.key)}</div>
+        <div class="form-group"><label>Tên danh mục</label>
+          <input type="text" class="sed-cat-title" value="${esc(cat.title || '')}"></div>
+        <div class="form-group"><label>Mô tả</label>
+          <textarea class="sed-cat-desc" rows="2">${esc(cat.desc || '')}</textarea></div>
+        <div class="form-group"><label>Vai trò (hiển thị trong card)</label>
+          <input type="text" class="sed-cat-roles" value="${esc(cat.roles || '')}"></div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Support: FAQ editor ──
+  if (meta.key === 'support') {
+    const faqItems = content.faq || [];
+    html += `<div class="seditor-group-label" style="margin-top:20px"><i class="fa-regular fa-circle-question"></i> Câu hỏi thường gặp (FAQ)</div>
+    <div class="seditor-faq-list" id="seditor-faq-list">`;
+    faqItems.forEach((item, i) => {
+      html += _faqItemHtml(i, item.q, item.a);
+    });
+    html += `</div>
+    <button class="btn-sm btn-block-sub" onclick="addFaqItemEditor()" style="margin-top:8px">
+      <i class="fa-solid fa-plus"></i> Thêm câu hỏi
+    </button>`;
+  }
+
+  // ── Footer ──
+  html += `<div class="seditor-footer">
+    <button class="btn btn-primary" onclick="saveSectionContent('${esc(meta.key)}')">
+      <i class="fa-solid fa-floppy-disk"></i> Lưu nội dung section
+    </button>
+    <button class="btn" onclick="toggleSectionEditor('${esc(meta.key)}')">
+      <i class="fa-solid fa-xmark"></i> Đóng
+    </button>
+  </div>`;
+  html += `</div>`; // /seditor-form
+  return html;
+}
+
+function _faqItemHtml(i, q, a) {
+  return `<div class="seditor-faq-item">
+    <div class="seditor-faq-num">Q${i + 1}</div>
+    <div class="seditor-faq-fields">
+      <div class="form-group"><label>Câu hỏi</label>
+        <input type="text" class="sed-faq-q" value="${esc(q || '')}" placeholder="Nhập câu hỏi..."></div>
+      <div class="form-group"><label>Câu trả lời</label>
+        <textarea class="sed-faq-a" rows="2" placeholder="Nhập câu trả lời...">${esc(a || '')}</textarea></div>
+    </div>
+    <button class="item-remove" onclick="this.closest('.seditor-faq-item').remove();_renumberFaq()" title="Xóa">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>`;
+}
+
+function addFaqItemEditor() {
+  const list = document.getElementById('seditor-faq-list');
+  if (!list) return;
+  const i = list.querySelectorAll('.seditor-faq-item').length;
+  list.insertAdjacentHTML('beforeend', _faqItemHtml(i, '', ''));
+  list.querySelector('.seditor-faq-item:last-child .sed-faq-q')?.focus();
+}
+
+function _renumberFaq() {
+  const list = document.getElementById('seditor-faq-list');
+  if (!list) return;
+  list.querySelectorAll('.seditor-faq-item').forEach((item, i) => {
+    const numEl = item.querySelector('.seditor-faq-num');
+    if (numEl) numEl.textContent = 'Q' + (i + 1);
+  });
+}
+
+// ── Collect + save section content ───────────────────────
+async function saveSectionContent(key) {
+  const meta = SECTION_META.find(s => s.key === key);
+  if (!meta) return;
+  const editor = document.getElementById('seditor-' + key);
+  if (!editor) return;
+
+  const getVal = cls => (editor.querySelector(cls) || {}).value?.trim() || '';
+
+  const content = {
+    eyebrow:  getVal('.sed-eyebrow'),
+    title:    getVal('.sed-title'),
+    subtitle: getVal('.sed-subtitle'),
+  };
+
+  if (key === 'pm_overview') {
+    [1, 2, 3].forEach(n => {
+      content['m' + n + '_title'] = getVal('.sed-m' + n + '-title');
+      content['m' + n + '_desc']  = getVal('.sed-m' + n + '-desc');
+    });
+  }
+
+  if (key === 'library') {
+    content.cats = [];
+    editor.querySelectorAll('.seditor-cat-card').forEach((card, i) => {
+      const catDefault = meta.defaultContent.cats[i];
+      content.cats.push({
+        key:   catDefault ? catDefault.key : String(i),
+        title: (card.querySelector('.sed-cat-title') || {}).value?.trim() || '',
+        desc:  (card.querySelector('.sed-cat-desc')  || {}).value?.trim() || '',
+        roles: (card.querySelector('.sed-cat-roles') || {}).value?.trim() || '',
+      });
+    });
+  }
+
+  if (key === 'support') {
+    content.faq = [];
+    editor.querySelectorAll('.seditor-faq-item').forEach(item => {
+      const q = (item.querySelector('.sed-faq-q') || {}).value?.trim() || '';
+      const a = (item.querySelector('.sed-faq-a') || {}).value?.trim() || '';
+      if (q) content.faq.push({ q, a });
+    });
+  }
+
+  const saveBtn = editor.querySelector('.btn-primary');
+  const oldHtml = saveBtn ? saveBtn.innerHTML : '';
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<span class="spinner"></span> Đang lưu...'; }
+  try {
+    const { error } = await sb.from('site_settings')
+      .upsert({ key: meta.contentKey, value: JSON.stringify(content), updated_at: new Date().toISOString() }, { onConflict: 'key' });
+    if (error) throw error;
+    _sectionContent[meta.contentKey] = content;
+    showToast('✅ Đã lưu nội dung "' + meta.name + '"', 'success');
+    editor.dataset.loaded = ''; // force re-render next open
+    editor.classList.remove('seditor-open');
+  } catch (err) {
+    showToast('Lỗi lưu: ' + err.message, 'error');
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = oldHtml; }
+  }
+}
+
 // ════════════════════════════════════════
 //  SITE SETTINGS
 // ════════════════════════════════════════
@@ -1503,22 +1842,16 @@ async function loadSiteSettingsAdmin() {
     const phase = map['current_pm_phase'] || '';
     document.querySelectorAll('input[name="pm_phase"]').forEach(r => { r.checked = (r.value === phase); });
 
-    // Section visibility toggles
-    const sectionToggles = [
-      { key: 'pm_overview_visible', id: 'toggle-pm-overview', statusId: 'status-pm-overview' },
-      { key: 'library_visible',     id: 'toggle-library',     statusId: 'status-library'     },
-      { key: 'journey_visible',     id: 'toggle-journey',     statusId: 'status-journey'     },
-      { key: 'support_visible',     id: 'toggle-support',     statusId: 'status-support'     },
-    ];
-    sectionToggles.forEach(({ key, id, statusId }) => {
-      const el = document.getElementById(id);
-      const st = document.getElementById(statusId);
-      if (!el) return;
-      // Default visible = true (sections are shown by default unless explicitly set false)
-      const on = map[key] !== 'false';
-      el.checked = on;
-      if (st) st.textContent = on ? 'Đang hiển thị' : 'Đang ẩn';
+    // Load section content into cache
+    _sectionContent = {};
+    SECTION_META.forEach(s => {
+      if (map[s.contentKey]) {
+        try { _sectionContent[s.contentKey] = JSON.parse(map[s.contentKey]); } catch {}
+      }
     });
+
+    // Render section manager accordion
+    renderSectionMgr(map);
 
     // Contact info
     const itTa   = document.getElementById('it-contacts-ta');

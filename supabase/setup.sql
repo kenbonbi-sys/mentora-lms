@@ -190,6 +190,12 @@ INSERT INTO public.site_settings (key, value) VALUES ('support_visible',     'tr
 INSERT INTO public.site_settings (key, value) VALUES ('it_contacts',   '["sang.dang","phuong.nguyen36","anh.bui3"]') ON CONFLICT (key) DO NOTHING;
 INSERT INTO public.site_settings (key, value) VALUES ('lnod_contacts', '["tran.nguyen17","linh.tran5"]')             ON CONFLICT (key) DO NOTHING;
 
+-- Section content (empty = use defaults in i18n.js)
+INSERT INTO public.site_settings (key, value) VALUES ('content_pm_overview', '{}') ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('content_library',     '{}') ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('content_journey',     '{}') ON CONFLICT (key) DO NOTHING;
+INSERT INTO public.site_settings (key, value) VALUES ('content_support',     '{}') ON CONFLICT (key) DO NOTHING;
+
 -- After running this SQL:
 -- 1. Create an admin user in Authentication > Users.
 -- 2. Copy Project URL and anon key from Settings > API.

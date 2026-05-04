@@ -438,57 +438,15 @@
           <i class="fa-solid fa-circle-check"></i> Đã lưu cài đặt
         </div>
 
-        <!-- ── Section visibility ── -->
+        <!-- ── Section management (toggle + content editor) ── -->
         <div class="admin-card" style="margin-top:20px">
           <div class="admin-card-header">
-            <div class="admin-card-title"><i class="fa-solid fa-layout" style="color:var(--accent)"></i> Hiện / Ẩn sections</div>
-            <span style="font-size:12px;color:var(--text-tertiary)">Thay đổi có hiệu lực ngay với tất cả người dùng</span>
+            <div class="admin-card-title"><i class="fa-solid fa-layout" style="color:var(--accent)"></i> Quản lý sections</div>
+            <span style="font-size:12px;color:var(--text-tertiary)">Bật/tắt và chỉnh nội dung từng section trên trang học viên</span>
           </div>
-          <div class="section-toggles-grid">
-            <div class="section-toggle-card">
-              <div class="section-toggle-info">
-                <div class="section-toggle-name"><i class="fa-solid fa-diagram-project" style="color:#1c66bb;margin-right:5px"></i>Quy trình tổng quan</div>
-                <div class="section-toggle-desc">3 milestone + Continuous Feedback bar</div>
-              </div>
-              <label class="settings-toggle">
-                <input type="checkbox" id="toggle-pm-overview" onchange="saveSetting('pm_overview_visible', this.checked)">
-                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-                <span class="settings-toggle-status" id="status-pm-overview">Đang tải...</span>
-              </label>
-            </div>
-            <div class="section-toggle-card">
-              <div class="section-toggle-info">
-                <div class="section-toggle-name"><i class="fa-solid fa-book-open" style="color:#a50064;margin-right:5px"></i>Thư viện học tập</div>
-                <div class="section-toggle-desc">6 category cards (Học ngay)</div>
-              </div>
-              <label class="settings-toggle">
-                <input type="checkbox" id="toggle-library" onchange="saveSetting('library_visible', this.checked)">
-                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-                <span class="settings-toggle-status" id="status-library">Đang tải...</span>
-              </label>
-            </div>
-            <div class="section-toggle-card">
-              <div class="section-toggle-info">
-                <div class="section-toggle-name"><i class="fa-solid fa-route" style="color:#7759d2;margin-right:5px"></i>Lộ trình theo vai trò</div>
-                <div class="section-toggle-desc">4 role tiles (NV / QL / cấp 2 / HOD)</div>
-              </div>
-              <label class="settings-toggle">
-                <input type="checkbox" id="toggle-journey" onchange="saveSetting('journey_visible', this.checked)">
-                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-                <span class="settings-toggle-status" id="status-journey">Đang tải...</span>
-              </label>
-            </div>
-            <div class="section-toggle-card">
-              <div class="section-toggle-info">
-                <div class="section-toggle-name"><i class="fa-solid fa-headset" style="color:#0e7490;margin-right:5px"></i>Hỗ trợ (FAQ + Liên hệ)</div>
-                <div class="section-toggle-desc">FAQ modal, Liên hệ IT và LnOD</div>
-              </div>
-              <label class="settings-toggle">
-                <input type="checkbox" id="toggle-support" onchange="saveSetting('support_visible', this.checked)">
-                <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
-                <span class="settings-toggle-status" id="status-support">Đang tải...</span>
-              </label>
-            </div>
+          <div class="section-mgr" id="section-mgr">
+            <!-- Rendered by renderSectionMgr() in admin.js -->
+            <div style="padding:20px;color:var(--text-tertiary);font-size:13px"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>
           </div>
         </div>
 

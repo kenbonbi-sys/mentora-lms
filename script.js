@@ -1116,6 +1116,90 @@ function loadSiteSettings() {
     if (jrySec) jrySec.style.display = map['journey_visible']     === 'false' ? 'none' : '';
     if (supSec) supSec.style.display = map['support_visible']     === 'false' ? 'none' : '';
 
+    // ── Section content overrides ───────────────────────────
+    var _applyText = function (sel, val) {
+      if (!val) return;
+      document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
+    };
+    var _applyHtml = function (sel, val) {
+      if (!val) return;
+      document.querySelectorAll(sel).forEach(function (el) { el.innerHTML = val; });
+    };
+    var _parseSigTitle = function (text) {
+      return text.replace(/\*([^*]+)\*/g, '<span class="sig">$1</span>');
+    };
+
+    // PM Overview
+    if (map['content_pm_overview']) {
+      try {
+        var cPm = JSON.parse(map['content_pm_overview']);
+        _applyText('[data-i18n="pm.eyebrow"]', cPm.eyebrow);
+        _applyHtml('[data-i18n="pm.title"]',    _parseSigTitle(cPm.title || ''));
+        _applyText('[data-i18n="pm.subtitle"]', cPm.subtitle);
+        [1,2,3].forEach(function (n) {
+          _applyText('[data-i18n="pm.m'+n+'.title"]', cPm['m'+n+'_title']);
+          _applyText('[data-i18n="pm.m'+n+'.desc"]',  cPm['m'+n+'_desc']);
+        });
+      } catch (e) {}
+    }
+
+    // Library
+    if (map['content_library']) {
+      try {
+        var cLib = JSON.parse(map['content_library']);
+        _applyText('[data-i18n="lib.eyebrow"]',  cLib.eyebrow);
+        _applyHtml('[data-i18n="lib.title"]',     _parseSigTitle(cLib.title || ''));
+        _applyText('[data-i18n="lib.subtitle"]',  cLib.subtitle);
+        if (Array.isArray(cLib.cats)) {
+          var libCards = document.querySelectorAll('.lib-card');
+          cLib.cats.forEach(function (cat, i) {
+            if (!libCards[i]) return;
+            var titleEl = libCards[i].querySelector('.lib-card-title');
+            var descEl  = libCards[i].querySelector('.lib-card-desc');
+            var rolesEl = libCards[i].querySelector('.lib-card-roles span');
+            if (titleEl && cat.title) titleEl.textContent = cat.title;
+            if (descEl  && cat.desc)  descEl.textContent  = cat.desc;
+            if (rolesEl && cat.roles) rolesEl.textContent = cat.roles;
+          });
+        }
+      } catch (e) {}
+    }
+
+    // Journey
+    if (map['content_journey']) {
+      try {
+        var cJrn = JSON.parse(map['content_journey']);
+        _applyText('[data-i18n="journey.eyebrow"]',  cJrn.eyebrow);
+        _applyHtml('[data-i18n="journey.title"]',     _parseSigTitle(cJrn.title || ''));
+        _applyText('[data-i18n="journey.subtitle"]',  cJrn.subtitle);
+      } catch (e) {}
+    }
+
+    // Support
+    if (map['content_support']) {
+      try {
+        var cSup = JSON.parse(map['content_support']);
+        _applyText('[data-i18n="sup.eyebrow"]',  cSup.eyebrow);
+        _applyHtml('[data-i18n="sup.title"]',     _parseSigTitle(cSup.title || ''));
+        _applyText('[data-i18n="sup.subtitle"]',  cSup.subtitle);
+        if (Array.isArray(cSup.faq) && cSup.faq.length) {
+          var faqBody = document.querySelector('.faq-body');
+          if (faqBody) {
+            faqBody.innerHTML = cSup.faq.map(function (item, i) {
+              return '<div class="faq-item' + (i === 0 ? ' faq-item--open' : '') + '">'
+                + '<button class="faq-summary" aria-expanded="' + (i === 0 ? 'true' : 'false') + '" onclick="toggleFaq(this)">'
+                + '<span>' + (item.q || '') + '</span>'
+                + '<i class="fa-solid fa-chevron-down"></i>'
+                + '</button>'
+                + '<div class="faq-answer"><div class="faq-answer-inner">'
+                + '<p>' + (item.a || '') + '</p>'
+                + '</div></div></div>';
+            }).join('');
+          }
+        }
+      } catch (e) {}
+    }
+
     // Contact info — IT
     if (map['it_contacts']) {
       try {
