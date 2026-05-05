@@ -6,8 +6,59 @@
   <title>Mentora LMS — Compliance Training Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <!-- Lock UI before scripts run — prevents flash of unsecured content -->
+  <script>document.documentElement.classList.add('js-auth-pending');</script>
 </head>
 <body>
+
+  <!-- ══ AUTH GATE ══ -->
+  <div id="auth-gate" class="auth-gate">
+    <div class="auth-bg-glow auth-bg-glow--left"></div>
+    <div class="auth-bg-glow auth-bg-glow--right"></div>
+    <div class="auth-card">
+      <img src="/assets/images/logo/logo-primary.png" alt="MoMo" class="auth-logo">
+      <div class="auth-card-body">
+        <h1 class="auth-title">Mentora LMS</h1>
+        <p class="auth-subtitle">Hệ thống đào tạo nội bộ dành riêng cho MoMoers</p>
+
+        <!-- Email form state -->
+        <div id="auth-form-state">
+          <p class="auth-desc">Nhập địa chỉ email công ty để nhận link đăng nhập.</p>
+          <div class="auth-input-group">
+            <div class="auth-input-wrap">
+              <i class="fa-solid fa-envelope auth-input-icon"></i>
+              <input type="email" id="auth-email-input" class="auth-email-input"
+                     placeholder="ho.ten@momo.com.vn" autocomplete="email"
+                     onkeydown="if(event.key==='Enter')sendMagicLink()">
+            </div>
+            <div id="auth-error-msg" class="auth-error-msg" style="display:none">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span id="auth-error-text"></span>
+            </div>
+          </div>
+          <button class="auth-send-btn" id="auth-send-btn" onclick="sendMagicLink()">
+            <span>Gửi link đăng nhập</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <p class="auth-hint">
+            <i class="fa-solid fa-shield-halved"></i>
+            Chỉ email <strong>@momo.com.vn</strong> hoặc <strong>@mservice.com.vn</strong> được phép truy cập.
+          </p>
+        </div>
+
+        <!-- Success state -->
+        <div id="auth-success-state" style="display:none">
+          <div class="auth-success-icon"><i class="fa-solid fa-paper-plane"></i></div>
+          <h3 class="auth-success-title">Kiểm tra hộp thư của bạn</h3>
+          <p class="auth-success-desc">
+            Chúng tôi đã gửi magic link đến<br>
+            <strong id="auth-sent-email"></strong>
+          </p>
+          <p class="auth-success-note">Nhấp vào link trong email để đăng nhập tức thì. Không thấy email? Kiểm tra thư mục spam hoặc <button class="auth-link-btn" onclick="showAuthForm()">thử lại</button>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Reading progress bar -->
   <div id="reading-progress"><div id="reading-progress-bar"></div></div>
@@ -38,7 +89,12 @@
         <button type="button" class="lang-btn active" data-lang="vi">VI</button>
         <button type="button" class="lang-btn" data-lang="en">EN</button>
       </div>
-      <div class="nav-actions" id="nav-actions"></div>
+      <div class="nav-actions" id="nav-actions">
+        <button id="auth-logout-btn" class="auth-logout-btn" onclick="signOut()" style="display:none" title="Đăng xuất">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="auth-logout-label">Đăng xuất</span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -783,6 +839,7 @@
 
   <div class="toast-wrap" id="toast-wrap" role="status" aria-live="polite" aria-atomic="true"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
   <script src="i18n.js" defer></script>
   <script src="script.js" defer></script>
 </body>

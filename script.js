@@ -273,11 +273,185 @@ var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJl
 
 function _sbReady() { return SB_URL && SB_URL.indexOf('YOUR_PROJECT') === -1; }
 
+// ── Supabase JS client (for auth; data ops still use raw fetch) ──
+var _sbClient = null;
+(function () {
+  try {
+    if (typeof supabase !== 'undefined' && supabase.createClient && _sbReady()) {
+      _sbClient = supabase.createClient(SB_URL, SB_ANON);
+      window._sbClient = _sbClient;
+    }
+  } catch (e) { /* SDK not loaded */ }
+})();
+
 function _getSession() {
   if (!window._sessionId) {
     window._sessionId = 'sess_' + Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
   return window._sessionId;
+}
+
+// ════════════════════════════════════════
+//  AUTH GATE — Magic Link (domain-restricted)
+//  Only @momo.com.vn and @mservice.com.vn allowed
+// ════════════════════════════════════════
+var _appStarted = false;
+
+function _startApp() {
+  if (_appStarted) return;
+  _appStarted = true;
+  updateStreak();
+  loadAnnouncement();
+  loadSiteSettings();
+  loadModules();
+  setTimeout(function () {
+    var params = new URLSearchParams(window.location.search);
+    var mid    = params.get('module');
+    if (!mid) return;
+    var tryOpen = function (attempts) {
+      var m = allModules.find(function (x) { return x.id === mid; });
+      if (m) {
+        openDetail(mid);
+      } else if (attempts > 0) {
+        setTimeout(function () { tryOpen(attempts - 1); }, 300);
+      } else {
+        showToast(_t('toast.modNotFound', 'Không tìm thấy module "{id}". Link có thể đã hết hạn.').replace('{id}', mid), 'error');
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+    };
+    tryOpen(10);
+  }, 200);
+}
+
+function _unlockApp() {
+  document.documentElement.classList.remove('js-auth-pending');
+  var gate = document.getElementById('auth-gate');
+  if (gate) gate.style.display = 'none';
+  var logoutBtn = document.getElementById('auth-logout-btn');
+  if (logoutBtn) logoutBtn.style.display = '';
+  _startApp();
+}
+
+function _lockApp() {
+  document.documentElement.classList.add('js-auth-pending');
+  var gate = document.getElementById('auth-gate');
+  if (gate) {
+    gate.style.display = 'flex';
+    var fs = document.getElementById('auth-form-state');
+    var ss = document.getElementById('auth-success-state');
+    if (fs) fs.style.display = '';
+    if (ss) ss.style.display = 'none';
+    var inp = document.getElementById('auth-email-input');
+    if (inp) inp.value = '';
+    var errEl = document.getElementById('auth-error-msg');
+    if (errEl) errEl.style.display = 'none';
+    var btn = document.getElementById('auth-send-btn');
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span>Gửi link đăng nhập</span><i class="fa-solid fa-arrow-right"></i>'; }
+  }
+  var logoutBtn = document.getElementById('auth-logout-btn');
+  if (logoutBtn) logoutBtn.style.display = 'none';
+}
+
+function initAuth() {
+  // No Supabase SDK or no config → bypass auth (local dev)
+  if (!_sbClient) {
+    _unlockApp();
+    return;
+  }
+
+  // Check for existing session (handles page refresh)
+  _sbClient.auth.getSession().then(function (result) {
+    var session = result && result.data && result.data.session;
+    if (session) {
+      _unlockApp();
+    }
+    // else: auth gate stays visible (class already on html from inline script)
+  }).catch(function () {
+    // Network error — still require auth (don't unlock)
+  });
+
+  // Listen for auth state changes — handles magic link redirect hash
+  _sbClient.auth.onAuthStateChange(function (event, session) {
+    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+      _unlockApp();
+    } else if (event === 'SIGNED_OUT') {
+      _lockApp();
+    }
+  });
+}
+
+function sendMagicLink() {
+  var inp = document.getElementById('auth-email-input');
+  var email = (inp ? inp.value : '').trim().toLowerCase();
+
+  // Basic validation
+  if (!email || email.indexOf('@') === -1) {
+    _showAuthError('Vui lòng nhập địa chỉ email hợp lệ.');
+    return;
+  }
+
+  // Domain restriction
+  if (!email.endsWith('@momo.com.vn') && !email.endsWith('@mservice.com.vn')) {
+    _showAuthError('Email phải có đuôi @momo.com.vn hoặc @mservice.com.vn');
+    return;
+  }
+
+  var btn = document.getElementById('auth-send-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Đang gửi...'; }
+  var errEl = document.getElementById('auth-error-msg');
+  if (errEl) errEl.style.display = 'none';
+
+  if (!_sbClient) {
+    _showAuthError('Lỗi cấu hình hệ thống. Vui lòng liên hệ IT.');
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span>Gửi link đăng nhập</span><i class="fa-solid fa-arrow-right"></i>'; }
+    return;
+  }
+
+  _sbClient.auth.signInWithOtp({
+    email: email,
+    options: { emailRedirectTo: window.location.origin + window.location.pathname }
+  }).then(function (result) {
+    if (result.error) {
+      _showAuthError(result.error.message || 'Có lỗi xảy ra. Vui lòng thử lại.');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span>Gửi link đăng nhập</span><i class="fa-solid fa-arrow-right"></i>'; }
+      return;
+    }
+    // Show success state
+    var sentEl = document.getElementById('auth-sent-email');
+    if (sentEl) sentEl.textContent = email;
+    var fs = document.getElementById('auth-form-state');
+    var ss = document.getElementById('auth-success-state');
+    if (fs) fs.style.display = 'none';
+    if (ss) ss.style.display = '';
+  }).catch(function () {
+    _showAuthError('Có lỗi xảy ra. Vui lòng thử lại.');
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span>Gửi link đăng nhập</span><i class="fa-solid fa-arrow-right"></i>'; }
+  });
+}
+
+function showAuthForm() {
+  var fs = document.getElementById('auth-form-state');
+  var ss = document.getElementById('auth-success-state');
+  var errEl = document.getElementById('auth-error-msg');
+  var btn = document.getElementById('auth-send-btn');
+  if (fs) fs.style.display = '';
+  if (ss) ss.style.display = 'none';
+  if (errEl) errEl.style.display = 'none';
+  if (btn) { btn.disabled = false; btn.innerHTML = '<span>Gửi link đăng nhập</span><i class="fa-solid fa-arrow-right"></i>'; }
+}
+
+function _showAuthError(msg) {
+  var errEl = document.getElementById('auth-error-msg');
+  var errText = document.getElementById('auth-error-text');
+  if (errEl && errText) { errText.textContent = msg; errEl.style.display = ''; }
+}
+
+function signOut() {
+  if (_sbClient) {
+    _sbClient.auth.signOut().then(function () { _lockApp(); }).catch(function () { _lockApp(); });
+  } else {
+    _lockApp();
+  }
 }
 
 function _sbInsert(table, payload) {
@@ -669,8 +843,8 @@ function getStreak() {
 // ════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', function () {
 
-  // ── Streak — counted on every daily visit ──
-  updateStreak();
+  // ── Auth Gate — must be first; gates all data loading ──
+  initAuth();
 
   // ── Full-screen menu overlay (brandbook style) ──
   var lastDrawerTrigger = null;
@@ -1058,33 +1232,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ── Announcement ──
-  loadAnnouncement();
-
-  // ── Site settings (show/hide modules section) ──
-  loadSiteSettings();
-
-  // ── Load modules, then check URL param ──
-  loadModules();
-  setTimeout(function () {
-    var params = new URLSearchParams(window.location.search);
-    var mid    = params.get('module');
-    if (!mid) return;
-    var tryOpen = function (attempts) {
-      var m = allModules.find(function (x) { return x.id === mid; });
-      if (m) {
-        openDetail(mid);
-      } else if (attempts > 0) {
-        setTimeout(function () { tryOpen(attempts - 1); }, 300);
-      } else {
-        // Module not found after all retries — show helpful message
-        showToast(_t('toast.modNotFound', 'Không tìm thấy module "{id}". Link có thể đã hết hạn.').replace('{id}', mid), 'error');
-        // Clean URL so user isn't confused on refresh
-        window.history.replaceState({}, '', window.location.pathname);
-      }
-    };
-    tryOpen(10);
-  }, 200);
+  // ── Data loading is handled by _startApp() ──
+  // initAuth() (called above) invokes _startApp() once auth is confirmed.
+  // _startApp() calls: updateStreak, loadAnnouncement, loadSiteSettings, loadModules
 });
 
 // ════════════════════════════════════════
