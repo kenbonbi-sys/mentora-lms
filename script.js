@@ -293,7 +293,7 @@ function _getSession() {
 
 // ════════════════════════════════════════
 //  AUTH GATE — Magic Link (domain-restricted)
-//  Only @momo.com.vn and @mservice.com.vn allowed
+//  Only @momo.vn and @mservice.com.vn allowed
 // ════════════════════════════════════════
 var _appStarted = false;
 
@@ -391,8 +391,8 @@ function sendMagicLink() {
   }
 
   // Domain restriction
-  if (!email.endsWith('@momo.com.vn') && !email.endsWith('@mservice.com.vn')) {
-    _showAuthError('Email phải có đuôi @momo.com.vn hoặc @mservice.com.vn');
+  if (!email.endsWith('@momo.vn') && !email.endsWith('@mservice.com.vn')) {
+    _showAuthError('Email phải có đuôi @momo.vn hoặc @mservice.com.vn');
     return;
   }
 
