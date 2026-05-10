@@ -1615,13 +1615,12 @@ async function toggleSectionEditor(key) {
     if (!meta) return;
     let content = Object.assign({}, meta.defaultContent);
     if (_sectionContent[meta.contentKey]) {
-      content = Object.assign({}, meta.defaultContent, _sectionContent[meta.contentKey]);
-      if (meta.key === 'library' && _sectionContent[meta.contentKey].cats) {
-        content.cats = _sectionContent[meta.contentKey].cats;
-      }
-      if (meta.key === 'support' && _sectionContent[meta.contentKey].faq) {
-        content.faq = _sectionContent[meta.contentKey].faq;
-      }
+      const saved = _sectionContent[meta.contentKey];
+      Object.keys(saved).forEach(function(k) {
+        // Skip empty strings so defaultContent fills the gap (prevents blank eyebrow when DB has '')
+        if (typeof saved[k] === 'string' && saved[k] === '') return;
+        content[k] = saved[k];
+      });
     }
     editor.innerHTML = buildSectionEditor(meta, content);
     editor.dataset.loaded = '1';
