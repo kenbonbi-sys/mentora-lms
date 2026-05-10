@@ -1,6 +1,6 @@
 # 📋 BACKLOG — Mentora LMS
 
-> **Cập nhật:** 04/05/2026
+> **Cập nhật:** 11/05/2026
 > **Mục đích:** Inventory toàn bộ tính năng đang có trong hệ thống. Dùng để track tiến độ, plan v2, và onboard người mới.
 >
 > **Quy ước trạng thái:**
@@ -16,6 +16,7 @@
 ### 1.1 Navigation & Layout
 | # | Tính năng | Trạng thái | Ghi chú |
 |---|---|---|---|
+| 1.0.1 | Magic Link auth gate (Supabase OTP, whitelist @momo.vn / @mservice.com.vn) | ✅ | Chỉ email domain MoMo mới vào được. Session persist. Logout button navbar |
 | 1.1.1 | Sticky navbar với logo MoMo | ✅ | `lms-nav` — backdrop blur, height 68px |
 | 1.1.2 | Hamburger pill button "MENU" ở **góc trái** (brandbook style) | ✅ | Mới đổi vị trí — pink solid pill, dễ thấy |
 | 1.1.3 | Full-screen menu overlay (2 cột: Tổng Quan + Modules) | ✅ | Pink gradient bg, Trust Display 32px — Tổng Quan có đủ 5 link: Trang chủ / Quy trình / Thư viện / Lộ trình / Tài nguyên |
@@ -173,6 +174,7 @@
 ### 2.4 Modules CMS
 | # | Tính năng | Trạng thái | Ghi chú |
 |---|---|---|---|
+| 2.4.0 | Section content manager (Settings tab) — eyebrow/title/subtitle/milestones/FAQ/visibility toggle | ✅ | 4 sections: PM Overview / Library / Journey / Support |
 | 2.4.1 | List view với status badges (Draft/Published) | ✅ | |
 | 2.4.2 | Add new module button | ✅ | |
 | 2.4.3 | Edit module modal | ✅ | |
@@ -308,6 +310,19 @@
 ---
 
 ## 6. CHANGELOG (sessions gần đây)
+
+### 11/05/2026
+- ✅ **Bug fix — Badge eyebrow trống trong admin editor**: `Object.assign({}, defaultContent, savedContent)` ghi đè default bằng `''` từ DB → admin editor luôn hiển thị trống. Fix: revert về `Object.assign` gốc + xử lý ở learner portal (`_applyEyebrow`)
+- ✅ **Feature — Ẩn badge khi eyebrow bị xoá**: Khi admin xoá nội dung eyebrow và save, badge tự ẩn hoàn toàn trên learner portal (`el.style.display = 'none'`). Khi non-empty → hiển thị lại
+- ✅ **UX — Placeholder "Để trống để ẩn badge"** trong input eyebrow của section editor để admin biết hành vi khi để trống
+
+### 05/05/2026
+- ✅ **Magic Link auth gate**: Chỉ email `@momo.vn` / `@mservice.com.vn` mới vào được learner portal. Supabase gửi OTP link qua email. Session persist qua `onAuthStateChange`. Logout button trong navbar
+- ✅ **Fix auth domain**: Đổi từ `@momo.com.vn` → `@momo.vn` cho đúng email thực tế
+
+### 04/05/2026 (tiếp theo)
+- ✅ **Section Content Manager** trong admin Settings tab: 4 sections (PM Overview / Library / Journey / Support) có accordion row với visibility toggle + inline form editor cho toàn bộ fields (eyebrow, title, subtitle, milestones, FAQ...)
+- ✅ Fix hero h1 font-size clamp để tiêu đề dài không bị wrap sai
 
 ### 04/05/2026
 - ✅ CF bar (Continuous Feedback): cân bằng layout bằng cách giảm `padding-right` từ 28px → 16px, đẩy text block sát lề phải hơn
