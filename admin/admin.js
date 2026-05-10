@@ -1615,12 +1615,13 @@ async function toggleSectionEditor(key) {
     if (!meta) return;
     let content = Object.assign({}, meta.defaultContent);
     if (_sectionContent[meta.contentKey]) {
-      const saved = _sectionContent[meta.contentKey];
-      Object.keys(saved).forEach(function(k) {
-        // Skip empty strings so defaultContent fills the gap (prevents blank eyebrow when DB has '')
-        if (typeof saved[k] === 'string' && saved[k] === '') return;
-        content[k] = saved[k];
-      });
+      content = Object.assign({}, meta.defaultContent, _sectionContent[meta.contentKey]);
+      if (meta.key === 'library' && _sectionContent[meta.contentKey].cats) {
+        content.cats = _sectionContent[meta.contentKey].cats;
+      }
+      if (meta.key === 'support' && _sectionContent[meta.contentKey].faq) {
+        content.faq = _sectionContent[meta.contentKey].faq;
+      }
     }
     editor.innerHTML = buildSectionEditor(meta, content);
     editor.dataset.loaded = '1';
@@ -1643,7 +1644,7 @@ function buildSectionEditor(meta, content) {
   <div class="seditor-header-fields">
     <div class="form-group">
       <label>Badge eyebrow</label>
-      <input type="text" class="sed-eyebrow" value="${esc(content.eyebrow || '')}">
+      <input type="text" class="sed-eyebrow" value="${esc(content.eyebrow || '')}" placeholder="Để trống để ẩn badge">
     </div>
     <div class="form-group">
       <label>Tiêu đề chính (H2)</label>

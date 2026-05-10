@@ -1271,6 +1271,14 @@ function loadSiteSettings() {
       if (!val) return;
       document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
     };
+    // For badge eyebrow: empty string = hide element, undefined = keep HTML default
+    var _applyEyebrow = function (sel, val) {
+      if (val === undefined) return;
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (val) { el.textContent = val; el.style.display = ''; }
+        else { el.style.display = 'none'; }
+      });
+    };
     var _applyHtml = function (sel, val) {
       if (!val) return;
       document.querySelectorAll(sel).forEach(function (el) { el.innerHTML = val; });
@@ -1283,7 +1291,7 @@ function loadSiteSettings() {
     if (map['content_pm_overview']) {
       try {
         var cPm = JSON.parse(map['content_pm_overview']);
-        _applyText('[data-i18n="pm.eyebrow"]', cPm.eyebrow);
+        _applyEyebrow('[data-i18n="pm.eyebrow"]', cPm.eyebrow);
         _applyHtml('[data-i18n="pm.title"]',    _parseSigTitle(cPm.title || ''));
         _applyText('[data-i18n="pm.subtitle"]', cPm.subtitle);
         [1,2,3].forEach(function (n) {
@@ -1297,7 +1305,7 @@ function loadSiteSettings() {
     if (map['content_library']) {
       try {
         var cLib = JSON.parse(map['content_library']);
-        _applyText('[data-i18n="lib.eyebrow"]',  cLib.eyebrow);
+        _applyEyebrow('[data-i18n="lib.eyebrow"]',  cLib.eyebrow);
         _applyHtml('[data-i18n="lib.title"]',     _parseSigTitle(cLib.title || ''));
         _applyText('[data-i18n="lib.subtitle"]',  cLib.subtitle);
         if (Array.isArray(cLib.cats)) {
@@ -1319,7 +1327,7 @@ function loadSiteSettings() {
     if (map['content_journey']) {
       try {
         var cJrn = JSON.parse(map['content_journey']);
-        _applyText('[data-i18n="journey.eyebrow"]',  cJrn.eyebrow);
+        _applyEyebrow('[data-i18n="journey.eyebrow"]',  cJrn.eyebrow);
         _applyHtml('[data-i18n="journey.title"]',     _parseSigTitle(cJrn.title || ''));
         _applyText('[data-i18n="journey.subtitle"]',  cJrn.subtitle);
       } catch (e) {}
@@ -1329,7 +1337,7 @@ function loadSiteSettings() {
     if (map['content_support']) {
       try {
         var cSup = JSON.parse(map['content_support']);
-        _applyText('[data-i18n="sup.eyebrow"]',  cSup.eyebrow);
+        _applyEyebrow('[data-i18n="sup.eyebrow"]',  cSup.eyebrow);
         _applyHtml('[data-i18n="sup.title"]',     _parseSigTitle(cSup.title || ''));
         _applyText('[data-i18n="sup.subtitle"]',  cSup.subtitle);
         if (Array.isArray(cSup.faq) && cSup.faq.length) {
